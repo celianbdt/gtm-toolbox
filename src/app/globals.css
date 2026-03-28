@@ -1,3 +1,4 @@
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400,300&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -7,9 +8,9 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: 'Satoshi', system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-heading: 'Satoshi', system-ui, sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -48,73 +49,96 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ============================================================
+   GTM Toolbox — Design System
+   Palette: Near-black with purple accents, fine subtle borders
+   Primary: #7C3AED (violet)
+   No glow — clean thin borders instead
+   Font: Satoshi
+   ============================================================ */
+
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --background: #f8f9fc;
+  --foreground: #0f0a1f;
+  --card: #ffffff;
+  --card-foreground: #0f0a1f;
+  --popover: #ffffff;
+  --popover-foreground: #0f0a1f;
+  --primary: #7C3AED;
+  --primary-foreground: #ffffff;
+  --secondary: #f0eef5;
+  --secondary-foreground: #0f0a1f;
+  --muted: #f0eef5;
+  --muted-foreground: #6b6580;
+  --accent: #f0eef5;
+  --accent-foreground: #0f0a1f;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --border: #e4e0ed;
+  --input: #e4e0ed;
+  --ring: #7C3AED;
+  --chart-1: #7C3AED;
+  --chart-2: #A78BFA;
+  --chart-3: #D8CDFF;
+  --chart-4: #10B981;
+  --chart-5: #6366F1;
+  --radius: 0.75rem;
+  --sidebar: #f5f3fa;
+  --sidebar-foreground: #0f0a1f;
+  --sidebar-primary: #7C3AED;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ece8f5;
+  --sidebar-accent-foreground: #0f0a1f;
+  --sidebar-border: #e4e0ed;
+  --sidebar-ring: #7C3AED;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* ── Background — near black ── */
+  --background: #060608;
+  --foreground: #dddbe5;
+
+  /* ── Cards — very subtle elevation ── */
+  --card: #0e0e14;
+  --card-foreground: #dddbe5;
+  --popover: #0e0e14;
+  --popover-foreground: #dddbe5;
+
+  /* ── Primary — Violet ── */
+  --primary: #7C3AED;
+  --primary-foreground: #ffffff;
+
+  /* ── Surfaces ── */
+  --secondary: #111118;
+  --secondary-foreground: #dddbe5;
+  --muted: #111118;
+  --muted-foreground: #706d80;
+  --accent: #16161f;
+  --accent-foreground: #dddbe5;
+
+  /* ── Semantic ── */
+  --destructive: oklch(0.65 0.20 22);
+
+  /* ── Borders — very thin, barely there ── */
+  --border: rgba(255, 255, 255, 0.06);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #7C3AED;
+
+  /* ── Charts ── */
+  --chart-1: #7C3AED;
+  --chart-2: #A78BFA;
+  --chart-3: #D8CDFF;
+  --chart-4: #10B981;
+  --chart-5: #6366F1;
+
+  /* ── Sidebar — slightly distinct from bg ── */
+  --sidebar: #08080c;
+  --sidebar-foreground: #a09caf;
+  --sidebar-primary: #7C3AED;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #141420;
+  --sidebar-accent-foreground: #dddbe5;
+  --sidebar-border: rgba(255, 255, 255, 0.05);
+  --sidebar-ring: #7C3AED;
 }
 
 @layer base {
@@ -127,4 +151,103 @@
   html {
     @apply font-sans;
   }
+}
+
+/* ============================================================
+   Element overrides — clean, no glow, thin borders
+   ============================================================ */
+
+/* Cards — subtle border brighten on hover */
+.dark [data-slot="card"] {
+  transition: border-color 0.2s ease;
+}
+.dark [data-slot="card"]:hover {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.dark a:hover [data-slot="card"] {
+  border-color: rgba(124, 58, 237, 0.25);
+}
+
+/* Buttons — clean, no glow */
+.dark [data-slot="button"][data-variant="default"] {
+  transition: opacity 0.2s ease;
+}
+.dark [data-slot="button"][data-variant="default"]:hover {
+  opacity: 0.9;
+}
+
+/* Separator */
+.dark [data-slot="separator"] {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Dialog/Sheet — thin border, no glow */
+.dark [data-slot="dialog-overlay"],
+.dark [data-slot="sheet-overlay"] {
+  backdrop-filter: blur(4px);
+}
+.dark [data-slot="dialog-content"],
+.dark [data-slot="sheet-content"] {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Dropdown — thin border */
+.dark [data-slot="dropdown-menu-content"] {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================
+   Sidebar — clean panel
+   ============================================================ */
+
+/* Sidebar right border */
+.dark [data-slot="sidebar-container"][data-side="left"] {
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Group labels */
+.dark [data-slot="sidebar-group-label"] {
+  color: rgba(160, 156, 175, 0.5);
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+}
+
+/* Menu button — base */
+.dark [data-slot="sidebar-menu-button"] {
+  color: #7c7891;
+  transition: all 0.15s ease;
+  border-radius: 0.5rem;
+}
+.dark [data-slot="sidebar-menu-button"]:hover {
+  color: #dddbe5;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Active — violet filled */
+.dark [data-slot="sidebar-menu-button"][data-active="true"] {
+  color: #ffffff !important;
+  background: #7C3AED !important;
+}
+
+/* Disabled items */
+.dark [data-slot="sidebar-menu-button"]:disabled,
+.dark [data-slot="sidebar-menu-button"][aria-disabled="true"] {
+  color: rgba(124, 120, 145, 0.45);
+  opacity: 1;
+}
+.dark [data-slot="sidebar-menu-button"]:disabled [data-slot="badge"],
+.dark [data-slot="sidebar-menu-button"][aria-disabled="true"] [data-slot="badge"] {
+  color: rgba(160, 156, 175, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Sidebar separator */
+.dark [data-slot="sidebar-separator"] {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Sidebar header */
+.dark [data-slot="sidebar-header"] [data-slot="sidebar-menu-button"] {
+  color: #dddbe5;
 }
