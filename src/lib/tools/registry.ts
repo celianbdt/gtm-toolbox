@@ -55,11 +55,11 @@ export const tools: GTMTool[] = [
     id: "outbound-builder",
     name: "Outbound Builder",
     description:
-      "Generate personalized outbound sequences based on your ICP and messaging.",
+      "Analyze past campaigns and generate multi-channel outbound sequences with AI-powered insights.",
     icon: "Send",
     href: "outbound-builder",
     category: "outbound",
-    status: "coming-soon",
+    status: "active",
   },
 ];
 
