@@ -5,6 +5,7 @@ import type { CompetitorEntry, AnalysisFocus } from "@/lib/competitive-intel/typ
 import { CompetitorSelector } from "./competitor-selector";
 import { FocusSelector } from "./focus-selector";
 import { AnalysisReview } from "./analysis-review";
+import { InsightPicker } from "@/components/shared/insight-picker";
 
 type Step = "competitors" | "focus" | "review";
 
@@ -18,6 +19,7 @@ export function CISetup({ workspaceId, onSessionCreated }: Props) {
   const [competitors, setCompetitors] = useState<CompetitorEntry[]>([]);
   const [focusDimensions, setFocusDimensions] = useState<AnalysisFocus[]>([]);
   const [customQuestion, setCustomQuestion] = useState("");
+  const [insightSessionIds, setInsightSessionIds] = useState<string[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState("");
 
@@ -41,6 +43,7 @@ export function CISetup({ workspaceId, onSessionCreated }: Props) {
           competitors,
           focusDimensions,
           customQuestion: customQuestion.trim() || undefined,
+          insightSessionIds: insightSessionIds.length > 0 ? insightSessionIds : undefined,
         }),
       });
       const data = await res.json();
@@ -100,18 +103,27 @@ export function CISetup({ workspaceId, onSessionCreated }: Props) {
             />
           )}
           {step === "focus" && (
-            <FocusSelector
-              focusDimensions={focusDimensions}
-              onChange={setFocusDimensions}
-              customQuestion={customQuestion}
-              onCustomQuestionChange={setCustomQuestion}
-            />
+            <>
+              <FocusSelector
+                focusDimensions={focusDimensions}
+                onChange={setFocusDimensions}
+                customQuestion={customQuestion}
+                onCustomQuestionChange={setCustomQuestion}
+              />
+              <InsightPicker
+                workspaceId={workspaceId}
+                currentToolId="competitive-intel"
+                selectedIds={insightSessionIds}
+                onChange={setInsightSessionIds}
+              />
+            </>
           )}
           {step === "review" && (
             <AnalysisReview
               competitors={competitors}
               focusDimensions={focusDimensions}
               customQuestion={customQuestion}
+              insightCount={insightSessionIds.length}
             />
           )}
         </div>

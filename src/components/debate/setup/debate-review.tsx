@@ -6,9 +6,10 @@ type Props = {
   agents: AgentConfig[];
   mission: string;
   maxTurns: number;
+  insightCount?: number;
 };
 
-export function DebateReview({ agents, mission, maxTurns }: Props) {
+export function DebateReview({ agents, mission, maxTurns, insightCount = 0 }: Props) {
   return (
     <div className="space-y-6">
       <div>
@@ -46,6 +47,14 @@ export function DebateReview({ agents, mission, maxTurns }: Props) {
           <div className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Max turns</div>
           <p className="text-sm text-white">{maxTurns} turns</p>
         </div>
+        {insightCount > 0 && (
+          <div className="p-4">
+            <div className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Cross-tool insights</div>
+            <p className="text-sm text-white">
+              {insightCount} session{insightCount > 1 ? "s" : ""} included
+            </p>
+          </div>
+        )}
       </div>
 
       <p className="text-xs text-zinc-500">

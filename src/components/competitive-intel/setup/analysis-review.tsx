@@ -7,6 +7,7 @@ type Props = {
   competitors: CompetitorEntry[];
   focusDimensions: AnalysisFocus[];
   customQuestion: string;
+  insightCount?: number;
 };
 
 const ANALYSTS = [
@@ -20,6 +21,7 @@ export function AnalysisReview({
   competitors,
   focusDimensions,
   customQuestion,
+  insightCount = 0,
 }: Props) {
   return (
     <div>
@@ -87,6 +89,18 @@ export function AnalysisReview({
             ))}
           </div>
         </div>
+
+        {/* Cross-tool insights */}
+        {insightCount > 0 && (
+          <div className="border border-border rounded-lg p-4">
+            <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">
+              Cross-tool Insights
+            </h3>
+            <p className="text-sm text-foreground">
+              {insightCount} session{insightCount > 1 ? "s" : ""} included as context
+            </p>
+          </div>
+        )}
 
         {/* Process */}
         <div className="border border-border rounded-lg p-4">

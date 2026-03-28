@@ -10,6 +10,7 @@ import {
   updateSessionPhase,
 } from "@/lib/competitive-intel/db";
 import { getToolKnowledge } from "@/lib/knowledge";
+import { getToolInsights } from "@/lib/insights";
 import {
   buildIntelExtractionPrompt,
   buildAnalystAssessmentPrompt,
@@ -49,6 +50,7 @@ export async function POST(request: NextRequest) {
         const config = session.config;
         const agents = await getAgentsByIds(config.analyst_agent_ids);
         const workspaceContext = await getWorkspaceContext(session.workspace_id);
+        const toolInsights = await getToolInsights(config.insight_session_ids ?? []);
         const knowledgeBase = await getToolKnowledge("competitive-intel");
 
         // ══════════════════════════════════════════
@@ -60,7 +62,7 @@ export async function POST(request: NextRequest) {
         const intelBriefs: { competitor: string; brief: IntelBrief }[] = [];
 
         for (const competitor of config.competitors) {
-          const prompt = buildIntelExtractionPrompt(competitor, workspaceContext);
+          const prompt = buildIntelExtractionPrompt(competitor, workspaceContext, toolInsights);
 
           const { object: brief } = await generateObject({
             model: anthropic("claude-haiku-4-5"),
@@ -92,7 +94,8 @@ export async function POST(request: NextRequest) {
           config.focus_dimensions,
           config.custom_question,
           workspaceContext,
-          knowledgeBase
+          knowledgeBase,
+          toolInsights
         );
 
         const assessmentMessages: { agentId: string; content: string }[] = [];
@@ -242,7 +245,7 @@ export async function POST(request: NextRequest) {
           onResult: (obj: T) => Promise<void>
         ) {
           try {
-            const prompt = buildSynthesisPrompt(promptType, fullTranscript, competitorNames, workspaceContext);
+            const prompt = buildSynthesisPrompt(promptType, fullTranscript, competitorNames, workspaceContext, toolInsights);
             const { object } = await generateObject({
               model: anthropic("claude-sonnet-4-5"),
               schema,

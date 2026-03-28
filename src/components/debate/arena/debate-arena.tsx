@@ -19,8 +19,26 @@ export function DebateArena({ sessionId, workspaceId }: Props) {
   const [messages, setMessages] = useState<DebateMessage[]>([]);
   const [currentTurn, setCurrentTurn] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isSynthesizing, setIsSynthesizing] = useState(false);
+  const [isConcluded, setIsConcluded] = useState(false);
 
   const { streamingAgents, isStreaming, sendMessage, abort, estimatedCost } = useDebateStream();
+
+  const synthesizeDebate = useCallback(async () => {
+    setIsSynthesizing(true);
+    try {
+      await fetch("/api/debate/synthesize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId }),
+      });
+      setIsConcluded(true);
+    } catch (e) {
+      console.error("Failed to synthesize debate:", e);
+    } finally {
+      setIsSynthesizing(false);
+    }
+  }, [sessionId]);
 
   // Load session + agents + messages
   useEffect(() => {
@@ -91,11 +109,16 @@ export function DebateArena({ sessionId, workspaceId }: Props) {
           setMessages((prev) => [...prev, msg]);
         },
         (stepNumber) => {
-          setCurrentTurn(stepNumber + 1);
+          const nextTurn = stepNumber + 1;
+          setCurrentTurn(nextTurn);
+          // Auto-synthesize when max turns reached
+          if (session && nextTurn >= session.config.max_turns) {
+            synthesizeDebate();
+          }
         }
       );
     },
-    [sessionId, workspaceId, currentTurn, agentsMap, sendMessage]
+    [sessionId, workspaceId, currentTurn, agentsMap, sendMessage, session, synthesizeDebate]
   );
 
   const handlePause = useCallback(() => {
@@ -105,7 +128,8 @@ export function DebateArena({ sessionId, workspaceId }: Props) {
 
   const handleStop = useCallback(() => {
     abort();
-  }, [abort]);
+    synthesizeDebate();
+  }, [abort, synthesizeDebate]);
 
   const handleResume = useCallback(() => {
     setIsPaused(false);
@@ -158,15 +182,35 @@ export function DebateArena({ sessionId, workspaceId }: Props) {
         </div>
       )}
 
+      {/* Synthesis overlay */}
+      {isSynthesizing && (
+        <div className="px-6 py-4 border-t border-border bg-secondary/50">
+          <div className="max-w-4xl mx-auto flex items-center justify-center gap-3">
+            <div className="w-4 h-4 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin" />
+            <span className="text-sm text-muted-foreground">Synthesizing debate insights...</span>
+          </div>
+        </div>
+      )}
+
+      {isConcluded && (
+        <div className="px-6 py-4 border-t border-border bg-secondary/50">
+          <div className="max-w-4xl mx-auto flex items-center justify-center gap-3">
+            <span className="text-sm text-muted-foreground">Debate concluded — insights saved for cross-tool use</span>
+          </div>
+        </div>
+      )}
+
       {/* Sticky input */}
-      <HumanInput
-        onSend={handleSend}
-        onPause={handlePause}
-        onStop={handleStop}
-        isStreaming={isStreaming}
-        currentTurn={currentTurn}
-        maxTurns={maxTurns}
-      />
+      {!isConcluded && !isSynthesizing && (
+        <HumanInput
+          onSend={handleSend}
+          onPause={handlePause}
+          onStop={handleStop}
+          isStreaming={isStreaming}
+          currentTurn={currentTurn}
+          maxTurns={maxTurns}
+        />
+      )}
     </div>
   );
 }

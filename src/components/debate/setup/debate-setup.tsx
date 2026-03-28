@@ -6,6 +6,7 @@ import { TeamBuilder } from "./team-builder";
 import { MissionInput } from "./mission-input";
 import { DebateReview } from "./debate-review";
 import { AiLoader } from "@/components/ui/ai-loader";
+import { InsightPicker } from "@/components/shared/insight-picker";
 
 type Step = "team" | "mission" | "review";
 
@@ -19,6 +20,7 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
   const [agents, setAgents] = useState<AgentConfig[]>([]);
   const [mission, setMission] = useState("");
   const [maxTurns, setMaxTurns] = useState(10);
+  const [insightSessionIds, setInsightSessionIds] = useState<string[]>([]);
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState("");
 
@@ -42,6 +44,7 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
           mission,
           maxTurns,
           agentIds: agents.map((a) => a.id),
+          insightSessionIds: insightSessionIds.length > 0 ? insightSessionIds : undefined,
         }),
       });
       const data = await res.json();
@@ -95,15 +98,23 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
             <TeamBuilder workspaceId={workspaceId} agents={agents} onChange={setAgents} />
           )}
           {step === "mission" && (
-            <MissionInput
-              mission={mission}
-              onChange={setMission}
-              maxTurns={maxTurns}
-              onMaxTurnsChange={setMaxTurns}
-            />
+            <>
+              <MissionInput
+                mission={mission}
+                onChange={setMission}
+                maxTurns={maxTurns}
+                onMaxTurnsChange={setMaxTurns}
+              />
+              <InsightPicker
+                workspaceId={workspaceId}
+                currentToolId="strategy-debate"
+                selectedIds={insightSessionIds}
+                onChange={setInsightSessionIds}
+              />
+            </>
           )}
           {step === "review" && (
-            <DebateReview agents={agents} mission={mission} maxTurns={maxTurns} />
+            <DebateReview agents={agents} mission={mission} maxTurns={maxTurns} insightCount={insightSessionIds.length} />
           )}
         </div>
       </div>

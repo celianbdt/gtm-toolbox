@@ -5,11 +5,12 @@ import type { CISessionConfig, CompetitorEntry, AnalysisFocus } from "@/lib/comp
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { workspaceId, competitors, focusDimensions, customQuestion } = body as {
+    const { workspaceId, competitors, focusDimensions, customQuestion, insightSessionIds } = body as {
       workspaceId: string;
       competitors: CompetitorEntry[];
       focusDimensions: AnalysisFocus[];
       customQuestion?: string;
+      insightSessionIds?: string[];
     };
 
     if (!workspaceId || !competitors?.length || !focusDimensions?.length) {
@@ -33,6 +34,7 @@ export async function POST(request: NextRequest) {
       phase_config: {
         debate_rounds: 1,
       },
+      insight_session_ids: insightSessionIds,
     };
 
     const title = competitors.length === 1

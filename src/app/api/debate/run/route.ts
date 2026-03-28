@@ -9,6 +9,7 @@ import {
   insertMessage,
   incrementTurn,
 } from "@/lib/debate/db";
+import { getToolInsights } from "@/lib/insights";
 import { selectRespondingAgents } from "@/lib/debate/scoring";
 import type { SSEEvent, AgentConfig, DebateMessage } from "@/lib/debate/types";
 
@@ -20,6 +21,7 @@ function buildAgentMessages(
   agent: AgentConfig,
   mission: string,
   workspaceContext: string,
+  toolInsights: string,
   history: DebateMessage[],
   agentsMap: Map<string, AgentConfig>,
   currentStepMessages: { agentId: string; content: string }[]
@@ -28,7 +30,11 @@ function buildAgentMessages(
     ? `\n\n## Company Context\n${workspaceContext}`
     : "";
 
-  const systemPrompt = `${agent.system_prompt}${contextBlock}
+  const insightsBlock = toolInsights
+    ? `\n\n${toolInsights}`
+    : "";
+
+  const systemPrompt = `${agent.system_prompt}${contextBlock}${insightsBlock}
 
 ## Debate Mission
 ${mission}
@@ -97,6 +103,7 @@ export async function POST(request: NextRequest) {
         const agents = await getAgentsByIds(config.agent_ids);
         const agentsMap = new Map(agents.map((a) => [a.id, a]));
         const workspaceContext = await getWorkspaceContext(workspaceId);
+        const toolInsights = await getToolInsights(config.insight_session_ids ?? []);
         const history = await getSessionMessages(sessionId);
 
         const stepNumber = config.current_turn;
@@ -133,6 +140,7 @@ export async function POST(request: NextRequest) {
             agent,
             config.mission,
             workspaceContext,
+            toolInsights,
             history,
             agentsMap,
             currentStepMessages

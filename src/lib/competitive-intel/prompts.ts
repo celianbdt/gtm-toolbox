@@ -7,7 +7,8 @@ import { ANALYSIS_FOCUS_LABELS } from "./types";
  */
 export function buildIntelExtractionPrompt(
   competitor: CompetitorEntry,
-  workspaceContext: string
+  workspaceContext: string,
+  toolInsights?: string
 ): string {
   const sources = competitor.data_sources
     .map((s) => `### ${s.title} (${s.type})\n${s.content}`)
@@ -23,6 +24,7 @@ ${competitor.website ? `Website: ${competitor.website}` : ""}
 
 ${sources}
 
+${toolInsights ? `\n## Prior Analysis Insights\n${toolInsights}\n` : ""}
 Extract the key facts into the structured format. Be precise and evidence-based. If information is not available, leave optional fields empty. For weaknesses_signals, identify any signals of weakness (slow releases, negative reviews, customer complaints, tech debt signals, etc.).`;
 }
 
@@ -34,7 +36,8 @@ export function buildAnalystAssessmentPrompt(
   focusDimensions: AnalysisFocus[],
   customQuestion: string | undefined,
   workspaceContext: string,
-  knowledgeBase: string
+  knowledgeBase: string,
+  toolInsights?: string
 ): string {
   const briefsText = intelBriefs
     .map(
@@ -66,7 +69,7 @@ ${customQuestion ? `\n## Additional Question\n${customQuestion}` : ""}
 
 ## GTM Knowledge Base
 ${knowledgeBase}
-
+${toolInsights ? `\n## Prior Analysis Insights\n${toolInsights}\n` : ""}
 ---
 
 CRITICAL: Keep your ENTIRE response under 150 words. Be sharp, direct, and actionable. Use bullet points, not paragraphs. One key insight per focus dimension — no filler. The team can ask you to go deeper on specific points later.`;
@@ -104,7 +107,8 @@ export function buildSynthesisPrompt(
   outputType: SynthesisOutputType,
   analysisTranscript: string,
   competitorNames: string[],
-  workspaceContext: string
+  workspaceContext: string,
+  toolInsights?: string
 ): string {
   const base = `You are a synthesis engine. You have access to a full competitive intelligence analysis conducted by 4 expert analysts (Market Analyst, Product Strategist, Sales Tactician, Customer Voice). They have each assessed the competitors and debated their findings.
 
@@ -116,7 +120,7 @@ ${workspaceContext || "No company context provided."}
 
 ## Competitors Analyzed
 ${competitorNames.join(", ")}
-
+${toolInsights ? `\n## Prior Analysis Insights\n${toolInsights}\n` : ""}
 ---
 
 `;

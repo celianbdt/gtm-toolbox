@@ -39,6 +39,17 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
 
   const selectedIds = new Set(agents.map((a) => a.id));
 
+  async function deleteWorkspaceAgent(agentId: string) {
+    try {
+      const res = await fetch(`/api/agents/${agentId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Delete failed");
+      setWorkspaceAgents((prev) => prev.filter((a) => a.id !== agentId));
+      onChange(agents.filter((a) => a.id !== agentId));
+    } catch {
+      setError("Failed to delete agent");
+    }
+  }
+
   function toggle(agent: AgentConfig) {
     if (selectedIds.has(agent.id)) {
       onChange(agents.filter((a) => a.id !== agent.id));
@@ -138,11 +149,12 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
                   <div className="text-xs text-zinc-500 mb-2 uppercase tracking-wider">My agents</div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {workspaceAgents.map((a) => (
-                      <div key={a.id} className={isFull && !selectedIds.has(a.id) ? "opacity-40 cursor-not-allowed" : ""}>
+                      <div key={a.id} className={`relative ${isFull && !selectedIds.has(a.id) ? "opacity-40 cursor-not-allowed" : ""}`}>
                         <AgentCard
                           agent={a}
                           selected={selectedIds.has(a.id)}
                           onClick={() => toggle(a)}
+                          onRemove={() => deleteWorkspaceAgent(a.id)}
                         />
                       </div>
                     ))}

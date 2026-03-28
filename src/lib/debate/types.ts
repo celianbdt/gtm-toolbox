@@ -31,6 +31,7 @@ export type DebateSessionConfig = {
   max_turns: number;
   agent_ids: string[];
   current_turn: number;
+  insight_session_ids?: string[];
 };
 
 export type DebateSession = {

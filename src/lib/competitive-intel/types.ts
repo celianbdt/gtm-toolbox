@@ -48,6 +48,7 @@ export type CISessionConfig = {
   phase_config: {
     debate_rounds: number;
   };
+  insight_session_ids?: string[];
 };
 
 export type CISession = {
