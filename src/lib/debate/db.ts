@@ -117,6 +117,33 @@ export async function getSessionMessages(sessionId: string): Promise<DebateMessa
   return data as DebateMessage[];
 }
 
+export async function listDebateSessions(
+  workspaceId: string
+): Promise<DebateSession[]> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("tool_sessions")
+    .select("*")
+    .eq("workspace_id", workspaceId)
+    .eq("tool_id", "strategy-debate")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as DebateSession[];
+}
+
+export async function getDebateOutputs(
+  sessionId: string
+): Promise<{ id: string; session_id: string; output_type: string; title: string; description: string; confidence_score: number | null; tags: string[]; metadata: Record<string, unknown>; created_at: string }[]> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("session_outputs")
+    .select("*")
+    .eq("session_id", sessionId)
+    .order("created_at");
+  if (error) throw error;
+  return data ?? [];
+}
+
 export async function getWorkspaceContext(workspaceId: string): Promise<string> {
   const supabase = createAdminClient();
   const { data, error } = await supabase

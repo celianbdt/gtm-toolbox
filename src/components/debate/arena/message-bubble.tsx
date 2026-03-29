@@ -1,28 +1,12 @@
 "use client";
 
+import ReactMarkdown from "react-markdown";
 import type { AgentConfig, DebateMessage } from "@/lib/debate/types";
 
 type Props = {
   message: DebateMessage;
   agent?: AgentConfig;
 };
-
-function renderContent(content: string) {
-  return content.split("\n").map((line, i) => {
-    const parts = line.split(/(\*\*[^*]+\*\*)/g);
-    return (
-      <p key={i} className={i > 0 ? "mt-2" : ""}>
-        {parts.map((part, j) =>
-          part.startsWith("**") && part.endsWith("**") ? (
-            <strong key={j}>{part.slice(2, -2)}</strong>
-          ) : (
-            part
-          )
-        )}
-      </p>
-    );
-  });
-}
 
 export function MessageBubble({ message, agent }: Props) {
   const isHuman = message.role === "user";
@@ -40,7 +24,7 @@ export function MessageBubble({ message, agent }: Props) {
   const score = message.metadata?.engagement_score;
 
   return (
-    <div className="flex gap-3 max-w-[85%]">
+    <div className="flex gap-3 max-w-[75%]">
       {agent && (
         <div
           className="w-9 h-9 rounded-full flex items-center justify-center text-lg flex-shrink-0 mt-1"
@@ -67,10 +51,10 @@ export function MessageBubble({ message, agent }: Props) {
           </div>
         )}
         <div
-          className="text-sm text-zinc-200 leading-relaxed pl-3 border-l-2"
+          className="text-[13px] text-zinc-200 leading-snug pl-3 border-l-2 prose prose-invert prose-sm max-w-none prose-p:my-0.5 prose-headings:my-1 prose-headings:text-sm prose-ul:my-0.5 prose-li:my-0 prose-strong:text-zinc-100"
           style={{ borderColor: agent?.color ?? "#6b7280" }}
         >
-          {renderContent(message.content)}
+          <ReactMarkdown>{message.content}</ReactMarkdown>
         </div>
       </div>
     </div>

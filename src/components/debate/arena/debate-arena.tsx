@@ -10,15 +10,15 @@ import { HumanInput } from "./human-input";
 type Props = {
   sessionId: string;
   workspaceId: string;
+  onConcluded?: (sessionId: string) => void;
 };
 
-export function DebateArena({ sessionId, workspaceId }: Props) {
+export function DebateArena({ sessionId, workspaceId, onConcluded }: Props) {
   const [session, setSession] = useState<DebateSession | null>(null);
   const [agents, setAgents] = useState<AgentConfig[]>([]);
   const [agentsMap, setAgentsMap] = useState<Map<string, AgentConfig>>(new Map());
   const [messages, setMessages] = useState<DebateMessage[]>([]);
   const [currentTurn, setCurrentTurn] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const [isSynthesizing, setIsSynthesizing] = useState(false);
   const [isConcluded, setIsConcluded] = useState(false);
 
@@ -122,7 +122,6 @@ export function DebateArena({ sessionId, workspaceId }: Props) {
   );
 
   const handlePause = useCallback(() => {
-    setIsPaused(true);
     abort();
   }, [abort]);
 
@@ -130,10 +129,6 @@ export function DebateArena({ sessionId, workspaceId }: Props) {
     abort();
     synthesizeDebate();
   }, [abort, synthesizeDebate]);
-
-  const handleResume = useCallback(() => {
-    setIsPaused(false);
-  }, []);
 
   if (!session) {
     return (
@@ -148,7 +143,7 @@ export function DebateArena({ sessionId, workspaceId }: Props) {
   const maxTurns = session.config.max_turns;
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-h-0 overflow-hidden">
       <DebateTopBar
         mission={session.config.mission}
         currentTurn={currentTurn}
@@ -167,21 +162,6 @@ export function DebateArena({ sessionId, workspaceId }: Props) {
         />
       </div>
 
-      {/* Paused overlay */}
-      {isPaused && (
-        <div className="px-6 py-4 border-t border-border bg-secondary/50">
-          <div className="max-w-4xl mx-auto flex items-center justify-center gap-3">
-            <span className="text-sm text-muted-foreground">Debate paused</span>
-            <button
-              onClick={handleResume}
-              className="px-3 py-1.5 text-xs bg-[#7C3AED] text-white rounded-lg hover:bg-[#6D28D9] transition-colors"
-            >
-              Resume
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Synthesis overlay */}
       {isSynthesizing && (
         <div className="px-6 py-4 border-t border-border bg-secondary/50">
@@ -196,6 +176,14 @@ export function DebateArena({ sessionId, workspaceId }: Props) {
         <div className="px-6 py-4 border-t border-border bg-secondary/50">
           <div className="max-w-4xl mx-auto flex items-center justify-center gap-3">
             <span className="text-sm text-muted-foreground">Debate concluded — insights saved for cross-tool use</span>
+            {onConcluded && (
+              <button
+                onClick={() => onConcluded(sessionId)}
+                className="px-4 py-1.5 text-xs text-white bg-[#7C3AED] hover:bg-[#6D28D9] rounded-lg transition-colors"
+              >
+                View deliverables
+              </button>
+            )}
           </div>
         </div>
       )}

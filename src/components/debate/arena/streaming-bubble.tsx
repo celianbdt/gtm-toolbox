@@ -1,5 +1,6 @@
 "use client";
 
+import ReactMarkdown from "react-markdown";
 import type { AgentConfig } from "@/lib/debate/types";
 
 type Props = {
@@ -9,7 +10,7 @@ type Props = {
 
 export function StreamingBubble({ agent, content }: Props) {
   return (
-    <div className="flex gap-3 max-w-[85%]">
+    <div className="flex gap-3 max-w-[75%]">
       <div
         className="w-9 h-9 rounded-full flex items-center justify-center text-lg flex-shrink-0 mt-1 animate-pulse"
         style={{ backgroundColor: `${agent.color}20`, border: `1.5px solid ${agent.color}` }}
@@ -27,16 +28,12 @@ export function StreamingBubble({ agent, content }: Props) {
           )}
         </div>
         <div
-          className="text-sm text-zinc-200 leading-relaxed pl-3 border-l-2"
+          className="text-[13px] text-zinc-200 leading-snug pl-3 border-l-2 prose prose-invert prose-sm max-w-none prose-p:my-0.5 prose-headings:my-1 prose-headings:text-sm prose-ul:my-0.5 prose-li:my-0 prose-strong:text-zinc-100"
           style={{ borderColor: agent.color }}
         >
           {content ? (
             <>
-              {content.split("\n").map((line, i) => (
-                <p key={i} className={i > 0 ? "mt-2" : ""}>
-                  {line}
-                </p>
-              ))}
+              <ReactMarkdown>{content}</ReactMarkdown>
               <span className="inline-block w-0.5 h-4 bg-current ml-0.5 animate-pulse" />
             </>
           ) : (

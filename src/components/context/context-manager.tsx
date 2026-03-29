@@ -5,6 +5,9 @@ import type { ContextDocument, DocType } from "@/lib/context/types";
 import { DOC_TYPES } from "@/lib/context/types";
 import { DocumentCard } from "./document-card";
 import { AddDocumentSheet } from "./add-document-sheet";
+import { RemodelSheet } from "./remodel-sheet";
+import { Sparkles } from "lucide-react";
+import { createClient } from "@/lib/supabase/client";
 
 type Props = {
   workspaceId: string;
@@ -18,6 +21,7 @@ export function ContextManager({ workspaceId, initialDocs }: Props) {
   const [filter, setFilter] = useState<Filter>("all");
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editDoc, setEditDoc] = useState<ContextDocument | null>(null);
+  const [remodelOpen, setRemodelOpen] = useState(false);
 
   const filtered = filter === "all" ? docs : docs.filter((d) => d.doc_type === filter);
 
@@ -83,12 +87,23 @@ export function ContextManager({ workspaceId, initialDocs }: Props) {
           })}
         </div>
 
-        <button
-          onClick={openAdd}
-          className="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white text-sm font-medium rounded-lg transition-colors"
-        >
-          + Add document
-        </button>
+        <div className="flex gap-2">
+          {docs.length >= 2 && (
+            <button
+              onClick={() => setRemodelOpen(true)}
+              className="flex items-center gap-1.5 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-sm font-medium rounded-lg transition-colors border border-zinc-700"
+            >
+              <Sparkles className="h-3.5 w-3.5" />
+              Remodel Context
+            </button>
+          )}
+          <button
+            onClick={openAdd}
+            className="px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white text-sm font-medium rounded-lg transition-colors"
+          >
+            + Add document
+          </button>
+        </div>
       </div>
 
       {/* Grid */}
@@ -125,6 +140,22 @@ export function ContextManager({ workspaceId, initialDocs }: Props) {
         workspaceId={workspaceId}
         editDoc={editDoc}
         onSaved={handleSaved}
+      />
+
+      <RemodelSheet
+        workspaceId={workspaceId}
+        open={remodelOpen}
+        onOpenChange={setRemodelOpen}
+        onRemodeled={async () => {
+          // Reload documents from supabase
+          const supabase = createClient();
+          const { data } = await supabase
+            .from("context_documents")
+            .select("*")
+            .eq("workspace_id", workspaceId)
+            .order("updated_at", { ascending: false });
+          if (data) setDocs(data as ContextDocument[]);
+        }}
       />
     </>
   );

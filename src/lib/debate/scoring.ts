@@ -40,20 +40,22 @@ export function scoreEngagement(agent: AgentConfig, lastMessage: string): number
 export function selectRespondingAgents(
   agents: AgentConfig[],
   lastMessage: string,
-  threshold = 0.35
+  threshold = 0.15
 ): { agent: AgentConfig; score: number }[] {
   const scored = agents.map((agent) => ({
     agent,
     score: scoreEngagement(agent, lastMessage),
   }));
 
-  const above = scored.filter((s) => s.score >= threshold);
+  const sorted = scored.sort((a, b) => b.score - a.score);
 
-  // Always ensure at least 1 agent responds (highest scorer)
-  if (above.length === 0) {
-    const best = scored.sort((a, b) => b.score - a.score)[0];
-    return best ? [best] : [];
+  const above = sorted.filter((s) => s.score >= threshold);
+
+  // Always ensure at least 3 agents respond for a rich debate
+  const minResponders = Math.min(3, sorted.length);
+  if (above.length < minResponders) {
+    return sorted.slice(0, minResponders);
   }
 
-  return above.sort((a, b) => b.score - a.score);
+  return above;
 }

@@ -146,6 +146,11 @@ export async function POST(request: NextRequest) {
             currentStepMessages
           );
 
+          // Ensure messages is never empty — add user message if needed
+          if (messages.length === 0) {
+            messages.push({ role: "user", content: userMessage });
+          }
+
           let fullContent = "";
 
           const result = streamText({
