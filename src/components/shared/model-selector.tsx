@@ -10,14 +10,16 @@ export type AIModel = {
 };
 
 export const AVAILABLE_MODELS: AIModel[] = [
-  { id: "claude-sonnet-4-5", provider: "anthropic", label: "Claude Sonnet 4.5", description: "Fast, smart — best for debates" },
-  { id: "claude-sonnet-4-6", provider: "anthropic", label: "Claude Sonnet 4.6", description: "Latest Sonnet, faster output" },
-  { id: "claude-opus-4-6", provider: "anthropic", label: "Claude Opus 4.6", description: "Most powerful, deeper reasoning" },
-  { id: "claude-haiku-4-5-20251001", provider: "anthropic", label: "Claude Haiku 4.5", description: "Ultra-fast, cheap — summaries" },
-  { id: "gpt-4.1", provider: "openai", label: "GPT-4.1", description: "OpenAI flagship" },
-  { id: "gpt-4.1-mini", provider: "openai", label: "GPT-4.1 Mini", description: "Fast and affordable" },
-  { id: "gpt-4o", provider: "openai", label: "GPT-4o", description: "Multimodal, fast" },
-  { id: "o3-mini", provider: "openai", label: "o3-mini", description: "Reasoning model, fast" },
+  { id: "claude-sonnet-4-5", provider: "anthropic", label: "Claude Sonnet 4.5", description: "Fast, smart — idéal pour les debates" },
+  { id: "claude-sonnet-4-6", provider: "anthropic", label: "Claude Sonnet 4.6", description: "Dernier Sonnet, output plus rapide" },
+  { id: "claude-opus-4-6", provider: "anthropic", label: "Claude Opus 4.6", description: "Le plus puissant, raisonnement profond" },
+  { id: "claude-haiku-4-5-20251001", provider: "anthropic", label: "Claude Haiku 4.5", description: "Ultra-rapide, pas cher — résumés" },
+  { id: "o3", provider: "openai", label: "o3", description: "Meilleur raisonnement OpenAI" },
+  { id: "o4-mini", provider: "openai", label: "o4-mini", description: "Raisonnement rapide et efficace" },
+  { id: "gpt-4.1", provider: "openai", label: "GPT-4.1", description: "Flagship OpenAI — coding + instructions" },
+  { id: "gpt-4.1-mini", provider: "openai", label: "GPT-4.1 Mini", description: "Rapide et abordable" },
+  { id: "gpt-4.1-nano", provider: "openai", label: "GPT-4.1 Nano", description: "Le moins cher, ultra-rapide" },
+  { id: "gpt-4o", provider: "openai", label: "GPT-4o", description: "Multimodal, bon équilibre" },
 ];
 
 type Props = {
