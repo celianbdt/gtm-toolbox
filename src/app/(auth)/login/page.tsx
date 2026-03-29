@@ -15,6 +15,27 @@ export default function LoginPage() {
     setLoading(true);
     setError(null);
 
+    // Check whitelist first
+    const checkRes = await fetch("/api/auth/check-whitelist", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: email.trim().toLowerCase() }),
+    });
+    const checkData = await checkRes.json();
+
+    if (!checkRes.ok) {
+      setError(checkData.error ?? "Erreur de vérification");
+      setLoading(false);
+      return;
+    }
+
+    if (!checkData.allowed) {
+      setError(checkData.message);
+      setLoading(false);
+      return;
+    }
+
+    // Whitelisted — send magic link
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOtp({
       email,

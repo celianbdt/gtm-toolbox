@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@supabase/ssr";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
@@ -32,8 +33,18 @@ export async function GET(request: Request) {
       }
     );
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
+    const { data: session, error } = await supabase.auth.exchangeCodeForSession(code);
+    if (!error && session?.user) {
+      // Ensure user profile exists
+      const admin = createAdminClient();
+      await admin
+        .from("user_profiles")
+        .upsert({
+          id: session.user.id,
+          email: session.user.email ?? "",
+          app_role: "user",
+        }, { onConflict: "id", ignoreDuplicates: true });
+
       return response;
     }
   }

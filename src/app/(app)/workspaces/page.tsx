@@ -7,11 +7,24 @@ export default async function WorkspacesPage() {
   let workspaces: { id: string; name: string; slug: string; description: string | null; color: string }[] = [];
 
   try {
-    const { data } = await supabase
-      .from("workspaces")
-      .select("*")
-      .order("created_at", { ascending: true });
-    workspaces = data ?? [];
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      // Get workspaces the user is a member of
+      const { data: members } = await supabase
+        .from("workspace_members")
+        .select("workspace_id")
+        .eq("user_id", user.id);
+
+      const wsIds = members?.map((m) => m.workspace_id) ?? [];
+      if (wsIds.length > 0) {
+        const { data } = await supabase
+          .from("workspaces")
+          .select("*")
+          .in("id", wsIds)
+          .order("created_at", { ascending: true });
+        workspaces = data ?? [];
+      }
+    }
   } catch {
     // Tables not yet created — run the migration
   }

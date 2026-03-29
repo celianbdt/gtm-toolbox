@@ -12,11 +12,23 @@ export default async function AppLayout({
   let workspaces: { id: string; name: string; slug: string; color: string }[] = [];
 
   try {
-    const { data } = await supabase
-      .from("workspaces")
-      .select("id, name, slug, color")
-      .order("created_at", { ascending: true });
-    workspaces = data ?? [];
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data: members } = await supabase
+        .from("workspace_members")
+        .select("workspace_id")
+        .eq("user_id", user.id);
+
+      const wsIds = members?.map((m) => m.workspace_id) ?? [];
+      if (wsIds.length > 0) {
+        const { data } = await supabase
+          .from("workspaces")
+          .select("id, name, slug, color")
+          .in("id", wsIds)
+          .order("created_at", { ascending: true });
+        workspaces = data ?? [];
+      }
+    }
   } catch {
     // Tables not yet created — run the migration first
   }

@@ -37,17 +37,25 @@ export function CreateWorkspaceDialog() {
     const supabase = createClient();
     const slug = slugify(name);
 
+    // Get current user
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { setLoading(false); return; }
+
     const { data, error } = await supabase
       .from("workspaces")
       .insert({ name: name.trim(), slug })
-      .select("slug")
+      .select("id, slug")
       .single();
 
     if (!error && data) {
+      // Add creator as workspace owner
+      await supabase
+        .from("workspace_members")
+        .insert({ workspace_id: data.id, user_id: user.id, role: "owner" });
+
       setOpen(false);
       setName("");
       router.push(`/${data.slug}`);
-      router.refresh();
       router.refresh();
     }
     setLoading(false);
