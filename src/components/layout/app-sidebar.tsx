@@ -10,6 +10,7 @@ import {
   LogOut,
   ChevronDown,
   Plus,
+  LayoutGrid,
 } from "lucide-react";
 import {
   Sidebar,
@@ -197,6 +198,14 @@ export function AppSidebar({
 
       <SidebarFooter>
         <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <Link href="/workspaces">
+                <LayoutGrid className="size-4" />
+                <span>All workspaces</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton onClick={handleLogout}>
               <LogOut className="size-4" />
