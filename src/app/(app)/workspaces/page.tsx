@@ -1,15 +1,17 @@
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { WorkspaceCards } from "@/components/workspace/workspace-cards";
 import { CreateWorkspaceDialog } from "@/components/workspace/create-workspace-dialog";
+import { WhitelistPanel } from "@/components/workspace/whitelist-panel";
 
 export default async function WorkspacesPage() {
   const supabase = await createClient();
   let workspaces: { id: string; name: string; slug: string; description: string | null; color: string }[] = [];
+  let isSuperAdmin = false;
 
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      // Get workspaces the user is a member of
       const { data: members } = await supabase
         .from("workspace_members")
         .select("workspace_id")
@@ -24,9 +26,18 @@ export default async function WorkspacesPage() {
           .order("created_at", { ascending: true });
         workspaces = data ?? [];
       }
+
+      // Check superadmin
+      const admin = createAdminClient();
+      const { data: profile } = await admin
+        .from("user_profiles")
+        .select("app_role")
+        .eq("id", user.id)
+        .single();
+      isSuperAdmin = profile?.app_role === "superadmin";
     }
   } catch {
-    // Tables not yet created — run the migration
+    // Tables not yet created
   }
 
   return (
@@ -41,6 +52,12 @@ export default async function WorkspacesPage() {
         <CreateWorkspaceDialog />
       </div>
       <WorkspaceCards workspaces={workspaces} />
+
+      {isSuperAdmin && (
+        <div className="mt-10">
+          <WhitelistPanel />
+        </div>
+      )}
     </div>
   );
 }
