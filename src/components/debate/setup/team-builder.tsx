@@ -21,7 +21,7 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
   const [generatedAgents, setGeneratedAgents] = useState<AgentConfig[]>([]);
   const [error, setError] = useState("");
   const [mode, setMode] = useState<"templates" | "prompt">("templates");
-  const [maxAgents, setMaxAgents] = useState(4);
+  const [maxAgents, setMaxAgents] = useState(10);
 
   useEffect(() => {
     setLoadingAgents(true);
@@ -39,11 +39,15 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
 
   const selectedIds = new Set(agents.map((a) => a.id));
 
-  async function deleteWorkspaceAgent(agentId: string) {
+  async function deleteAgent(agentId: string, isTemplate: boolean) {
     try {
       const res = await fetch(`/api/agents/${agentId}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Delete failed");
-      setWorkspaceAgents((prev) => prev.filter((a) => a.id !== agentId));
+      if (isTemplate) {
+        setTemplates((prev) => prev.filter((a) => a.id !== agentId));
+      } else {
+        setWorkspaceAgents((prev) => prev.filter((a) => a.id !== agentId));
+      }
       onChange(agents.filter((a) => a.id !== agentId));
     } catch {
       setError("Failed to delete agent");
@@ -154,7 +158,7 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
                           agent={a}
                           selected={selectedIds.has(a.id)}
                           onClick={() => toggle(a)}
-                          onRemove={() => deleteWorkspaceAgent(a.id)}
+                          onRemove={() => deleteAgent(a.id, false)}
                         />
                       </div>
                     ))}
@@ -172,6 +176,7 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
                         agent={t}
                         selected={selectedIds.has(t.id)}
                         onClick={() => toggle(t)}
+                        onRemove={() => deleteAgent(t.id, true)}
                       />
                     </div>
                   ))}

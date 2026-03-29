@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { streamText } from "ai";
 import { requireAuth } from "@/lib/supabase/auth";
-import { anthropic } from "@ai-sdk/anthropic";
+import { getWorkspaceAPIKeys, getModelForAgent } from "@/lib/ai/provider";
 import {
   getSession,
   getAgentsByIds,
@@ -111,6 +111,8 @@ export async function POST(request: NextRequest) {
         const workspaceContext = await getWorkspaceContext(workspaceId);
         const toolInsights = await getToolInsights(config.insight_session_ids ?? []);
         const history = await getSessionMessages(sessionId);
+        const keys = await getWorkspaceAPIKeys(workspaceId);
+        const sessionModels: string[] = config.models ?? ["claude-sonnet-4-5"];
 
         const stepNumber = config.current_turn;
 
@@ -160,7 +162,7 @@ export async function POST(request: NextRequest) {
           let fullContent = "";
 
           const result = streamText({
-            model: anthropic("claude-sonnet-4-5"),
+            model: getModelForAgent(sessionModels, i, keys),
             system,
             messages,
             maxOutputTokens: 1000,
@@ -253,7 +255,7 @@ export async function POST(request: NextRequest) {
 
             let autoContent = "";
             const autoResult = streamText({
-              model: anthropic("claude-sonnet-4-5"),
+              model: getModelForAgent(sessionModels, i, keys),
               system: autoSystem,
               messages: autoMessages,
               maxOutputTokens: 1000,

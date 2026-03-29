@@ -40,6 +40,7 @@ export async function createSession(payload: {
   max_turns: number;
   agent_ids: string[];
   insight_session_ids?: string[];
+  models?: string[];
 }): Promise<DebateSession> {
   const supabase = createAdminClient();
   const config: DebateSessionConfig = {
@@ -48,6 +49,7 @@ export async function createSession(payload: {
     agent_ids: payload.agent_ids,
     current_turn: 0,
     insight_session_ids: payload.insight_session_ids,
+    models: payload.models,
   };
   const { data, error } = await supabase
     .from("tool_sessions")

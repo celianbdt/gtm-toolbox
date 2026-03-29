@@ -1,5 +1,6 @@
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createOpenAI } from "@ai-sdk/openai";
+import type { LanguageModel } from "ai";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export type WorkspaceAPIKeys = {
@@ -52,4 +53,28 @@ export function createWorkspaceOpenAI(keys: WorkspaceAPIKeys) {
 export async function getAnthropicForWorkspace(workspaceId: string) {
   const keys = await getWorkspaceAPIKeys(workspaceId);
   return createWorkspaceAnthropic(keys);
+}
+
+/**
+ * Resolve a model ID to a LanguageModel instance using workspace keys.
+ * Supports both Anthropic and OpenAI model IDs.
+ */
+export function resolveModel(modelId: string, keys: WorkspaceAPIKeys): LanguageModel {
+  // OpenAI models
+  if (modelId.startsWith("gpt-") || modelId.startsWith("o1") || modelId.startsWith("o3")) {
+    const openai = createWorkspaceOpenAI(keys);
+    return openai(modelId) as LanguageModel;
+  }
+  // Anthropic models (claude-*)
+  const anthropic = createWorkspaceAnthropic(keys);
+  return anthropic(modelId) as LanguageModel;
+}
+
+/**
+ * Get a model for a specific agent index, cycling through the selected models.
+ * If models = ["claude-sonnet-4-5", "gpt-4o"], agent 0 gets Claude, agent 1 gets GPT, etc.
+ */
+export function getModelForAgent(models: string[], agentIndex: number, keys: WorkspaceAPIKeys): LanguageModel {
+  const modelId = models[agentIndex % models.length];
+  return resolveModel(modelId, keys);
 }

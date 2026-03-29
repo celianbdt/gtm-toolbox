@@ -7,6 +7,7 @@ import { MissionInput } from "./mission-input";
 import { DebateReview } from "./debate-review";
 import { AiLoader } from "@/components/ui/ai-loader";
 import { InsightPicker } from "@/components/shared/insight-picker";
+import { ModelSelector } from "@/components/shared/model-selector";
 
 type Step = "team" | "mission" | "review";
 
@@ -21,6 +22,7 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
   const [mission, setMission] = useState("");
   const [maxTurns, setMaxTurns] = useState(10);
   const [insightSessionIds, setInsightSessionIds] = useState<string[]>([]);
+  const [selectedModels, setSelectedModels] = useState<string[]>(["claude-sonnet-4-5"]);
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState("");
 
@@ -45,6 +47,7 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
           maxTurns,
           agentIds: agents.map((a) => a.id),
           insightSessionIds: insightSessionIds.length > 0 ? insightSessionIds : undefined,
+          models: selectedModels,
         }),
       });
       const data = await res.json();
@@ -98,12 +101,17 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
             <TeamBuilder workspaceId={workspaceId} agents={agents} onChange={setAgents} />
           )}
           {step === "mission" && (
-            <>
+            <div className="space-y-8">
               <MissionInput
                 mission={mission}
                 onChange={setMission}
                 maxTurns={maxTurns}
                 onMaxTurnsChange={setMaxTurns}
+              />
+              <ModelSelector
+                selected={selectedModels}
+                onChange={setSelectedModels}
+                maxSelection={2}
               />
               <InsightPicker
                 workspaceId={workspaceId}
@@ -111,7 +119,7 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
                 selectedIds={insightSessionIds}
                 onChange={setInsightSessionIds}
               />
-            </>
+            </div>
           )}
           {step === "review" && (
             <DebateReview agents={agents} mission={mission} maxTurns={maxTurns} insightCount={insightSessionIds.length} />

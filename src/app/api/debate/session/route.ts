@@ -5,12 +5,13 @@ import { requireWorkspaceMember } from "@/lib/supabase/auth";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { workspaceId, mission, maxTurns, agentIds, insightSessionIds } = body as {
+    const { workspaceId, mission, maxTurns, agentIds, insightSessionIds, models } = body as {
       workspaceId: string;
       mission: string;
       maxTurns: number;
       agentIds: string[];
       insightSessionIds?: string[];
+      models?: string[];
     };
 
     if (!workspaceId || !mission || !agentIds?.length) {
@@ -37,6 +38,7 @@ export async function POST(request: NextRequest) {
       max_turns: maxTurns ?? 10,
       agent_ids: agentIds,
       insight_session_ids: insightSessionIds,
+      models: models ?? ["claude-sonnet-4-5"],
     });
 
     return NextResponse.json({ session });

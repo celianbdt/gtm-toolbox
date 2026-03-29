@@ -32,6 +32,7 @@ export type DebateSessionConfig = {
   agent_ids: string[];
   current_turn: number;
   insight_session_ids?: string[];
+  models?: string[];
 };
 
 export type DebateSession = {
