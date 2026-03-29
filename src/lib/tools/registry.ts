@@ -19,7 +19,7 @@ export const tools: GTMTool[] = [
     icon: "Target",
     href: "icp-audit",
     category: "analysis",
-    status: "coming-soon",
+    status: "active",
   },
   {
     id: "messaging-lab",
@@ -29,7 +29,7 @@ export const tools: GTMTool[] = [
     icon: "MessageSquareText",
     href: "messaging-lab",
     category: "messaging",
-    status: "coming-soon",
+    status: "active",
   },
   {
     id: "channel-planner",
@@ -39,7 +39,7 @@ export const tools: GTMTool[] = [
     icon: "Route",
     href: "channel-planner",
     category: "strategy",
-    status: "coming-soon",
+    status: "active",
   },
   {
     id: "competitive-intel",

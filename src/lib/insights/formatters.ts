@@ -110,6 +110,53 @@ const formatters: Record<string, Record<string, OutputFormatter>> = {
     "outbound-sequence": formatOutboundSequence,
     "campaign-kpi-summary": formatCampaignKPIs,
   },
+  "icp-audit": {
+    "icp-scorecard": (o) => {
+      const m = o.metadata as Record<string, unknown>;
+      const lines = [`**${o.title}** (Score: ${m.overall_score ?? "N/A"}/100)`];
+      lines.push(o.description);
+      const gaps = m.critical_gaps as string[] | undefined;
+      if (gaps?.length) lines.push(`Gaps: ${gaps.join("; ")}`);
+      return lines.join("\n");
+    },
+    "segment-analysis": (o) => {
+      const m = o.metadata as Record<string, unknown>;
+      return `**${o.title}** (Fit: ${m.fit_score ?? "N/A"}/100, Action: ${m.recommendation ?? "N/A"})\n${m.rationale ?? o.description}`;
+    },
+    "executive-summary": formatExecutiveSummary,
+  },
+  "messaging-lab": {
+    "messaging-framework": (o) => {
+      const m = o.metadata as Record<string, unknown>;
+      const lines = [`**${o.title}**`];
+      if (m.positioning_statement) lines.push(String(m.positioning_statement));
+      const pillars = m.pillars as Array<{ pillar: string }> | undefined;
+      if (pillars?.length) lines.push(`Pillars: ${pillars.map((p) => p.pillar).join(", ")}`);
+      return lines.join("\n");
+    },
+    "value-propositions": (o) => {
+      const m = o.metadata as Record<string, unknown>;
+      const props = m.propositions as Array<{ headline: string }> | undefined;
+      return `**${o.title}**\n${props?.map((p) => `- ${p.headline}`).join("\n") ?? o.description}`;
+    },
+    "executive-summary": formatExecutiveSummary,
+  },
+  "channel-planner": {
+    "channel-scorecard": (o) => {
+      const m = o.metadata as Record<string, unknown>;
+      const channels = m.channels as Array<{ channel_name: string; recommendation: string; fit_score: number }> | undefined;
+      const lines = [`**${o.title}**`];
+      if (channels?.length) {
+        lines.push(channels.map((c) => `- ${c.channel_name}: ${c.recommendation} (fit: ${c.fit_score}/100)`).join("\n"));
+      }
+      return lines.join("\n");
+    },
+    "budget-allocation": (o) => {
+      const m = o.metadata as Record<string, unknown>;
+      return `**${o.title}**\n${m.reallocation_summary ?? o.description}`;
+    },
+    "executive-summary": formatExecutiveSummary,
+  },
 };
 
 export function formatOutput(toolId: string, output: SessionOutputRecord): string {
@@ -121,4 +168,7 @@ export const TOOL_DISPLAY_NAMES: Record<string, string> = {
   "strategy-debate": "Strategy Debate",
   "competitive-intel": "Competitive Intelligence",
   "outbound-builder": "Outbound Builder",
+  "icp-audit": "ICP Audit",
+  "messaging-lab": "Messaging Lab",
+  "channel-planner": "Channel Planner",
 };
