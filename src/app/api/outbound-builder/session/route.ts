@@ -1,14 +1,52 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createOBSession, getOBAnalystTemplates } from "@/lib/outbound-builder/db";
-import type { AnalyzerSessionConfig, BuilderSessionConfig, AnalyzerFocus, CampaignDataSource, ICPDefinition, ChannelConfig, SequenceParams } from "@/lib/outbound-builder/types";
+import { requireWorkspaceMember } from "@/lib/supabase/auth";
+import type { AnalyzerSessionConfig, BuilderSessionConfig, ImportSessionConfig, AnalyzerFocus, CampaignDataSource, ICPDefinition, ChannelConfig, SequenceParams } from "@/lib/outbound-builder/types";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { workspaceId, mode } = body as { workspaceId: string; mode: "analyzer" | "builder" };
+    const { workspaceId, mode } = body as { workspaceId: string; mode: "analyzer" | "builder" | "import" };
 
     if (!workspaceId || !mode) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    }
+
+    const auth = await requireWorkspaceMember(workspaceId);
+    if (auth.error) return auth.error;
+
+    // Import mode doesn't need agent templates
+    if (mode === "import") {
+      const { campaignData, title: importTitle } = body as {
+        campaignData: CampaignDataSource[];
+        title?: string;
+      };
+
+      if (!campaignData?.length) {
+        return NextResponse.json({ error: "No campaign data to save" }, { status: 400 });
+      }
+
+      const totalCampaigns = campaignData.reduce((sum, ds) => sum + ds.rows.length, 0);
+      const config: ImportSessionConfig = {
+        mode: "import",
+        campaign_data: campaignData,
+        total_campaigns: totalCampaigns,
+      };
+
+      const session = await createOBSession({
+        workspace_id: workspaceId,
+        config,
+        title: (importTitle ?? `Import: ${totalCampaigns} campaigns`).slice(0, 80),
+      });
+
+      // Immediately conclude — import is just storage
+      const supabase = (await import("@/lib/supabase/admin")).createAdminClient();
+      await supabase
+        .from("tool_sessions")
+        .update({ status: "concluded" })
+        .eq("id", session.id);
+
+      return NextResponse.json({ session: { ...session, status: "concluded" } });
     }
 
     const analysts = await getOBAnalystTemplates();

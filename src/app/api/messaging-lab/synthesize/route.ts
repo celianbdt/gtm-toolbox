@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generateObject } from "ai";
+import { generateObject, generateText } from "ai";
+import { requireAuth } from "@/lib/supabase/auth";
 import { anthropic } from "@ai-sdk/anthropic";
 import {
   getMLSession,
@@ -28,6 +29,9 @@ import type {
 } from "@/lib/messaging-lab/schemas";
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth();
+  if (auth.error) return auth.error;
+
   try {
     const { sessionId } = (await request.json()) as { sessionId: string };
 
@@ -52,10 +56,20 @@ export async function POST(request: NextRequest) {
 
     const results: string[] = [];
 
+    // Compress transcript with Haiku before synthesis
+    const compressedTranscript = await generateText({
+      model: anthropic("claude-haiku-4-5-20251001"),
+      maxOutputTokens: 2000,
+      prompt: `Summarize this multi-agent analysis transcript into key findings, decisions, disagreements, and recommendations. Be comprehensive but concise (max 1500 words).
+
+TRANSCRIPT:
+${fullTranscript}`,
+    });
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function synth<T>(label: string, promptType: any, schema: any, onResult: (obj: T) => Promise<void>) {
       try {
-        const prompt = buildSynthesisPrompt(promptType, fullTranscript, config, workspaceContext);
+        const prompt = buildSynthesisPrompt(promptType, compressedTranscript.text, config, workspaceContext);
         const { object } = await generateObject({ model: anthropic("claude-sonnet-4-5"), schema, prompt });
         await onResult(object as T);
         results.push(label);

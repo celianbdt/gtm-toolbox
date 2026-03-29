@@ -157,6 +157,22 @@ export async function getWorkspaceContext(workspaceId: string): Promise<string> 
     .join("\n\n");
 }
 
+export async function listImportSessions(workspaceId: string): Promise<OBSession[]> {
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("tool_sessions")
+    .select("*")
+    .eq("workspace_id", workspaceId)
+    .eq("tool_id", "outbound-builder")
+    .eq("status", "concluded")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  // Filter to import-mode sessions in JS (JSONB filter)
+  return (data ?? []).filter(
+    (s) => (s.config as OBSessionConfig)?.mode === "import"
+  ) as OBSession[];
+}
+
 export async function listOBSessions(workspaceId: string): Promise<OBSession[]> {
   const supabase = createAdminClient();
   const { data, error } = await supabase

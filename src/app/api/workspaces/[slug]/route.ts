@@ -1,23 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAuth } from "@/lib/supabase/auth";
 
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
     const { slug } = await params;
     const body = await request.json();
-    const { name, description, color } = body as {
+    const { name, description, color, api_keys } = body as {
       name?: string;
       description?: string;
       color?: string;
+      api_keys?: { anthropic_api_key?: string; openai_api_key?: string };
     };
+
+    // Build update payload — only include fields that were sent
+    const update: Record<string, unknown> = {};
+    if (name !== undefined) update.name = name;
+    if (description !== undefined) update.description = description;
+    if (color !== undefined) update.color = color;
+    if (api_keys !== undefined) update.api_keys = api_keys;
 
     const supabase = createAdminClient();
     const { data, error } = await supabase
       .from("workspaces")
-      .update({ name, description, color })
+      .update(update)
       .eq("slug", slug)
       .select()
       .single();
@@ -35,6 +46,8 @@ export async function DELETE(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
     const { slug } = await params;
     const supabase = createAdminClient();
 

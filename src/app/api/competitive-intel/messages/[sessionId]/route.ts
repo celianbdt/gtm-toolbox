@@ -2,12 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSessionMessages } from "@/lib/competitive-intel/db";
 import { getAgentsByIds } from "@/lib/competitive-intel/db";
 import { getCISession } from "@/lib/competitive-intel/db";
+import { requireAuth } from "@/lib/supabase/auth";
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ sessionId: string }> }
 ) {
   try {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
     const { sessionId } = await params;
     const session = await getCISession(sessionId);
     const agents = await getAgentsByIds(session.config.analyst_agent_ids);

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireAuth } from "@/lib/supabase/auth";
 
 type NotionBlock = {
   type: string;
@@ -56,6 +57,9 @@ function blockToText(block: NotionBlock): string {
 }
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth();
+  if (auth.error) return auth.error;
+
   try {
     const { pageUrl, token } = await request.json() as { pageUrl: string; token: string };
 

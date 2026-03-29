@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cloneAgentToWorkspace } from "@/lib/agents/db";
+import { requireWorkspaceMember } from "@/lib/supabase/auth";
 
 export async function POST(
   request: NextRequest,
@@ -13,6 +14,9 @@ export async function POST(
     if (!workspaceId) {
       return NextResponse.json({ error: "Missing workspaceId" }, { status: 400 });
     }
+
+    const auth = await requireWorkspaceMember(workspaceId);
+    if (auth.error) return auth.error;
 
     const agent = await cloneAgentToWorkspace(id, workspaceId);
     return NextResponse.json({ agent });

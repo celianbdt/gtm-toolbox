@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { listOBSessions } from "@/lib/outbound-builder/db";
+import { listImportSessions } from "@/lib/outbound-builder/db";
 import { requireWorkspaceMember } from "@/lib/supabase/auth";
 
 export async function GET(req: NextRequest) {
@@ -12,10 +12,10 @@ export async function GET(req: NextRequest) {
   if (auth.error) return auth.error;
 
   try {
-    const sessions = await listOBSessions(workspaceId);
-    return NextResponse.json({ sessions });
+    const imports = await listImportSessions(workspaceId);
+    return NextResponse.json({ imports });
   } catch (e) {
-    console.error("[outbound-builder/sessions]", e);
-    return NextResponse.json({ error: "Failed to list sessions" }, { status: 500 });
+    console.error("[outbound-builder/imports]", e);
+    return NextResponse.json({ error: "Failed to list imports" }, { status: 500 });
   }
 }

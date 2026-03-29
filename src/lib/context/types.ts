@@ -1,9 +1,10 @@
-export type DocType = "icp" | "product" | "competitor" | "general";
+export type DocType = "icp" | "product" | "competitor" | "crm" | "general";
 
 export const DOC_TYPES: { value: DocType; label: string; color: string }[] = [
   { value: "icp", label: "ICP", color: "#8b5cf6" },
   { value: "product", label: "Product", color: "#06b6d4" },
   { value: "competitor", label: "Competitor", color: "#ef4444" },
+  { value: "crm", label: "CRM", color: "#f59e0b" },
   { value: "general", label: "General", color: "#6b7280" },
 ];
 

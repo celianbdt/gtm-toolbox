@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { generateObject } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireWorkspaceMember } from "@/lib/supabase/auth";
 import { z } from "zod";
 
 const AnalyzeSchema = z.object({
@@ -52,6 +53,9 @@ export async function POST(request: NextRequest) {
       workspaceId: string;
       action: "analyze" | "restructure";
     };
+
+    const auth = await requireWorkspaceMember(workspaceId);
+    if (auth.error) return auth.error;
 
     if (!workspaceId || !action) {
       return NextResponse.json(

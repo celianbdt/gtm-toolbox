@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createICASession, getICAAnalystTemplates } from "@/lib/icp-audit/db";
+import { requireWorkspaceMember } from "@/lib/supabase/auth";
 import type { ICASessionConfig, ICPSegment, ICPPersona, CustomerDataSource, WinLossEntry, AuditFocus } from "@/lib/icp-audit/types";
 
 export async function POST(request: NextRequest) {
@@ -31,6 +32,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    const auth = await requireWorkspaceMember(workspaceId);
+    if (auth.error) return auth.error;
+
     const analysts = await getICAAnalystTemplates();
     if (analysts.length === 0) {
       return NextResponse.json(
@@ -50,7 +54,7 @@ export async function POST(request: NextRequest) {
       analyst_agent_ids: analysts.map((a) => a.id),
       current_phase: "data-processing",
       phase_config: {
-        debate_rounds: 2,
+        debate_rounds: 1,
       },
       insight_session_ids: insightSessionIds,
     };

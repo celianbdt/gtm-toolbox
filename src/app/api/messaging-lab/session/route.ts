@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createMLSession, getMLAgentTemplates } from "@/lib/messaging-lab/db";
+import { requireWorkspaceMember } from "@/lib/supabase/auth";
 import type {
   MLSessionConfig,
   ProductInfo,
@@ -36,6 +37,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    const auth = await requireWorkspaceMember(workspaceId);
+    if (auth.error) return auth.error;
+
     const agents = await getMLAgentTemplates();
     if (agents.length === 0) {
       return NextResponse.json(
@@ -54,7 +58,7 @@ export async function POST(request: NextRequest) {
       analyst_agent_ids: agents.map((a) => a.id),
       current_phase: "context-loading",
       phase_config: {
-        debate_rounds: 2,
+        debate_rounds: 1,
       },
       insight_session_ids: insightSessionIds,
     };

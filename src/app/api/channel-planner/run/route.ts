@@ -1,5 +1,6 @@
-import { NextRequest } from "next/server";
-import { streamText, generateObject } from "ai";
+import { NextRequest, NextResponse } from "next/server";
+import { streamText, generateObject, generateText } from "ai";
+import { requireAuth } from "@/lib/supabase/auth";
 import { anthropic } from "@ai-sdk/anthropic";
 import {
   getCPSession,
@@ -45,6 +46,9 @@ function encodeSSE(event: CPSSEEvent): string {
 }
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth();
+  if (auth.error) return auth.error;
+
   const body = await request.json();
   const { sessionId } = body as { sessionId: string };
 
@@ -121,6 +125,7 @@ export async function POST(request: NextRequest) {
             model: anthropic("claude-sonnet-4-5"),
             system: agent.system_prompt,
             messages: [{ role: "user", content: assessmentPrompt }],
+            maxOutputTokens: 800,
           });
 
           for await (const delta of result.textStream) {
@@ -192,6 +197,7 @@ export async function POST(request: NextRequest) {
               model: anthropic("claude-sonnet-4-5"),
               system: systemPrompt,
               messages: debateMessages,
+              maxOutputTokens: 600,
             });
 
             for await (const delta of result.textStream) {
@@ -235,6 +241,18 @@ export async function POST(request: NextRequest) {
           })
           .join("\n\n---\n\n");
 
+        // Compress transcript with Haiku before synthesis
+        send({ type: "phase_start", phase: "compression" as any, phaseNumber: 4 });
+        const compressedTranscript = await generateText({
+          model: anthropic("claude-haiku-4-5-20251001"),
+          maxOutputTokens: 2000,
+          prompt: `Summarize this multi-agent analysis transcript into key findings, decisions, disagreements, and recommendations. Be comprehensive but concise (max 1500 words).
+
+TRANSCRIPT:
+${fullTranscript}`,
+        });
+        send({ type: "phase_done", phase: "compression" as any });
+
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         async function synthesize<T>(
           label: string,
@@ -243,7 +261,7 @@ export async function POST(request: NextRequest) {
           onResult: (obj: T) => Promise<void>
         ) {
           try {
-            const prompt = buildSynthesisPrompt(promptType, fullTranscript, config, workspaceContext, toolInsights);
+            const prompt = buildSynthesisPrompt(promptType, compressedTranscript.text, config, workspaceContext, toolInsights);
             const { object } = await generateObject({
               model: anthropic("claude-sonnet-4-5"),
               schema,

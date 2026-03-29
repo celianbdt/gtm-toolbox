@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionMessages, getAgentsByIds, getCPSession } from "@/lib/channel-planner/db";
+import { requireAuth } from "@/lib/supabase/auth";
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ sessionId: string }> }
 ) {
   try {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
     const { sessionId } = await params;
     const session = await getCPSession(sessionId);
     const agents = await getAgentsByIds(session.config.analyst_agent_ids);

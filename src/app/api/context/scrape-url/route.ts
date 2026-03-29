@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireAuth } from "@/lib/supabase/auth";
+import { isUrlSafe } from "@/lib/utils/url-validator";
 
 function stripHtml(html: string): string {
   return html
@@ -23,11 +25,18 @@ function extractTitle(html: string): string {
 }
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth();
+  if (auth.error) return auth.error;
+
   try {
     const { url } = await request.json() as { url: string };
 
     if (!url) {
       return NextResponse.json({ error: "No URL provided" }, { status: 400 });
+    }
+
+    if (!isUrlSafe(url)) {
+      return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
     }
 
     const res = await fetch(url, {

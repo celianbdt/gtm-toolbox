@@ -139,7 +139,7 @@ export function OBSetup({ workspaceId, mode, onSessionCreated }: Props) {
         <div className="max-w-2xl mx-auto">
           {/* Analyzer steps */}
           {mode === "analyzer" && currentStep === "data" && (
-            <CampaignDataStep dataSources={dataSources} onChange={setDataSources} />
+            <CampaignDataStep workspaceId={workspaceId} dataSources={dataSources} onChange={setDataSources} />
           )}
           {mode === "analyzer" && currentStep === "focus" && (
             <AnalyzerFocusStep

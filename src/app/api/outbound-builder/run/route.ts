@@ -1,5 +1,6 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { streamText, generateObject } from "ai";
+import { requireAuth } from "@/lib/supabase/auth";
 import { anthropic } from "@ai-sdk/anthropic";
 import {
   getOBSession,
@@ -26,6 +27,9 @@ function encodeSSE(event: OBSSEEvent): string {
 }
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth();
+  if (auth.error) return auth.error;
+
   const body = await request.json();
   const { sessionId } = body as { sessionId: string };
 
@@ -104,6 +108,7 @@ export async function POST(request: NextRequest) {
             model: anthropic("claude-sonnet-4-5"),
             system: agent.system_prompt,
             messages: [{ role: "user", content: assessmentPrompt }],
+            maxOutputTokens: 800,
           });
 
           for await (const delta of result.textStream) {
@@ -161,6 +166,7 @@ export async function POST(request: NextRequest) {
               model: anthropic("claude-sonnet-4-5"),
               system: `${agent.system_prompt}\n\n${roundPrompt}`,
               messages: [{ role: "user", content: `## All Analyst Assessments\n\n${previousContext}` }],
+              maxOutputTokens: 600,
             });
 
             for await (const delta of result.textStream) {

@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { importFromProvider } from "@/lib/outbound-builder/connectors";
+import { requireAuth } from "@/lib/supabase/auth";
 import type { OutboundProvider } from "@/lib/outbound-builder/connectors";
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth();
+  if (auth.error) return auth.error;
+
   try {
     const body = await request.json();
     const { provider, apiKey, workspaceId } = body as {

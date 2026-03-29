@@ -6,7 +6,7 @@ import { DOC_TYPES } from "@/lib/context/types";
 import { DocumentCard } from "./document-card";
 import { AddDocumentSheet } from "./add-document-sheet";
 import { RemodelSheet } from "./remodel-sheet";
-import { Sparkles } from "lucide-react";
+import { Sparkles, RefreshCw } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 type Props = {
@@ -22,6 +22,25 @@ export function ContextManager({ workspaceId, initialDocs }: Props) {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [editDoc, setEditDoc] = useState<ContextDocument | null>(null);
   const [remodelOpen, setRemodelOpen] = useState(false);
+  const [syncing, setSyncing] = useState(false);
+
+  const hasCrmDocs = docs.some((d) => d.doc_type === "crm");
+
+  async function handleCrmResync() {
+    // Find the most recent CRM doc to get the last import date
+    const lastCrm = docs
+      .filter((d) => d.doc_type === "crm")
+      .sort((a, b) => b.updated_at.localeCompare(a.updated_at))[0];
+    const updatedSince = lastCrm?.updated_at;
+
+    // Get CRM config from env (stored in metadata of existing CRM doc)
+    const crmMeta = lastCrm?.metadata as { source?: string } | undefined;
+    if (!crmMeta || crmMeta.source !== "crm-import") return;
+
+    // We need the URL and key — prompt user to use Add Document > CRM
+    // For auto-sync, the URL/key would need to be stored. For now, open the sheet.
+    setSheetOpen(true);
+  }
 
   const filtered = filter === "all" ? docs : docs.filter((d) => d.doc_type === filter);
 
@@ -88,6 +107,16 @@ export function ContextManager({ workspaceId, initialDocs }: Props) {
         </div>
 
         <div className="flex gap-2">
+          {hasCrmDocs && (
+            <button
+              onClick={handleCrmResync}
+              disabled={syncing}
+              className="flex items-center gap-1.5 px-4 py-2 bg-amber-900/30 hover:bg-amber-900/50 text-amber-400 text-sm font-medium rounded-lg transition-colors border border-amber-800/50"
+            >
+              <RefreshCw className={`h-3.5 w-3.5 ${syncing ? "animate-spin" : ""}`} />
+              CRM Sync
+            </button>
+          )}
           {docs.length >= 2 && (
             <button
               onClick={() => setRemodelOpen(true)}

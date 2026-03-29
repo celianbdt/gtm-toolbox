@@ -40,7 +40,7 @@ export function scoreEngagement(agent: AgentConfig, lastMessage: string): number
 export function selectRespondingAgents(
   agents: AgentConfig[],
   lastMessage: string,
-  threshold = 0.15
+  threshold = 0.08
 ): { agent: AgentConfig; score: number }[] {
   const scored = agents.map((agent) => ({
     agent,
@@ -49,13 +49,10 @@ export function selectRespondingAgents(
 
   const sorted = scored.sort((a, b) => b.score - a.score);
 
+  // All agents above threshold respond — no artificial minimum or cap.
+  // Low threshold ensures fluid participation: if an agent has even
+  // slight relevance, they join. If nobody matches, the top scorer responds alone.
   const above = sorted.filter((s) => s.score >= threshold);
 
-  // Always ensure at least 3 agents respond for a rich debate
-  const minResponders = Math.min(3, sorted.length);
-  if (above.length < minResponders) {
-    return sorted.slice(0, minResponders);
-  }
-
-  return above;
+  return above.length > 0 ? above : sorted.slice(0, 1);
 }

@@ -4,9 +4,13 @@ import { anthropic } from "@ai-sdk/anthropic";
 import { getSession, getSessionMessages, getAgentsByIds } from "@/lib/debate/db";
 import { DebateSummarySchema } from "@/lib/debate/schemas";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireAuth } from "@/lib/supabase/auth";
 import type { AgentConfig } from "@/lib/debate/types";
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth();
+  if (auth.error) return auth.error;
+
   const { sessionId } = (await request.json()) as { sessionId: string };
 
   try {

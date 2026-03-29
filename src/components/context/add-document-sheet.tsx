@@ -12,7 +12,7 @@ import type { ContextDocument, DocType } from "@/lib/context/types";
 import { DOC_TYPES } from "@/lib/context/types";
 
 type Tab = "write" | "import" | "tools";
-type ToolMode = "url" | "notion" | "gdocs";
+type ToolMode = "url" | "notion" | "gdocs" | "crm";
 
 type Props = {
   open: boolean;
@@ -107,6 +107,8 @@ export function AddDocumentSheet({
   const [notionUrl, setNotionUrl] = useState("");
   const [notionToken, setNotionToken] = useState("");
   const [gdocsUrl, setGdocsUrl] = useState("");
+  const [crmUrl, setCrmUrl] = useState("");
+  const [crmApiKey, setCrmApiKey] = useState("");
   const [fetching, setFetching] = useState(false);
   const [toolError, setToolError] = useState("");
 
@@ -121,6 +123,8 @@ export function AddDocumentSheet({
     setUrlInput("");
     setNotionUrl("");
     setGdocsUrl("");
+    setCrmUrl("");
+    setCrmApiKey("");
   }
 
   async function handleSave() {
@@ -204,10 +208,31 @@ export function AddDocumentSheet({
       if (!notionUrl.trim() || !notionToken.trim()) { setToolError("URL and token required"); setFetching(false); return; }
       endpoint = "/api/context/import-notion";
       body = { pageUrl: notionUrl.trim(), token: notionToken.trim() };
-    } else {
+    } else if (toolMode === "gdocs") {
       if (!gdocsUrl.trim()) { setToolError("Enter a Google Docs URL"); setFetching(false); return; }
       endpoint = "/api/context/import-gdocs";
       body = { url: gdocsUrl.trim() };
+    } else if (toolMode === "crm") {
+      if (!crmUrl.trim() || !crmApiKey.trim()) { setToolError("CRM URL and API Key required"); setFetching(false); return; }
+      // CRM import creates multiple documents directly — different flow
+      const res = await fetch("/api/context/import-crm", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ workspaceId, crmUrl: crmUrl.trim(), apiKey: crmApiKey.trim() }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setToolError(data.error ?? "CRM import failed");
+      } else {
+        // CRM creates multiple docs — trigger parent refresh and close
+        if (data.documents?.length) {
+          onSaved(data.documents[0] as ContextDocument);
+          reset();
+          onOpenChange(false);
+        }
+      }
+      setFetching(false);
+      return;
     }
 
     const res = await fetch(endpoint, {
@@ -312,8 +337,8 @@ export function AddDocumentSheet({
           {tab === "tools" && !isEdit && (
             <div className="space-y-5">
               {/* Tool mode selector */}
-              <div className="flex gap-2">
-                {(["url", "notion", "gdocs"] as ToolMode[]).map((m) => (
+              <div className="flex gap-2 flex-wrap">
+                {(["url", "notion", "gdocs", "crm"] as ToolMode[]).map((m) => (
                   <button
                     key={m}
                     onClick={() => { setToolMode(m); setToolError(""); }}
@@ -323,7 +348,7 @@ export function AddDocumentSheet({
                         : "border-zinc-700 text-zinc-500 hover:text-white"
                     }`}
                   >
-                    {m === "url" ? "🔗 URL" : m === "notion" ? "📓 Notion" : "📊 Google Docs"}
+                    {m === "url" ? "🔗 URL" : m === "notion" ? "📓 Notion" : m === "gdocs" ? "📊 Google Docs" : "🏢 CRM"}
                   </button>
                 ))}
               </div>
@@ -364,6 +389,30 @@ export function AddDocumentSheet({
                     onChange={(e) => setNotionUrl(e.target.value)}
                     placeholder="https://notion.so/My-Page-abc123..."
                     className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500"
+                  />
+                </div>
+              )}
+
+              {/* CRM mode */}
+              {toolMode === "crm" && (
+                <div className="space-y-3">
+                  <div className="rounded-lg bg-zinc-900 border border-zinc-800 p-3 text-xs text-zinc-400 space-y-1">
+                    <p className="font-medium text-zinc-300">CRM Integration</p>
+                    <p>Import contacts, deals, activities, KPIs and engagement data from your CRM API.</p>
+                    <p>Existing CRM documents will be <span className="text-amber-400">replaced</span> with fresh data.</p>
+                  </div>
+                  <input
+                    value={crmUrl}
+                    onChange={(e) => setCrmUrl(e.target.value)}
+                    placeholder="https://your-crm.vercel.app/api/v1/export/workspace?workspace_id=..."
+                    className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 font-mono"
+                  />
+                  <input
+                    value={crmApiKey}
+                    onChange={(e) => setCrmApiKey(e.target.value)}
+                    placeholder="API Key"
+                    type="password"
+                    className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 font-mono"
                   />
                 </div>
               )}

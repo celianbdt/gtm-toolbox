@@ -3,6 +3,7 @@ import { generateObject } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 import { insertAgentConfigs } from "@/lib/debate/db";
+import { requireWorkspaceMember } from "@/lib/supabase/auth";
 
 const AgentSchema = z.object({
   name: z.string(),
@@ -44,6 +45,9 @@ export async function POST(request: NextRequest) {
     if (!prompt || !workspaceId) {
       return NextResponse.json({ error: "Missing prompt or workspaceId" }, { status: 400 });
     }
+
+    const auth = await requireWorkspaceMember(workspaceId);
+    if (auth.error) return auth.error;
 
     const { object } = await generateObject({
       model: anthropic("claude-haiku-4-5-20251001"),

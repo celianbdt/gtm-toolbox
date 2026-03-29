@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createCISession, getCIAnalystTemplates } from "@/lib/competitive-intel/db";
+import { requireWorkspaceMember } from "@/lib/supabase/auth";
 import type { CISessionConfig, CompetitorEntry, AnalysisFocus } from "@/lib/competitive-intel/types";
 
 export async function POST(request: NextRequest) {
@@ -16,6 +17,9 @@ export async function POST(request: NextRequest) {
     if (!workspaceId || !competitors?.length || !focusDimensions?.length) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
+
+    const auth = await requireWorkspaceMember(workspaceId);
+    if (auth.error) return auth.error;
 
     const analysts = await getCIAnalystTemplates();
     if (analysts.length === 0) {

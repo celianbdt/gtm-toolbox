@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireWorkspaceMember } from "@/lib/supabase/auth";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,6 +14,9 @@ export async function POST(request: NextRequest) {
     if (!workspaceId || !title || !content) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
+
+    const auth = await requireWorkspaceMember(workspaceId);
+    if (auth.error) return auth.error;
 
     const supabase = createAdminClient();
     const { data, error } = await supabase

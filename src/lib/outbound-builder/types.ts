@@ -115,9 +115,17 @@ export type BuilderSessionConfig = {
   insight_session_ids?: string[];
 };
 
+// ── Import (Library) ──
+
+export type ImportSessionConfig = {
+  mode: "import";
+  campaign_data: CampaignDataSource[];
+  total_campaigns: number;
+};
+
 // ── Union ──
 
-export type OBSessionConfig = AnalyzerSessionConfig | BuilderSessionConfig;
+export type OBSessionConfig = AnalyzerSessionConfig | BuilderSessionConfig | ImportSessionConfig;
 
 export type OBSession = {
   id: string;

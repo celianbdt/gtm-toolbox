@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createCPSession, getCPAnalystTemplates } from "@/lib/channel-planner/db";
+import { requireWorkspaceMember } from "@/lib/supabase/auth";
 import type {
   CPSessionConfig,
   GoalsInfo,
@@ -35,6 +36,9 @@ export async function POST(request: NextRequest) {
     if (!workspaceId || !goals || !budget || !focusDimensions?.length) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
+
+    const auth = await requireWorkspaceMember(workspaceId);
+    if (auth.error) return auth.error;
 
     const analysts = await getCPAnalystTemplates();
     if (analysts.length === 0) {

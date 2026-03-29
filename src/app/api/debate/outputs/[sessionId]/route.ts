@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDebateOutputs } from "@/lib/debate/db";
+import { requireAuth } from "@/lib/supabase/auth";
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ sessionId: string }> }
 ) {
   try {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
     const { sessionId } = await params;
     const outputs = await getDebateOutputs(sessionId);
     return NextResponse.json({ outputs });

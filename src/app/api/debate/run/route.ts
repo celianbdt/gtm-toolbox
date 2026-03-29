@@ -1,5 +1,6 @@
-import { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { streamText } from "ai";
+import { requireAuth } from "@/lib/supabase/auth";
 import { anthropic } from "@ai-sdk/anthropic";
 import {
   getSession,
@@ -40,11 +41,13 @@ function buildAgentMessages(
 ${mission}
 
 ## Debate Rules
-- You are participating in a strategic debate with other AI agents.
+- You are ${agent.name} (${agent.role}). This is your ONLY identity. Never adopt other roles, personas, or sub-characters.
+- Write as a single voice — YOUR voice. Do not create sections labeled with other role names.
 - Be direct, opinionated, and stay true to your personality.
 - Reference what others have said when relevant — agree, disagree, or build on it.
-- Keep responses focused and under 200 words unless making a critical point.
-- Never break character. Never say you are an AI.`;
+- Keep responses focused and under 150 words. Be concise.
+- Never break character. Never say you are an AI.
+- Never structure your response as if multiple people are speaking.`;
 
   const messages: { role: "user" | "assistant"; content: string }[] = [];
 
@@ -83,6 +86,9 @@ ${mission}
 }
 
 export async function POST(request: NextRequest) {
+  const auth = await requireAuth();
+  if (auth.error) return auth.error;
+
   const body = await request.json();
   const { sessionId, userMessage, workspaceId } = body as {
     sessionId: string;
@@ -157,6 +163,7 @@ export async function POST(request: NextRequest) {
             model: anthropic("claude-sonnet-4-5"),
             system,
             messages,
+            maxOutputTokens: 1000,
           });
 
           for await (const delta of result.textStream) {
@@ -192,6 +199,99 @@ export async function POST(request: NextRequest) {
           stepNumber,
           respondingCount: responding.length,
         });
+
+        // ── Auto-rounds: agents discuss among themselves ──
+        const autoRounds = Math.min(2, config.max_turns - stepNumber - 1);
+        for (let round = 0; round < autoRounds; round++) {
+          const autoStepNumber = stepNumber + 1 + round;
+
+          // Reload history to include latest messages
+          const updatedHistory = await getSessionMessages(sessionId);
+
+          // Pick the last agent message as the trigger for scoring
+          const lastAgentMsg = updatedHistory
+            .filter((m) => m.role === "agent")
+            .sort((a, b) => b.step_number - a.step_number || b.sequence_in_step - a.sequence_in_step)[0];
+
+          if (!lastAgentMsg) break;
+
+          const autoResponding = selectRespondingAgents(
+            agents.filter((a) => a.id !== lastAgentMsg.agent_config_id),
+            lastAgentMsg.content
+          );
+
+          if (autoResponding.length === 0) break;
+
+          const autoStepMessages: { agentId: string; content: string }[] = [];
+
+          for (let i = 0; i < autoResponding.length; i++) {
+            const { agent, score } = autoResponding[i];
+
+            send({
+              type: "agent_start",
+              agentId: agent.id,
+              agentName: agent.name,
+              emoji: agent.avatar_emoji,
+              color: agent.color,
+              stepNumber: autoStepNumber,
+              sequenceInStep: i + 1,
+            });
+
+            const { system: autoSystem, messages: autoMessages } = buildAgentMessages(
+              agent,
+              config.mission,
+              workspaceContext,
+              toolInsights,
+              updatedHistory,
+              agentsMap,
+              autoStepMessages
+            );
+
+            if (autoMessages.length === 0) {
+              autoMessages.push({ role: "user", content: lastAgentMsg.content });
+            }
+
+            let autoContent = "";
+            const autoResult = streamText({
+              model: anthropic("claude-sonnet-4-5"),
+              system: autoSystem,
+              messages: autoMessages,
+              maxOutputTokens: 1000,
+            });
+
+            for await (const delta of autoResult.textStream) {
+              autoContent += delta;
+              send({ type: "agent_delta", agentId: agent.id, delta });
+            }
+
+            const autoSaved = await insertMessage({
+              session_id: sessionId,
+              agent_config_id: agent.id,
+              role: "agent",
+              content: autoContent,
+              step_number: autoStepNumber,
+              sequence_in_step: i + 1,
+              metadata: { engagement_score: score, auto_round: true },
+            });
+
+            send({
+              type: "agent_done",
+              agentId: agent.id,
+              messageId: autoSaved.id,
+              fullContent: autoContent,
+            });
+
+            autoStepMessages.push({ agentId: agent.id, content: autoContent });
+          }
+
+          await incrementTurn(sessionId, autoStepNumber);
+
+          send({
+            type: "step_done",
+            stepNumber: autoStepNumber,
+            respondingCount: autoResponding.length,
+          });
+        }
       } catch (error) {
         console.error("Debate run error:", error);
         send({ type: "error", message: "An error occurred during the debate." });

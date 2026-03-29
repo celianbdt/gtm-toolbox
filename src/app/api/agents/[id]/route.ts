@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { updateAgent, deleteAgent } from "@/lib/agents/db";
+import { requireAuth } from "@/lib/supabase/auth";
 import type { AgentConfig } from "@/lib/debate/types";
 
 export async function PATCH(
@@ -7,6 +8,8 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
     const { id } = await params;
     const body = await request.json();
     const agent = await updateAgent(id, body as Partial<AgentConfig>);
@@ -22,6 +25,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const auth = await requireAuth();
+    if (auth.error) return auth.error;
     const { id } = await params;
     await deleteAgent(id);
     return NextResponse.json({ success: true });
