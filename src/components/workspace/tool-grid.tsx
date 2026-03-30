@@ -18,6 +18,7 @@ const categoryLabels: Record<ToolCategory, string> = {
   messaging: "Messaging",
   analysis: "Analysis",
   outbound: "Outbound",
+  dev: "Dev",
 };
 
 const categoryColors: Record<ToolCategory, string> = {
@@ -25,6 +26,7 @@ const categoryColors: Record<ToolCategory, string> = {
   messaging: "text-[#D8CDFF]",
   analysis: "text-[#7C3AED]",
   outbound: "text-[#10B981]",
+  dev: "text-[#f59e0b]",
 };
 
 export function ToolGrid({ workspaceSlug }: { workspaceSlug: string }) {

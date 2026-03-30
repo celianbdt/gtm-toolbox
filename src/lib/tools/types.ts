@@ -1,4 +1,4 @@
-export type ToolCategory = "strategy" | "messaging" | "analysis" | "outbound";
+export type ToolCategory = "strategy" | "messaging" | "analysis" | "outbound" | "dev";
 export type ToolStatus = "active" | "coming-soon";
 
 export type GTMTool = {
