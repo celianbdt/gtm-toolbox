@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { PlanningPhase } from "@/lib/channel-planner/types";
 import { Send, Pause, Square } from "lucide-react";
+import { PixelArenaWrapper } from "@/components/shared/pixel-arena-wrapper";
 
 type StreamingAgent = {
   agentId: string;
@@ -249,6 +250,23 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
   const costDisplay =
     estimatedCost < 0.01 ? `<$0.01` : `~$${estimatedCost.toFixed(2)}`;
 
+  const pixelAgents: { id: string; name: string; emoji: string; color: string; role: string }[] = [];
+  const seenIds = new Set<string>();
+  for (const s of streamingAgents.values()) {
+    if (!seenIds.has(s.agentId)) {
+      pixelAgents.push({ id: s.agentId, name: s.agentName, emoji: s.emoji, color: s.color, role: s.phase });
+      seenIds.add(s.agentId);
+    }
+  }
+  for (const m of messages) {
+    if (m.role === "agent" && !seenIds.has(m.agentId)) {
+      pixelAgents.push({ id: m.agentId, name: m.agentName, emoji: m.emoji, color: m.color, role: m.phase });
+      seenIds.add(m.agentId);
+    }
+  }
+  const pixelSpeakingId = streamingAgents.size > 0 ? [...streamingAgents.keys()][0] : null;
+  const pixelStreamingText = pixelSpeakingId ? streamingAgents.get(pixelSpeakingId)?.content ?? "" : "";
+
   const allItems = [
     ...messages.map((m) => ({ ...m, streaming: false })),
     ...[...streamingAgents.values()].map((s) => ({
@@ -260,6 +278,13 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
   ];
 
   return (
+    <PixelArenaWrapper
+      agents={pixelAgents}
+      speakingId={pixelSpeakingId}
+      thinkingId={null}
+      streamingText={pixelStreamingText}
+      theme="planning"
+    >
     <div className="flex flex-col h-full overflow-hidden">
       {/* Phase Progress */}
       <div className="shrink-0 px-6 py-3 border-b border-border">
@@ -485,5 +510,6 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
         </div>
       )}
     </div>
+    </PixelArenaWrapper>
   );
 }

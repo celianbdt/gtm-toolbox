@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { OBSSEEvent } from "@/lib/outbound-builder/types";
+import { PixelArenaWrapper } from "@/components/shared/pixel-arena-wrapper";
 
 type StreamingAgent = {
   agentId: string;
@@ -199,7 +200,31 @@ export function OutboundArena({ sessionId, mode, onComplete }: Props) {
     "sequence-drafting": "Generating Sequences",
   };
 
+  const pixelAgents: { id: string; name: string; emoji: string; color: string; role: string }[] = [];
+  const seenIds = new Set<string>();
+  for (const s of streamingAgents.values()) {
+    if (!seenIds.has(s.agentId)) {
+      pixelAgents.push({ id: s.agentId, name: s.agentName, emoji: s.emoji, color: s.color, role: s.phase });
+      seenIds.add(s.agentId);
+    }
+  }
+  for (const m of messages) {
+    if (!seenIds.has(m.agentId)) {
+      pixelAgents.push({ id: m.agentId, name: m.agentName, emoji: m.emoji, color: m.color, role: m.phase });
+      seenIds.add(m.agentId);
+    }
+  }
+  const pixelSpeakingId = streamingAgents.size > 0 ? [...streamingAgents.keys()][0] : null;
+  const pixelStreamingText = pixelSpeakingId ? streamingAgents.get(pixelSpeakingId)?.content ?? "" : "";
+
   return (
+    <PixelArenaWrapper
+      agents={pixelAgents}
+      speakingId={pixelSpeakingId}
+      thinkingId={null}
+      streamingText={pixelStreamingText}
+      theme="outbound"
+    >
     <div className="flex flex-col h-full">
       {/* Phase indicator */}
       <div className="px-6 py-3 border-b border-border bg-secondary/30">
@@ -281,5 +306,6 @@ export function OutboundArena({ sessionId, mode, onComplete }: Props) {
         </div>
       )}
     </div>
+    </PixelArenaWrapper>
   );
 }

@@ -6,6 +6,7 @@ import { useDebateStream } from "@/hooks/use-debate-stream";
 import { DebateTopBar } from "./debate-top-bar";
 import { MessageFeed } from "./message-feed";
 import { HumanInput } from "./human-input";
+import { PixelArenaWrapper } from "@/components/shared/pixel-arena-wrapper";
 
 type Props = {
   sessionId: string;
@@ -142,7 +143,17 @@ export function DebateArena({ sessionId, workspaceId, onConcluded }: Props) {
 
   const maxTurns = session.config.max_turns;
 
+  const pixelSpeakingId = streamingAgents.size > 0 ? [...streamingAgents.keys()][0] : null;
+  const pixelStreamingText = pixelSpeakingId ? streamingAgents.get(pixelSpeakingId)?.accumulated ?? "" : "";
+
   return (
+    <PixelArenaWrapper
+      agents={agents.map((a) => ({ id: a.id, name: a.name, emoji: a.avatar_emoji, color: a.color, role: a.role }))}
+      speakingId={pixelSpeakingId}
+      thinkingId={null}
+      streamingText={pixelStreamingText}
+      theme="strategy"
+    >
     <div className="flex flex-col h-full min-h-0 overflow-hidden">
       <DebateTopBar
         mission={session.config.mission}
@@ -200,5 +211,6 @@ export function DebateArena({ sessionId, workspaceId, onConcluded }: Props) {
         />
       )}
     </div>
+    </PixelArenaWrapper>
   );
 }

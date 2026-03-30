@@ -5,6 +5,7 @@ import type { AnalysisPhase } from "@/lib/competitive-intel/types";
 import { PhaseProgress } from "./phase-progress";
 import { AnalystFeed } from "./analyst-feed";
 import { SteeringInput } from "./steering-input";
+import { PixelArenaWrapper } from "@/components/shared/pixel-arena-wrapper";
 
 type StreamingAgent = {
   agentId: string;
@@ -241,7 +242,26 @@ export function AnalysisArena({ sessionId, onComplete, onSaveExit }: Props) {
 
   const showInput = isRunning && currentPhase !== "data-processing" && currentPhase !== "synthesis";
 
+  const pixelAgents = [...streamingAgents.values()].map((s) => ({ id: s.agentId, name: s.agentName, emoji: s.emoji, color: s.color, role: s.phase }));
+  // Also include agents from finished messages for the roster
+  const seenIds = new Set(pixelAgents.map((a) => a.id));
+  for (const m of messages) {
+    if (m.role === "agent" && !seenIds.has(m.agentId)) {
+      pixelAgents.push({ id: m.agentId, name: m.agentName, emoji: m.emoji, color: m.color, role: m.phase });
+      seenIds.add(m.agentId);
+    }
+  }
+  const pixelSpeakingId = streamingAgents.size > 0 ? [...streamingAgents.keys()][0] : null;
+  const pixelStreamingText = pixelSpeakingId ? streamingAgents.get(pixelSpeakingId)?.content ?? "" : "";
+
   return (
+    <PixelArenaWrapper
+      agents={pixelAgents}
+      speakingId={pixelSpeakingId}
+      thinkingId={null}
+      streamingText={pixelStreamingText}
+      theme="analysis"
+    >
     <div className="flex flex-col h-full overflow-hidden">
       <div className="shrink-0">
         <PhaseProgress currentPhase={currentPhase} estimatedCost={estimatedCost} />
@@ -315,5 +335,6 @@ export function AnalysisArena({ sessionId, onComplete, onSaveExit }: Props) {
         )}
       </div>
     </div>
+    </PixelArenaWrapper>
   );
 }
