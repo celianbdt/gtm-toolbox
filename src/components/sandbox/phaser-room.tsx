@@ -26,160 +26,166 @@ function hexToNum(hex: string): number {
   return parseInt(hex.replace("#", ""), 16);
 }
 
-const HAIR_COLORS = [0x3a2a1a, 0x1a1a2a, 0xdaa520, 0x808080, 0x8b2500];
+// World constants
+const WORLD_W = 480;
+const WORLD_H = 360;
+
+// Seat positions (5 agents around conference table)
+const SEAT_POSITIONS = [
+  { x: 240, y: 155 },
+  { x: 310, y: 180 },
+  { x: 310, y: 225 },
+  { x: 170, y: 225 },
+  { x: 170, y: 180 },
+];
+
+const SPEAK_POSITIONS = [
+  { x: 240, y: 170 },
+  { x: 290, y: 190 },
+  { x: 290, y: 215 },
+  { x: 190, y: 215 },
+  { x: 190, y: 190 },
+];
+
+// Per-agent color configs
+const CHAR_CONFIGS = [
+  { hair: 0x6b4423, hairHi: 0x8b6443, shirt: 0x8b5cf6, shirtDk: 0x6b3cd6, skin: 0xf0c8a0, skinSh: 0xd4a878 },
+  { hair: 0x1a1a2e, hairHi: 0x2a2a4e, shirt: 0xef4444, shirtDk: 0xcf2424, skin: 0xe8c098, skinSh: 0xcc9a70 },
+  { hair: 0x8a7a6a, hairHi: 0xaa9a8a, shirt: 0x22c55e, shirtDk: 0x12a53e, skin: 0xf0c8a0, skinSh: 0xd4a878 },
+  { hair: 0xd4a050, hairHi: 0xf0c070, shirt: 0xf59e0b, shirtDk: 0xd57e00, skin: 0xf0c8a0, skinSh: 0xd4a878 },
+  { hair: 0x2a1a0e, hairHi: 0x4a3a2e, shirt: 0x06b6d4, shirtDk: 0x0696b4, skin: 0xd4a070, skinSh: 0xb88050 },
+];
 
 const BOOK_COLORS = [
   0xc44444, 0x4488aa, 0x44aa88, 0xaa8844, 0x8844aa, 0x888888, 0xaa4488,
 ];
 
-// World constants
-const WORLD_W = 640;
-const WORLD_H = 480;
+// ── Character Drawing (16x32 native pixels) ────────────────────────────
 
-// Seat positions (5 agents around conference table)
-const SEAT_POSITIONS = [
-  { x: 320, y: 185 }, // Agent 0 (top)
-  { x: 400, y: 215 }, // Agent 1 (right-top)
-  { x: 400, y: 265 }, // Agent 2 (right-bottom)
-  { x: 240, y: 265 }, // Agent 3 (left-bottom)
-  { x: 240, y: 215 }, // Agent 4 (left-top)
-];
-
-const SPEAK_POSITIONS = [
-  { x: 320, y: 200 }, // Agent 0
-  { x: 375, y: 225 }, // Agent 1
-  { x: 375, y: 255 }, // Agent 2
-  { x: 265, y: 255 }, // Agent 3
-  { x: 265, y: 225 }, // Agent 4
-];
-
-// ── Character Drawing (12x20 native pixels) ────────────────────────────
-
-function drawCharacter(
+function drawChar(
   g: Phaser.GameObjects.Graphics,
   ox: number,
   oy: number,
-  shirtColor: number,
-  agentIndex: number,
+  cfg: typeof CHAR_CONFIGS[number],
   walkFrame: number = 0,
 ) {
   g.clear();
 
-  const hair = HAIR_COLORS[agentIndex % HAIR_COLORS.length];
-  const skin = 0xf0c8a0;
-  const skinDark = 0xd4a878;
+  const { hair, hairHi, shirt, shirtDk, skin, skinSh } = cfg;
   const eyeWhite = 0xffffff;
-  const eyePupil = 0x1a1a2a;
-  const brow = 0x2a2a2a;
-  const mouth = 0xc4907a;
-  const white = 0xffffff;
-  const belt = 0x1a1a1a;
-  const pants = 0x1e1e30;
-  const shoes = 0x2a1a10;
+  const eyeDark = 0x1a1a2a;
+  const mouthColor = 0xc08060;
+  const collarWhite = 0xf0f0f0;
+  const belt = 0x3a3020;
+  const pants = 0x2a2a3c;
+  const shoes = 0x1a1a2a;
 
-  const p = (x: number, y: number, w: number, h: number, c: number) => {
-    g.fillStyle(c);
-    g.fillRect(ox + x, oy + y, w, h);
+  const p = (x: number, y: number, c: number, a: number = 1) => {
+    g.fillStyle(c, a);
+    g.fillRect(ox + x, oy + y, 1, 1);
   };
 
-  // Row 0-2: HAIR
-  // Row 0
-  p(2, 0, 8, 1, hair);
-  // Row 1
-  p(1, 1, 10, 1, hair);
-  // Row 2
-  p(1, 2, 10, 1, hair);
+  // Row-by-row helper for runs of pixels
+  const row = (y: number, startX: number, colors: (number | null)[]) => {
+    for (let i = 0; i < colors.length; i++) {
+      const c = colors[i];
+      if (c !== null) p(startX + i, y, c);
+    }
+  };
 
-  // Row 3-5: FACE
-  // Row 3 - forehead + eyebrows
-  p(0, 3, 1, 1, hair); // left hair side
-  p(11, 3, 1, 1, hair); // right hair side
-  p(1, 3, 10, 1, skin);
-  p(3, 3, 2, 1, brow); // left eyebrow
-  p(7, 3, 2, 1, brow); // right eyebrow
+  // ── HAIR (rows 0-8) ──
+  // Row 0: 6 centered
+  row(0, 5, [hair, hair, hair, hair, hair, hair]);
+  // Row 1: 8 with highlights
+  row(1, 4, [hair, hair, hairHi, hair, hair, hairHi, hair, hair]);
+  // Row 2: 10
+  row(2, 3, [hair, hairHi, hair, hair, hairHi, hairHi, hair, hair, hairHi, hair]);
+  // Row 3: 10
+  row(3, 3, [hair, hair, hairHi, hairHi, hair, hair, hairHi, hairHi, hair, hair]);
+  // Row 4: 12
+  row(4, 2, [hair, hair, hairHi, hair, hair, hairHi, hairHi, hair, hair, hairHi, hair, hair]);
+  // Row 5: sides framing face
+  p(2, 5, hair); p(3, 5, hair);
+  p(12, 5, hair); p(13, 5, hair);
+  // Row 6: sides
+  p(2, 6, hair); p(3, 6, hair);
+  p(12, 6, hair); p(13, 6, hair);
+  // Row 7: single pixel sides
+  p(2, 7, hair);
+  p(13, 7, hair);
 
-  // Row 4 - eyes
-  p(0, 4, 1, 1, hair);
-  p(11, 4, 1, 1, hair);
-  p(1, 4, 10, 1, skin);
-  // Left eye: sclera + pupil
-  p(3, 4, 1, 1, eyeWhite);
-  p(4, 4, 1, 1, eyePupil);
-  // Right eye: sclera + pupil
-  p(7, 4, 1, 1, eyeWhite);
-  p(8, 4, 1, 1, eyePupil);
+  // ── FACE (rows 5-11) ──
+  // Row 5: 8 skin between hair
+  row(5, 4, [skin, skin, skin, skin, skin, skin, skin, skin]);
+  // Row 6: 10 skin
+  row(6, 4, [skin, skin, skin, skin, skin, skin, skin, skin]);
+  // Cheek shadow
+  p(4, 6, skinSh); p(11, 6, skinSh);
+  // Row 7: eyes — skin with white+dark pairs
+  row(7, 3, [skin, skin, eyeWhite, eyeDark, skin, skin, skin, eyeWhite, eyeDark, skin]);
+  // Row 8: skin with slight cheek blush
+  row(8, 3, [skin, skin, skin, skin, skin, skin, skin, skin, skin, skin]);
+  p(4, 8, skinSh); p(11, 8, skinSh);
+  // Row 9: mouth
+  row(9, 3, [skin, skin, skin, skin, mouthColor, mouthColor, skin, skin, skin, skin]);
+  // Row 10: chin
+  row(10, 4, [skin, skin, skin, skin, skin, skin, skin, skin]);
+  // Row 11: neck
+  row(11, 6, [skin, skin, skin, skin]);
 
-  // Row 5 - mouth
-  p(1, 5, 10, 1, skin);
-  p(5, 5, 2, 1, mouth);
+  // ── SHIRT/BODY (rows 12-20) ──
+  // Row 12: collar
+  row(12, 3, [collarWhite, collarWhite, collarWhite, collarWhite, collarWhite, collarWhite, collarWhite, collarWhite, collarWhite, collarWhite]);
+  // Row 13: arms + body
+  row(13, 2, [shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt]);
+  // Row 14
+  row(14, 2, [shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt]);
+  // Row 15: fold lines
+  row(15, 2, [shirt, shirt, shirt, shirtDk, shirt, shirt, shirtDk, shirt, shirtDk, shirt, shirt, shirt]);
+  // Row 16
+  row(16, 3, [shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt]);
+  // Row 17: button line
+  row(17, 3, [shirt, shirt, shirtDk, shirtDk, shirtDk, shirtDk, shirt, shirt, shirt, shirt]);
+  // Row 18
+  row(18, 3, [shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt, null]);
+  // Row 19
+  row(19, 4, [shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt]);
+  // Row 20
+  row(20, 4, [shirt, shirt, shirt, shirt, shirt, shirt, shirt, shirt]);
 
-  // Row 6: NECK
-  p(4, 6, 4, 1, skin);
+  // Arms skin (hands at end of arms)
+  p(2, 15, skin); p(13, 15, skin);
+  p(2, 16, skin); p(13, 16, skin);
 
-  // Row 7-11: SHIRT / TORSO
-  // Row 7 - collar
-  p(2, 7, 8, 1, shirtColor);
-  p(5, 7, 2, 1, white); // collar
+  // ── BELT (row 21) ──
+  row(21, 4, [belt, belt, belt, belt, belt, belt, belt, belt]);
 
-  // Row 8
-  p(1, 8, 10, 1, shirtColor);
-  p(5, 8, 1, 1, white); // button line center
-
-  // Row 9
-  p(1, 9, 10, 1, shirtColor);
-  p(5, 9, 1, 1, white);
-
-  // Row 10
-  p(1, 10, 10, 1, shirtColor);
-  p(5, 10, 1, 1, white);
-
-  // Row 11 - bottom of shirt
-  p(2, 11, 8, 1, shirtColor);
-
-  // Arms (slight protrusion)
-  p(0, 8, 1, 3, shirtColor);
-  p(11, 8, 1, 3, shirtColor);
-  // Hands
-  p(0, 11, 1, 1, skin);
-  p(11, 11, 1, 1, skin);
-
-  // Row 12: BELT
-  p(3, 12, 6, 1, belt);
-
-  // Row 13-16: PANTS (2 separate legs)
-  if (walkFrame === 0) {
-    // Standing
-    p(3, 13, 2, 4, pants);
-    p(7, 13, 2, 4, pants);
-  } else if (walkFrame === 1) {
-    // Left forward
-    p(2, 13, 2, 4, pants);
-    p(7, 13, 2, 4, pants);
-  } else if (walkFrame === 3) {
-    // Right forward
-    p(3, 13, 2, 4, pants);
-    p(8, 13, 2, 4, pants);
-  } else {
-    // Frame 2 = standing
-    p(3, 13, 2, 4, pants);
-    p(7, 13, 2, 4, pants);
+  // ── PANTS (rows 22-27) ──
+  const legShift = walkFrame === 1 ? -1 : walkFrame === 3 ? 1 : 0;
+  for (let r = 22; r <= 27; r++) {
+    if (r < 24) {
+      // Joined top
+      row(r, 4, [pants, pants, pants, pants, pants, pants, pants, pants]);
+    } else {
+      // Separate legs
+      const leftX = 4 + (walkFrame === 1 ? -1 : 0);
+      const rightX = 9 + (walkFrame === 3 ? 1 : 0);
+      p(leftX, r, pants); p(leftX + 1, r, pants); p(leftX + 2, r, pants);
+      p(rightX, r, pants); p(rightX + 1, r, pants); p(rightX + 2, r, pants);
+    }
   }
 
-  // Row 17-18: SHOES
-  if (walkFrame === 0 || walkFrame === 2) {
-    p(2, 17, 3, 2, shoes);
-    p(7, 17, 3, 2, shoes);
-  } else if (walkFrame === 1) {
-    p(1, 17, 3, 2, shoes);
-    p(7, 17, 3, 2, shoes);
-  } else {
-    p(2, 17, 3, 2, shoes);
-    p(8, 17, 3, 2, shoes);
+  // ── SHOES (rows 28-29) ──
+  const leftShoeX = 3 + (walkFrame === 1 ? -1 : 0);
+  const rightShoeX = 9 + (walkFrame === 3 ? 1 : 0);
+  for (let r = 28; r <= 29; r++) {
+    row(r, leftShoeX, [shoes, shoes, shoes, shoes]);
+    row(r, rightShoeX, [shoes, shoes, shoes, shoes]);
   }
 
-  // Row 19: SHADOW
-  g.fillStyle(0x000000, 0.15);
-  g.fillEllipse(ox + 6, oy + 19.5, 10, 2);
+  // ── SHADOW (rows 30-31) ──
+  g.fillStyle(0x000000, 0.2);
+  g.fillEllipse(ox + 8, oy + 31, 12, 4);
 }
 
 // ── Component ──────────────────────────────────────────────────────────
@@ -189,8 +195,8 @@ export default function PhaserRoom({
   speakingId,
   thinkingId,
   streamingText,
-  width = 1280,
-  height = 960,
+  width = 1200,
+  height = 900,
   className,
 }: RoomProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -213,16 +219,13 @@ export default function PhaserRoom({
     const dataRef = sceneDataRef;
 
     class OfficeScene extends Phaser.Scene {
-      private agentContainers: Map<string, Phaser.GameObjects.Container> =
-        new Map();
+      private agentContainers: Map<string, Phaser.GameObjects.Container> = new Map();
       private bubbles: Map<string, Phaser.GameObjects.Container> = new Map();
       private thinkDots: Map<string, Phaser.GameObjects.Container> = new Map();
-      private charGraphics: Map<string, Phaser.GameObjects.Graphics> =
-        new Map();
+      private charGraphics: Map<string, Phaser.GameObjects.Graphics> = new Map();
       private bounceTimers: Map<string, Phaser.Time.TimerEvent> = new Map();
       private seatPositions: Map<string, { x: number; y: number }> = new Map();
-      private speakPositions: Map<string, { x: number; y: number }> =
-        new Map();
+      private speakPositions: Map<string, { x: number; y: number }> = new Map();
       private idleTimers: Map<string, Phaser.Time.TimerEvent> = new Map();
       private prevSpeakingId: string | null = null;
 
@@ -231,12 +234,9 @@ export default function PhaserRoom({
       }
 
       create() {
-        // Set world bounds
         this.physics?.world?.setBounds(0, 0, WORLD_W, WORLD_H);
-
-        // Camera zoom
-        this.cameras.main.setZoom(2.0);
-        this.cameras.main.centerOn(WORLD_W / 2, WORLD_H / 2);
+        this.cameras.main.setZoom(2.5);
+        this.cameras.main.centerOn(240, 180);
 
         this.drawRoom();
         this.createAgents();
@@ -255,291 +255,284 @@ export default function PhaserRoom({
         g.setDepth(0);
 
         // ═══ FLOOR: Wood planks ═══
-        for (let y = 0; y < WORLD_H; y += 8) {
-          const color = y % 16 === 0 ? 0x3a3020 : 0x342a1c;
+        for (let y = 20; y < WORLD_H - 14; y += 6) {
+          const color = Math.floor((y - 20) / 6) % 2 === 0 ? 0xb89868 : 0xaa8858;
           g.fillStyle(color);
-          g.fillRect(0, y, WORLD_W, 8);
+          g.fillRect(14, y, WORLD_W - 28, 6);
         }
-        // Vertical plank lines
-        g.lineStyle(1, 0x2a2018, 0.15);
-        for (let x = 0; x < WORLD_W; x += 32) {
-          g.lineBetween(x, 0, x, WORLD_H);
+        // Vertical plank separators
+        g.fillStyle(0x987848, 0.3);
+        for (let x = 14; x < WORLD_W - 14; x += 24) {
+          g.fillRect(x, 20, 1, WORLD_H - 34);
         }
 
         // ═══ CARPET under table ═══
-        const carpetX = (WORLD_W - 240) / 2;
-        const carpetY = (WORLD_H - 120) / 2;
-        g.fillStyle(0x2a2540);
-        g.fillRect(carpetX, carpetY, 240, 120);
-        g.lineStyle(1, 0x4a3a6a);
-        g.strokeRect(carpetX, carpetY, 240, 120);
+        const carpetX = 240 - 80;
+        const carpetY = 200 - 45;
+        g.setDepth(1);
+        g.fillStyle(0x4a6080);
+        g.fillRect(carpetX, carpetY, 160, 90);
+        g.lineStyle(1, 0x5a7090);
+        g.strokeRect(carpetX, carpetY, 160, 90);
 
-        // ═══ WALLS (16px thick) ═══
-        const wallColor = 0x1e1e2e;
-        const trimColor = 0x3a3a4a;
+        // ═══ WALLS ═══
+        const wallG = this.add.graphics();
+        wallG.setDepth(0);
 
         // Top wall
-        g.fillStyle(wallColor);
-        g.fillRect(0, 0, WORLD_W, 16);
-        g.fillStyle(trimColor);
-        g.fillRect(0, 14, WORLD_W, 2);
+        wallG.fillStyle(0x2a2a3a);
+        wallG.fillRect(0, 0, WORLD_W, 20);
+        wallG.fillStyle(0x3a3a4a);
+        wallG.fillRect(0, 19, WORLD_W, 1);
 
         // Left wall
-        g.fillStyle(wallColor);
-        g.fillRect(0, 0, 16, WORLD_H);
-        g.fillStyle(trimColor);
-        g.fillRect(14, 0, 2, WORLD_H);
+        wallG.fillStyle(0x2a2a3a);
+        wallG.fillRect(0, 0, 14, WORLD_H);
+        wallG.fillStyle(0x3a3a4a);
+        wallG.fillRect(13, 0, 1, WORLD_H);
 
         // Right wall
-        g.fillStyle(wallColor);
-        g.fillRect(WORLD_W - 16, 0, 16, WORLD_H);
-        g.fillStyle(trimColor);
-        g.fillRect(WORLD_W - 16, 0, 2, WORLD_H);
+        wallG.fillStyle(0x2a2a3a);
+        wallG.fillRect(WORLD_W - 14, 0, 14, WORLD_H);
+        wallG.fillStyle(0x3a3a4a);
+        wallG.fillRect(WORLD_W - 14, 0, 1, WORLD_H);
 
         // Bottom wall with door gap
-        g.fillStyle(wallColor);
-        const doorLeft = (WORLD_W - 40) / 2;
-        g.fillRect(0, WORLD_H - 12, doorLeft, 12);
-        g.fillRect(doorLeft + 40, WORLD_H - 12, WORLD_W - doorLeft - 40, 12);
-        g.fillStyle(trimColor);
-        g.fillRect(0, WORLD_H - 12, doorLeft, 2);
-        g.fillRect(doorLeft + 40, WORLD_H - 12, WORLD_W - doorLeft - 40, 2);
+        const doorLeft = (WORLD_W - 36) / 2;
+        wallG.fillStyle(0x2a2a3a);
+        wallG.fillRect(0, WORLD_H - 14, doorLeft, 14);
+        wallG.fillRect(doorLeft + 36, WORLD_H - 14, WORLD_W - doorLeft - 36, 14);
+        wallG.fillStyle(0x3a3a4a);
+        wallG.fillRect(0, WORLD_H - 14, doorLeft, 1);
+        wallG.fillRect(doorLeft + 36, WORLD_H - 14, WORLD_W - doorLeft - 36, 1);
 
         // ═══ FURNITURE ═══
         const fg = this.add.graphics();
-        fg.setDepth(1);
+        fg.setDepth(2);
 
         // ── Conference Table (center) ──
-        const tX = 320 - 50;
-        const tY = 240 - 25;
-        // Edge
-        fg.fillStyle(0x4a3020);
-        fg.fillRoundedRect(tX - 1, tY - 1, 102, 52, 6);
-        // Body
-        fg.fillStyle(0x6d4c2e);
-        fg.fillRoundedRect(tX, tY, 100, 50, 5);
-        // Top highlight
-        fg.fillStyle(0x7d5c3e);
-        fg.fillRoundedRect(tX + 2, tY + 2, 96, 46, 4);
-
-        // Props on table
-        // 3 papers
-        fg.fillStyle(0xe8e8d8, 0.7);
-        fg.fillRect(295, 232, 6, 8);
-        fg.fillRect(310, 228, 6, 8);
-        fg.fillRect(340, 234, 6, 8);
+        const tX = 195;
+        const tY = 178;
+        // Table top
+        fg.fillStyle(0x9b7853);
+        fg.fillRoundedRect(tX + 2, tY + 2, 86, 41, 4);
+        fg.fillStyle(0x8b6843);
+        fg.fillRoundedRect(tX, tY, 90, 45, 5);
+        fg.fillStyle(0x9b7853);
+        fg.fillRoundedRect(tX + 3, tY + 3, 84, 39, 3);
+        // Front edge (depth)
+        fg.fillStyle(0x6b4823);
+        fg.fillRect(tX, tY + 45, 90, 6);
+        // Legs
+        fg.fillStyle(0x5a3813);
+        fg.fillRect(tX + 2, tY + 45, 2, 4);
+        fg.fillRect(tX + 86, tY + 45, 2, 4);
+        fg.fillRect(tX + 2, tY + 42, 2, 4);
+        fg.fillRect(tX + 86, tY + 42, 2, 4);
+        // Props: papers
+        fg.fillStyle(0xf0f0e8);
+        fg.fillRect(tX + 15, tY + 8, 6, 8);
+        fg.fillRect(tX + 35, tY + 5, 6, 8);
         // Laptop
-        fg.fillStyle(0x2d3436);
-        fg.fillRect(350, 236, 12, 8);
-        fg.fillStyle(0x4488cc, 0.5);
-        fg.fillRect(351, 237, 10, 6);
-        // Coffee mugs
+        fg.fillStyle(0x2a2a2a);
+        fg.fillRect(tX + 55, tY + 10, 14, 10);
+        fg.fillStyle(0x4488cc);
+        fg.fillRect(tX + 57, tY + 12, 10, 6);
+        // Mugs
         fg.fillStyle(0xd63031);
-        fg.fillCircle(300, 250, 3);
-        fg.fillStyle(0x1a1a1a);
-        fg.fillCircle(300, 250, 1.5);
+        fg.fillRect(tX + 25, tY + 30, 4, 4);
         fg.fillStyle(0xdfe6e9);
-        fg.fillCircle(330, 248, 3);
-        fg.fillStyle(0x4a3020);
-        fg.fillCircle(330, 248, 1.5);
-        // Pen
-        fg.fillStyle(0x0984e3);
-        fg.fillRect(322, 255, 1, 6);
+        fg.fillRect(tX + 60, tY + 28, 4, 4);
 
         // ── Chairs at seat positions ──
         const chairG = this.add.graphics();
         chairG.setDepth(4);
         for (let i = 0; i < 5; i++) {
           const sp = SEAT_POSITIONS[i];
+          // Chair back
           chairG.fillStyle(0x3a3a4a);
-          chairG.fillCircle(sp.x, sp.y + 12, 7);
+          chairG.fillRect(sp.x - 4, sp.y + 8, 8, 4);
+          // Seat
+          chairG.fillStyle(0x4a4a5a);
+          chairG.fillRect(sp.x - 4, sp.y + 12, 8, 6);
         }
 
-        // ── Workstation Desks (3 along top wall) ──
+        // ── Workstation Desks (top-left) ──
         const deskG = this.add.graphics();
         deskG.setDepth(2);
-        const deskPositions = [120, 280, 440];
 
-        for (const dx of deskPositions) {
-          const dy = 40;
-          // Desk surface
-          deskG.fillStyle(0x5a3e28);
-          deskG.fillRect(dx - 20, dy - 12, 40, 24);
-          deskG.fillStyle(0x6d4c2e);
-          deskG.fillRect(dx - 19, dy - 11, 38, 22);
-
+        const drawDesk = (dx: number, dy: number) => {
+          // Desktop surface
+          deskG.fillStyle(0x8b6843);
+          deskG.fillRect(dx, dy, 50, 28);
+          // Front depth
+          deskG.fillStyle(0x6b4823);
+          deskG.fillRect(dx, dy + 28, 50, 5);
           // Monitor
-          deskG.fillStyle(0x2d3436);
-          deskG.fillRect(dx - 9, dy - 10, 18, 12);
-          deskG.fillStyle(0x4488cc, 0.4);
-          deskG.fillRect(dx - 7, dy - 8, 14, 8);
+          deskG.fillStyle(0x2a2a2a);
+          deskG.fillRect(dx + 18, dy + 2, 14, 10);
+          deskG.fillStyle(0x4488cc);
+          deskG.fillRect(dx + 20, dy + 3, 10, 6);
           // Stand
-          deskG.fillStyle(0x2d3436);
-          deskG.fillRect(dx - 2, dy + 2, 4, 3);
-          deskG.fillRect(dx - 5, dy + 5, 10, 2);
-
+          deskG.fillStyle(0x2a2a2a);
+          deskG.fillRect(dx + 24, dy + 12, 2, 4);
           // Keyboard
-          deskG.fillStyle(0x3a3a3a);
-          deskG.fillRect(dx - 5, dy + 8, 10, 3);
+          deskG.fillStyle(0xcccccc);
+          deskG.fillRect(dx + 19, dy + 18, 12, 4);
           // Mouse
-          deskG.fillStyle(0x3a3a3a);
-          deskG.fillRect(dx + 8, dy + 8, 4, 3);
-
+          deskG.fillStyle(0xcccccc);
+          deskG.fillRect(dx + 34, dy + 19, 3, 4);
           // Chair in front
-          deskG.fillStyle(0x2d3436);
-          deskG.fillCircle(dx, dy + 20, 7);
-          deskG.fillStyle(0x4a4a6a);
-          deskG.fillCircle(dx, dy + 20, 5);
-        }
+          deskG.fillStyle(0x3a3a4a);
+          deskG.fillRect(dx + 17, dy + 36, 8, 4);
+          deskG.fillStyle(0x4a4a5a);
+          deskG.fillRect(dx + 17, dy + 40, 8, 6);
+        };
 
-        // ── Bookshelves ──
+        drawDesk(55, 60);
+        drawDesk(55, 140);
+
+        // ── Bookshelves (right wall) ──
         const shelfG = this.add.graphics();
         shelfG.setDepth(3);
 
         const drawBookshelf = (bx: number, by: number) => {
           // Frame
-          shelfG.fillStyle(0x5a3e28);
-          shelfG.fillRect(bx - 15, by - 25, 30, 50);
-
+          shelfG.fillStyle(0x7b5833);
+          shelfG.fillRect(bx, by, 40, 55);
+          // 3 shelves
           for (let s = 0; s < 3; s++) {
-            const shelfY = by - 25 + 2 + s * 16;
+            const sy = by + 2 + s * 18;
             // Shelf board
-            shelfG.fillStyle(0x6d4c2e);
-            shelfG.fillRect(bx - 13, shelfY + 14, 26, 2);
+            shelfG.fillStyle(0x8b6843);
+            shelfG.fillRect(bx + 2, sy + 15, 36, 2);
             // Books
-            let bookX = bx - 12;
-            for (let b = 0; b < 7; b++) {
-              const bh = 10 + (b % 3) * 2;
+            let bookX = bx + 3;
+            for (let b = 0; b < 8; b++) {
+              const bh = 12 + (b % 3) * 3;
+              const bw = 3 + (b % 2);
               shelfG.fillStyle(BOOK_COLORS[b % BOOK_COLORS.length]);
-              shelfG.fillRect(bookX, shelfY + (14 - bh), 3, bh);
-              bookX += 3.5;
+              shelfG.fillRect(bookX, sy + (15 - bh), bw, bh);
+              bookX += bw + 0.5;
             }
           }
         };
 
-        // Left wall shelves
-        drawBookshelf(24 + 15, 60);
-        drawBookshelf(24 + 15, 140);
-        // Right wall shelves
-        drawBookshelf(590 + 15, 60);
-        drawBookshelf(590 + 15, 140);
+        drawBookshelf(420, 40);
+        drawBookshelf(420, 120);
 
-        // ── Coffee Area (bottom-right) ──
+        // ── Coffee Corner (bottom-right) ──
         const coffeeG = this.add.graphics();
         coffeeG.setDepth(2);
 
         // Counter
-        coffeeG.fillStyle(0x4a4a4a);
-        coffeeG.fillRect(515, 392, 50, 16);
-        coffeeG.fillStyle(0x5a5a5a);
-        coffeeG.fillRect(516, 393, 48, 14);
+        coffeeG.fillStyle(0x7b5833);
+        coffeeG.fillRect(370, 282, 60, 16);
+        coffeeG.fillStyle(0x5b3813);
+        coffeeG.fillRect(370, 298, 60, 4);
         // Coffee machine
-        coffeeG.fillStyle(0x2d3436);
-        coffeeG.fillRect(518, 374, 14, 18);
+        coffeeG.fillStyle(0x2a2a2a);
+        coffeeG.fillRect(375, 268, 12, 16);
         coffeeG.fillStyle(0xd63031);
-        coffeeG.fillCircle(525, 380, 2);
-        // Cups on counter
+        coffeeG.fillRect(378, 272, 2, 2);
+        coffeeG.fillStyle(0x22c55e);
+        coffeeG.fillRect(381, 272, 2, 2);
+        // Cups
         coffeeG.fillStyle(0xdfe6e9);
-        coffeeG.fillRect(536, 394, 4, 5);
-        coffeeG.fillRect(542, 394, 4, 5);
-        coffeeG.fillRect(548, 394, 4, 5);
-        // Small round table
-        coffeeG.fillStyle(0x5a4530);
-        coffeeG.fillCircle(560, 440, 12);
-        coffeeG.fillStyle(0x6d5540);
-        coffeeG.fillCircle(560, 440, 10);
+        coffeeG.fillRect(392, 284, 3, 4);
+        coffeeG.fillRect(397, 284, 3, 4);
+        coffeeG.fillRect(402, 284, 3, 4);
+        // Small table
+        coffeeG.fillStyle(0x7b5833);
+        coffeeG.fillRect(398, 310, 24, 24);
+        coffeeG.fillStyle(0x8b6843);
+        coffeeG.fillRect(400, 312, 20, 20);
         // 2 chairs
-        coffeeG.fillStyle(0x2d3436);
-        coffeeG.fillCircle(545, 440, 5);
-        coffeeG.fillStyle(0x4a4a6a);
-        coffeeG.fillCircle(545, 440, 3.5);
-        coffeeG.fillStyle(0x2d3436);
-        coffeeG.fillCircle(575, 440, 5);
-        coffeeG.fillStyle(0x4a4a6a);
-        coffeeG.fillCircle(575, 440, 3.5);
+        coffeeG.fillStyle(0x3a3a4a);
+        coffeeG.fillRect(390, 316, 6, 4);
+        coffeeG.fillStyle(0x4a4a5a);
+        coffeeG.fillRect(390, 320, 6, 6);
+        coffeeG.fillStyle(0x3a3a4a);
+        coffeeG.fillRect(424, 316, 6, 4);
+        coffeeG.fillStyle(0x4a4a5a);
+        coffeeG.fillRect(424, 320, 6, 6);
+        // Vending machine
+        coffeeG.fillStyle(0x555555);
+        coffeeG.fillRect(440, 280, 14, 24);
+        coffeeG.fillStyle(0x3a7aba);
+        coffeeG.fillRect(442, 282, 10, 14);
+        coffeeG.fillStyle(0x333333);
+        coffeeG.fillRect(442, 298, 4, 4);
 
         // ── Plants ──
         const plantG = this.add.graphics();
         plantG.setDepth(3);
 
         const drawPlant = (px: number, py: number) => {
-          // Pot (trapezoid approximation)
-          plantG.fillStyle(0x8b4513);
-          plantG.fillRect(px - 5, py, 10, 8);
-          plantG.fillStyle(0xa0522d);
-          plantG.fillRect(px - 4, py + 1, 8, 6);
-          // Soil
-          plantG.fillStyle(0x3e2723);
-          plantG.fillRect(px - 4, py, 8, 2);
-          // Leaves
+          // White/cream pot
+          plantG.fillStyle(0xf0e8d8);
+          plantG.fillRect(px - 4, py, 8, 6);
+          // Green leaves (bushy)
+          plantG.fillStyle(0x1a6a2a);
+          plantG.fillRect(px - 3, py - 6, 6, 6);
           plantG.fillStyle(0x27ae60);
-          plantG.fillCircle(px, py - 4, 6);
+          plantG.fillRect(px - 5, py - 10, 5, 6);
+          plantG.fillRect(px + 1, py - 8, 5, 5);
           plantG.fillStyle(0x2ecc71);
-          plantG.fillCircle(px - 4, py - 8, 4);
-          plantG.fillCircle(px + 4, py - 6, 4);
-          plantG.fillStyle(0x27ae60);
-          plantG.fillCircle(px + 1, py - 10, 3);
+          plantG.fillRect(px - 2, py - 12, 4, 4);
+          plantG.fillRect(px + 2, py - 11, 3, 3);
         };
 
-        drawPlant(40, 420);
-        drawPlant(600, 420);
-        drawPlant(50, 300);
-        drawPlant(590, 300);
+        drawPlant(26, 42);
+        drawPlant(WORLD_W - 26, 42);
+        drawPlant(26, WORLD_H - 28);
+        drawPlant(WORLD_W - 26, WORLD_H - 28);
 
         // ── Whiteboard (top wall) ──
         const wbG = this.add.graphics();
         wbG.setDepth(2);
-        const wbX = 320 - 40;
-        const wbY = 4;
+        const wbX = 240 - 35;
+        const wbY = 2;
         // White fill
-        wbG.fillStyle(0xdfe6e9);
-        wbG.fillRect(wbX, wbY, 80, 36);
-        // Gray frame
-        wbG.lineStyle(1, 0x636e72);
-        wbG.strokeRect(wbX, wbY, 80, 36);
-        // Marker scribbles
-        wbG.lineStyle(1, 0x0984e3, 0.6);
-        wbG.lineBetween(wbX + 5, wbY + 8, wbX + 45, wbY + 10);
-        wbG.lineStyle(1, 0xd63031, 0.5);
-        wbG.lineBetween(wbX + 5, wbY + 16, wbX + 50, wbY + 18);
-        wbG.lineStyle(1, 0x00b894, 0.4);
-        wbG.lineBetween(wbX + 5, wbY + 24, wbX + 40, wbY + 22);
+        wbG.fillStyle(0xf0f0f0);
+        wbG.fillRect(wbX, wbY, 70, 28);
+        // Gray border
+        wbG.lineStyle(1, 0x808080);
+        wbG.strokeRect(wbX, wbY, 70, 28);
+        // Colored scribbles
+        wbG.lineStyle(1, 0x0984e3, 0.7);
+        wbG.lineBetween(wbX + 4, wbY + 6, wbX + 40, wbY + 8);
+        wbG.lineStyle(1, 0xd63031, 0.6);
+        wbG.lineBetween(wbX + 4, wbY + 13, wbX + 45, wbY + 14);
+        wbG.lineStyle(1, 0x00b894, 0.5);
+        wbG.lineBetween(wbX + 4, wbY + 19, wbX + 35, wbY + 18);
         // Sticky notes
-        wbG.fillStyle(0xffeaa7, 0.8);
-        wbG.fillRect(wbX + 56, wbY + 6, 8, 8);
-        wbG.fillStyle(0x81ecec, 0.8);
-        wbG.fillRect(wbX + 66, wbY + 10, 8, 8);
-        // Marker tray
-        wbG.fillStyle(0x636e72);
-        wbG.fillRect(wbX + 20, wbY + 36, 40, 3);
-        wbG.fillStyle(0xd63031);
-        wbG.fillCircle(wbX + 28, wbY + 37, 1.5);
-        wbG.fillStyle(0x0984e3);
-        wbG.fillCircle(wbX + 35, wbY + 37, 1.5);
-        wbG.fillStyle(0x00b894);
-        wbG.fillCircle(wbX + 42, wbY + 37, 1.5);
+        wbG.fillStyle(0xffeaa7, 0.9);
+        wbG.fillRect(wbX + 50, wbY + 4, 4, 4);
+        wbG.fillStyle(0x81ecec, 0.9);
+        wbG.fillRect(wbX + 56, wbY + 8, 4, 4);
 
-        // ── Clock ──
+        // ── Clock (top wall right) ──
         const clkG = this.add.graphics();
         clkG.setDepth(2);
-        clkG.fillStyle(0xe8e8e0);
-        clkG.fillCircle(500, 24, 8);
-        clkG.lineStyle(1, 0x636e72);
-        clkG.strokeCircle(500, 24, 8);
+        clkG.fillStyle(0xf0f0f0);
+        clkG.fillCircle(400, 10, 7);
+        clkG.lineStyle(1, 0x808080);
+        clkG.strokeCircle(400, 10, 7);
         clkG.lineStyle(1.5, 0x2d3436);
-        clkG.lineBetween(500, 24, 500, 18); // hour hand
+        clkG.lineBetween(400, 10, 400, 5);
         clkG.lineStyle(1, 0x636e72);
-        clkG.lineBetween(500, 24, 505, 26); // minute hand
+        clkG.lineBetween(400, 10, 404, 12);
 
-        // ── Picture frame ──
+        // ── Picture Frame (right wall) ──
         const picG = this.add.graphics();
         picG.setDepth(2);
-        picG.fillStyle(0x5a3e28);
-        picG.fillRect(152, 18, 16, 12);
+        picG.fillStyle(0x6b4823);
+        picG.fillRect(WORLD_W - 13, 80, 12, 10);
         picG.fillStyle(0x44aa88);
-        picG.fillRect(154, 20, 12, 4); // landscape top (green)
+        picG.fillRect(WORLD_W - 11, 82, 8, 3);
         picG.fillStyle(0x4488cc);
-        picG.fillRect(154, 24, 12, 4); // landscape bottom (blue)
+        picG.fillRect(WORLD_W - 11, 85, 8, 3);
       }
 
       // ── Agent Creation ────────────────────────────────────────────
@@ -559,13 +552,14 @@ export default function PhaserRoom({
 
           // Character graphic
           const charG = this.add.graphics();
-          drawCharacter(charG, -6, -20, hexToNum(agent.color), i, 0);
+          const cfg = CHAR_CONFIGS[i % CHAR_CONFIGS.length];
+          drawChar(charG, -8, -32, cfg, 0);
           container.add(charG);
           this.charGraphics.set(agent.id, charG);
 
           // Name label
           const label = this.add
-            .text(0, 6, `${agent.emoji} ${agent.name}`, {
+            .text(0, 4, `${agent.emoji} ${agent.name}`, {
               fontSize: "7px",
               color: "#ffffff",
               backgroundColor: "#000000aa",
@@ -577,7 +571,7 @@ export default function PhaserRoom({
 
           // Role label
           const roleLabel = this.add
-            .text(0, 16, agent.role, {
+            .text(0, 14, agent.role, {
               fontSize: "5px",
               color: agent.color,
               align: "center",
@@ -619,31 +613,28 @@ export default function PhaserRoom({
         const agentList = dataRef.current.agents;
         const idx = agentList.findIndex((a) => a.id === agentId);
         if (idx < 0) return;
-        const agent = agentList[idx];
 
+        const cfg = CHAR_CONFIGS[idx % CHAR_CONFIGS.length];
         let walkFrame = 0;
 
-        // Walk frame animation
         const walkTimer = this.time.addEvent({
-          delay: 200,
-          repeat: 3,
+          delay: 180,
+          repeat: 4,
           callback: () => {
             walkFrame = (walkFrame + 1) % 4;
-            drawCharacter(charG, -6, -20, hexToNum(agent.color), idx, walkFrame);
+            drawChar(charG, -8, -32, cfg, walkFrame);
           },
         });
 
-        // Position tween
         this.tweens.add({
           targets: container,
           x: targetX,
           y: targetY,
           duration: 800,
-          ease: "Sine.easeInOut",
+          ease: "Quad.easeInOut",
           onComplete: () => {
             walkTimer.remove();
-            // Reset to standing
-            drawCharacter(charG, -6, -20, hexToNum(agent.color), idx, 0);
+            drawChar(charG, -8, -32, cfg, 0);
           },
         });
       }
@@ -656,7 +647,6 @@ export default function PhaserRoom({
 
         // Handle movement when speaking changes
         if (speakingId !== this.prevSpeakingId) {
-          // Move previous speaker back to seat
           if (this.prevSpeakingId) {
             const prevSeat = this.seatPositions.get(this.prevSpeakingId);
             const prevContainer = this.agentContainers.get(this.prevSpeakingId);
@@ -668,7 +658,6 @@ export default function PhaserRoom({
             }
           }
 
-          // Move new speaker toward table
           if (speakingId) {
             const speakPos = this.speakPositions.get(speakingId);
             const speakContainer = this.agentContainers.get(speakingId);
@@ -695,7 +684,7 @@ export default function PhaserRoom({
           if (isSpeaking && streamingText) {
             let bubble = this.bubbles.get(agent.id);
             if (!bubble) {
-              bubble = this.add.container(container.x, container.y - 30);
+              bubble = this.add.container(container.x, container.y - 40);
               bubble.setDepth(50);
 
               const bg = this.add.graphics();
@@ -705,7 +694,7 @@ export default function PhaserRoom({
                 .text(0, 0, "", {
                   fontSize: "9px",
                   color: "#ffffff",
-                  wordWrap: { width: 150 },
+                  wordWrap: { width: 140 },
                   align: "left",
                   padding: { x: 6, y: 4 },
                   lineSpacing: 1,
@@ -716,18 +705,18 @@ export default function PhaserRoom({
               this.bubbles.set(agent.id, bubble);
             }
 
-            bubble.setPosition(container.x, container.y - 30);
+            bubble.setPosition(container.x, container.y - 40);
 
             const text = bubble.getAt(1) as Phaser.GameObjects.Text;
             const truncated =
-              streamingText.length > 50
-                ? "..." + streamingText.slice(-47)
+              streamingText.length > 45
+                ? "..." + streamingText.slice(-42)
                 : streamingText;
             text.setText(`${agent.emoji} ${truncated}`);
 
             const bg = bubble.getAt(0) as Phaser.GameObjects.Graphics;
             bg.clear();
-            const tw = Math.min(text.width + 12, 160);
+            const tw = Math.min(text.width + 12, 150);
             const th = text.height + 8;
             // Background
             bg.fillStyle(0x0a0a14, 0.95);
@@ -774,7 +763,7 @@ export default function PhaserRoom({
           if (isThinking) {
             let dots = this.thinkDots.get(agent.id);
             if (!dots) {
-              dots = this.add.container(container.x, container.y - 25);
+              dots = this.add.container(container.x, container.y - 35);
               dots.setDepth(50);
 
               for (let d = 0; d < 3; d++) {
@@ -799,7 +788,6 @@ export default function PhaserRoom({
 
               this.thinkDots.set(agent.id, dots);
 
-              // Side sway
               this.tweens.add({
                 targets: container,
                 x: container.x + 3,
@@ -809,7 +797,7 @@ export default function PhaserRoom({
                 ease: "Sine.easeInOut",
               });
             }
-            dots.setPosition(container.x, container.y - 25);
+            dots.setPosition(container.x, container.y - 35);
             dots.setVisible(true);
           } else {
             const dots = this.thinkDots.get(agent.id);
@@ -838,7 +826,7 @@ export default function PhaserRoom({
       height,
       scene: [OfficeScene],
       pixelArt: true,
-      backgroundColor: "#16213e",
+      backgroundColor: "#2a2a3a",
       scale: { mode: Phaser.Scale.FIT },
       input: { keyboard: { capture: [] } },
     });
