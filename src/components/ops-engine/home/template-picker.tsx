@@ -68,22 +68,6 @@ export function TemplatePicker({
         body: JSON.stringify({
           workspace_id: workspaceId,
           name: "Untitled Table",
-          description: null,
-          scoring_config: {
-            rules: [],
-            thresholds: {
-              ignored: 0,
-              cold: 20,
-              warm: 40,
-              hot: 60,
-              priority: 80,
-            },
-          },
-          settings: {
-            enrichment_threshold: 30,
-            daily_signal_limit: 100,
-            auto_enrich: false,
-          },
         }),
       });
       if (!res.ok) throw new Error("Failed to create blank table");

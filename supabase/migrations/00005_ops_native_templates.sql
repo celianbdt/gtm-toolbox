@@ -22,7 +22,7 @@ VALUES (
     {"name":"Employee Count","key":"employee_count","column_type":"enricher","position":7,"config":{"waterfall":[{"provider":"clearbit","fields":["employee_count"],"timeout_ms":10000},{"provider":"proxycurl","fields":["employee_count"],"timeout_ms":10000}],"cache_ttl_days":30},"is_visible":true},
     {"name":"Contact Email","key":"contact_email","column_type":"enricher","position":8,"config":{"waterfall":[{"provider":"apollo","fields":["email"],"timeout_ms":10000},{"provider":"hunter","fields":["email"],"timeout_ms":10000},{"provider":"dropcontact","fields":["email"],"timeout_ms":10000}],"cache_ttl_days":30},"is_visible":true},
     {"name":"Contact Name","key":"contact_name","column_type":"static","position":9,"config":{},"is_visible":true},
-    {"name":"ICP Score","key":"icp_score","column_type":"ai_column","position":10,"config":{"prompt":"Based on this company'\''s industry: {industry}, size: {employee_count}, and funding: {funding_amount}, score ICP fit from 0-100. Consider: SaaS/tech focus, 10-500 employees, recent Series A-B preferred.","model":"claude-haiku-4-5","output_type":"number"},"is_visible":true},
+    {"name":"ICP Score","key":"icp_score","column_type":"ai_column","position":10,"config":{"prompt":"Based on this company''s industry: {industry}, size: {employee_count}, and funding: {funding_amount}, score ICP fit from 0-100. Consider: SaaS/tech focus, 10-500 employees, recent Series A-B preferred.","model":"claude-haiku-4-5","output_type":"number"},"is_visible":true},
     {"name":"Personalized Opener","key":"personalized_opener","column_type":"ai_column","position":11,"config":{"prompt":"Write a 2-sentence personalized cold email opener for {contact_name} at {company_name}. Reference their recent {funding_round} of {funding_amount}. Be specific and human.","model":"claude-haiku-4-5","output_type":"text"},"is_visible":true}
   ]'::jsonb,
   '{
@@ -58,7 +58,7 @@ VALUES (
     {"name":"Posted Date","key":"posted_date","column_type":"static","position":4,"config":{},"is_visible":true},
     {"name":"Employee Count","key":"employee_count","column_type":"enricher","position":5,"config":{"waterfall":[{"provider":"clearbit","fields":["employee_count"],"timeout_ms":10000}],"cache_ttl_days":30},"is_visible":true},
     {"name":"Contact Email","key":"contact_email","column_type":"enricher","position":6,"config":{"waterfall":[{"provider":"apollo","fields":["email"],"timeout_ms":10000},{"provider":"icypeas","fields":["email"],"timeout_ms":10000}],"cache_ttl_days":30},"is_visible":true},
-    {"name":"ICP Score","key":"icp_score","column_type":"ai_column","position":7,"config":{"prompt":"Based on this company'\''s hiring for {job_title} in {job_department}, with {employee_count} employees, score ICP fit from 0-100. Hiring in Sales/Marketing/Growth signals buying intent.","model":"claude-haiku-4-5","output_type":"number"},"is_visible":true}
+    {"name":"ICP Score","key":"icp_score","column_type":"ai_column","position":7,"config":{"prompt":"Based on this company''s hiring for {job_title} in {job_department}, with {employee_count} employees, score ICP fit from 0-100. Hiring in Sales/Marketing/Growth signals buying intent.","model":"claude-haiku-4-5","output_type":"number"},"is_visible":true}
   ]'::jsonb,
   '{
     "rules": [

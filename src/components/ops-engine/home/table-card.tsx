@@ -11,7 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import type { OpsTable, ThresholdTier } from "@/lib/ops-engine/types";
 import { TIER_COLORS } from "@/lib/ops-engine/types";
-import { Clock, Table2 } from "lucide-react";
+import { Clock, Table2, Trash2 } from "lucide-react";
 
 type TierDistribution = Partial<Record<ThresholdTier, number>>;
 
@@ -63,11 +63,13 @@ export function TableCard({
   rowCount,
   tierDistribution,
   onClick,
+  onDelete,
 }: {
   table: OpsTable;
   rowCount: number;
   tierDistribution: TierDistribution;
   onClick: () => void;
+  onDelete: () => void;
 }) {
   return (
     <Card
@@ -79,11 +81,15 @@ export function TableCard({
         <div className="flex items-center justify-between gap-2">
           <CardTitle className="truncate">{table.name}</CardTitle>
           <div className="flex items-center gap-1.5 shrink-0">
-            {table.is_active ? (
-              <span className="size-2 rounded-full bg-emerald-500" />
-            ) : (
-              <span className="size-2 rounded-full bg-gray-500" />
-            )}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (confirm(`Delete "${table.name}"?`)) onDelete();
+              }}
+              className="p-1 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+            >
+              <Trash2 className="size-3.5" />
+            </button>
           </div>
         </div>
         {table.description && (

@@ -157,6 +157,14 @@ export function OpsHome({
                 rowCount={m.rowCount}
                 tierDistribution={m.tierDistribution}
                 onClick={() => onNavigateTable(m.table.id)}
+                onDelete={async () => {
+                  await fetch(`/api/ops-engine/tables/${m.table.id}`, {
+                    method: "DELETE",
+                  });
+                  setTables((prev) =>
+                    prev.filter((t) => t.table.id !== m.table.id)
+                  );
+                }}
               />
             ))}
           </div>

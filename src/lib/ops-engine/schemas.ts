@@ -79,8 +79,8 @@ export const tableSettingsSchema = z.object({
 export const createTableSchema = z.object({
   workspace_id: z.string().uuid(),
   name: z.string().min(1).max(200),
-  description: z.string().max(2000).optional(),
-  template_id: z.string().uuid().optional(),
+  description: z.string().max(2000).nullable().optional(),
+  template_id: z.string().uuid().nullable().optional(),
   scoring_config: scoringConfigSchema.optional(),
   settings: tableSettingsSchema.optional(),
 });
