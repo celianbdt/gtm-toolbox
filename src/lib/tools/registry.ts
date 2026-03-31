@@ -62,6 +62,16 @@ export const tools: GTMTool[] = [
     status: "active",
   },
   {
+    id: "ops-engine",
+    name: "Ops Engine",
+    description:
+      "Prospect database with signals, enrichment waterfalls, scoring, and automations — like Clay, built-in.",
+    icon: "Database",
+    href: "ops-engine",
+    category: "ops",
+    status: "active",
+  },
+  {
     id: "sandbox",
     name: "Sandbox",
     description:
