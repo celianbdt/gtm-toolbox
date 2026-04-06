@@ -72,6 +72,7 @@ export function AddColumnDialog({
 
   // Formula config
   const [formulaExpr, setFormulaExpr] = useState("");
+  const [formulaOutputType, setFormulaOutputType] = useState<"number" | "text" | "boolean">("number");
 
   function handleNameChange(v: string) {
     setName(v);
@@ -87,7 +88,7 @@ export function AddColumnDialog({
       case "ai_column":
         return { prompt: aiPrompt, model: "gpt-4o-mini", output_type: "text" as const };
       case "formula":
-        return { expression: formulaExpr, output_type: "text" as const };
+        return { expression: formulaExpr, output_type: formulaOutputType };
       default:
         return {};
     }
@@ -131,6 +132,7 @@ export function AddColumnDialog({
     setWaterfall([]);
     setAiPrompt("");
     setFormulaExpr("");
+    setFormulaOutputType("number");
   }
 
   function addWaterfallStep() {
@@ -320,16 +322,44 @@ export function AddColumnDialog({
           )}
 
           {columnType === "formula" && (
-            <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-medium text-muted-foreground">
-                Expression
-              </label>
-              <Input
-                value={formulaExpr}
-                onChange={(e) => setFormulaExpr(e.target.value)}
-                placeholder="funding_amount * 0.1 + employee_count"
-                className="h-8 text-sm font-mono"
-              />
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-medium text-muted-foreground">
+                  Expression
+                </label>
+                <Textarea
+                  value={formulaExpr}
+                  onChange={(e) => setFormulaExpr(e.target.value)}
+                  placeholder="funding_amount * 0.1 + employee_count"
+                  className="text-sm font-mono min-h-16"
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-xs font-medium text-muted-foreground">
+                  Output type
+                </label>
+                <Select
+                  value={formulaOutputType}
+                  onValueChange={(v) => setFormulaOutputType(v as "number" | "text" | "boolean")}
+                >
+                  <SelectTrigger className="h-8 text-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="number">Number</SelectItem>
+                    <SelectItem value="text">Text</SelectItem>
+                    <SelectItem value="boolean">Boolean</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="rounded-md bg-muted/50 p-2.5 text-[10px] text-muted-foreground space-y-1">
+                <p className="font-medium text-xs text-foreground/70">Formula examples:</p>
+                <p><code className="bg-muted px-1 rounded">funding_amount * 0.1</code> — math on numeric columns</p>
+                <p><code className="bg-muted px-1 rounded">employee_count &gt; 50</code> — boolean condition</p>
+                <p><code className="bg-muted px-1 rounded">signal_score + enrichment_score</code> — sum columns</p>
+                <p><code className="bg-muted px-1 rounded">days_since(funding_date)</code> — days since a date</p>
+                <p className="pt-1">Use column keys (lowercase_with_underscores) to reference values.</p>
+              </div>
             </div>
           )}
         </div>

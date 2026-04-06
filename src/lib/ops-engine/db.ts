@@ -322,29 +322,45 @@ export async function listTemplates(
 }
 
 export async function getTemplate(
-  templateId: string
+  templateIdOrSlug: string
+): Promise<OpsTemplate> {
+  const supabase = createAdminClient();
+  // Try UUID first, then slug
+  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(templateIdOrSlug);
+  const column = isUuid ? "id" : "slug";
+  const { data, error } = await supabase
+    .from("ops_templates")
+    .select("*")
+    .eq(column, templateIdOrSlug)
+    .single();
+  if (error) throw error;
+  return data as OpsTemplate;
+}
+
+export async function getTemplateBySlug(
+  slug: string
 ): Promise<OpsTemplate> {
   const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("ops_templates")
     .select("*")
-    .eq("id", templateId)
+    .eq("slug", slug)
     .single();
   if (error) throw error;
   return data as OpsTemplate;
 }
 
 export async function instantiateTemplate(
-  templateId: string,
+  templateIdOrSlug: string,
   workspaceId: string,
   tableName: string
 ): Promise<OpsTable> {
-  const template = await getTemplate(templateId);
+  const template = await getTemplate(templateIdOrSlug);
 
   const table = await createTable({
     workspace_id: workspaceId,
     name: tableName,
-    template_id: templateId,
+    template_id: template.id,
     scoring_config: template.scoring_config,
     settings: template.settings,
   });
