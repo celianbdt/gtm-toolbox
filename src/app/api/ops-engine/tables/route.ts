@@ -41,7 +41,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const table = await createTable(parsed.data);
+    const { description, template_id, ...rest } = parsed.data;
+    const table = await createTable({
+      ...rest,
+      description: description ?? undefined,
+      template_id: template_id ?? undefined,
+    });
     return NextResponse.json({ table }, { status: 201 });
   } catch (error) {
     console.error("Failed to create table:", error);

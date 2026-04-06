@@ -115,7 +115,7 @@ export const updateColumnSchema = z.object({
 // ── Row schemas ──
 
 export const createRowSchema = z.object({
-  domain: z.string().optional(),
+  domain: z.string().nullable().optional(),
   data: z.record(z.string(), z.unknown()).default({}),
   source: z.enum([
     "crunchbase", "proxycurl", "linkedin_jobs", "snitcher", "newsapi",

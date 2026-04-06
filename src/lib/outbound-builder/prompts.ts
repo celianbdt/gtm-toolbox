@@ -1,6 +1,39 @@
 import type { CampaignRow, AnalyzerFocus, ICPDefinition, ChannelConfig, SequenceParams } from "./types";
 import { ANALYZER_FOCUS_LABELS } from "./types";
 
+// ── Helpers ──
+
+function formatCampaignStats(r: CampaignRow): string {
+  return `- ${r.campaign_name} | ${r.channel} | segment: ${r.segment ?? "N/A"} | sent: ${r.sent ?? "?"} | open: ${r.open_rate ?? "?"}% | reply: ${r.reply_rate ?? "?"}% | meetings: ${r.meetings_booked ?? "?"} | period: ${r.period ?? "N/A"} | ${r.notes ?? ""}`;
+}
+
+function formatCampaignContent(r: CampaignRow): string {
+  if (!r.sequence_steps || r.sequence_steps.length === 0) return "";
+  const steps = r.sequence_steps
+    .map((s) => {
+      const parts = [`  Step ${s.step_number} (${s.channel})`];
+      if (s.delay_days) parts[0] += ` — delay: ${s.delay_days}d`;
+      if (s.subject) parts.push(`    Subject: ${s.subject}`);
+      if (s.body) {
+        const bodyPreview = s.body.length > 500 ? s.body.slice(0, 500) + "…" : s.body;
+        parts.push(`    Body: ${bodyPreview}`);
+      }
+      return parts.join("\n");
+    })
+    .join("\n");
+  return `\n  [Sequence — ${r.sequence_steps.length} steps]\n${steps}`;
+}
+
+function formatCampaignsWithContent(rows: CampaignRow[]): string {
+  return rows
+    .map((r) => formatCampaignStats(r) + formatCampaignContent(r))
+    .join("\n\n");
+}
+
+function formatCampaignsStatsOnly(rows: CampaignRow[]): string {
+  return rows.map(formatCampaignStats).join("\n");
+}
+
 // ══════════════════════════════════════════
 // MODE 1: CAMPAIGN ANALYZER PROMPTS
 // ══════════════════════════════════════════
@@ -10,22 +43,21 @@ export function buildCampaignDataPrompt(
   workspaceContext: string,
   toolInsights?: string
 ): string {
-  const dataTable = rows
-    .map(
-      (r) =>
-        `- ${r.campaign_name} | ${r.channel} | segment: ${r.segment ?? "N/A"} | sent: ${r.sent ?? "?"} | open: ${r.open_rate ?? "?"}% | reply: ${r.reply_rate ?? "?"}% | meetings: ${r.meetings_booked ?? "?"} | period: ${r.period ?? "N/A"}`
-    )
-    .join("\n");
+  const hasContent = rows.some((r) => r.sequence_steps && r.sequence_steps.length > 0);
+  const dataSection = hasContent
+    ? formatCampaignsWithContent(rows)
+    : formatCampaignsStatsOnly(rows);
 
   return `You are a campaign performance analyst. Analyze the following outbound campaign data and produce a structured KPI summary.
 
-## Campaign Data
-${dataTable}
+## Campaign Data (Performance + Messaging Content)
+${dataSection}
 
 ## Company Context
 ${workspaceContext || "No company context provided."}
 ${toolInsights ? `\n## Prior Analysis Insights\n${toolInsights}\n` : ""}
-Calculate aggregate metrics across all campaigns. Identify the best and worst performing campaigns with clear reasoning.`;
+Calculate aggregate metrics across all campaigns. Identify the best and worst performing campaigns with clear reasoning.
+${hasContent ? "\nIMPORTANT: You have access to the actual email/message content of each campaign. Analyze the MESSAGING and POSITIONING — what language, angles, and value props correlate with higher open/reply rates? This is critical for the analysis." : ""}`;
 }
 
 export function buildAnalyzerAssessmentPrompt(
@@ -37,19 +69,17 @@ export function buildAnalyzerAssessmentPrompt(
   knowledgeBase: string,
   toolInsights?: string
 ): string {
-  const dataTable = campaignData
-    .map(
-      (r) =>
-        `- ${r.campaign_name} | ${r.channel} | segment: ${r.segment ?? "N/A"} | open: ${r.open_rate ?? "?"}% | reply: ${r.reply_rate ?? "?"}% | meetings: ${r.meetings_booked ?? "?"}`
-    )
-    .join("\n");
+  const hasContent = campaignData.some((r) => r.sequence_steps && r.sequence_steps.length > 0);
+  const dataSection = hasContent
+    ? formatCampaignsWithContent(campaignData)
+    : formatCampaignsStatsOnly(campaignData);
 
   const focusText = focusDimensions
     .map((f) => `- ${ANALYZER_FOCUS_LABELS[f]}`)
     .join("\n");
 
-  return `## Campaign Performance Data
-${dataTable}
+  return `## Campaign Performance Data & Messaging Content
+${dataSection}
 
 ## KPI Summary
 ${kpiSummary}
@@ -66,7 +96,8 @@ ${knowledgeBase}
 ${toolInsights ? `\n## Prior Analysis Insights\n${toolInsights}\n` : ""}
 ---
 
-CRITICAL: Keep your ENTIRE response under 150 words. Be sharp, direct, and actionable. Use bullet points. One key insight per focus dimension. Focus on what the data reveals and what should change.`;
+CRITICAL: Keep your ENTIRE response under 150 words. Be sharp, direct, and actionable. Use bullet points. One key insight per focus dimension.
+${hasContent ? "You have the FULL MESSAGE CONTENT — analyze which subject lines, value props, angles, and CTAs drive better results. Compare messaging across campaigns." : "Focus on what the data reveals and what should change."}`;
 }
 
 export function buildAnalyzerDebateRound1Prompt(): string {
@@ -95,14 +126,15 @@ export function buildPlaybookSynthesisPrompt(
   workspaceContext: string,
   toolInsights?: string
 ): string {
-  const dataTable = campaignData
-    .map((r) => `${r.campaign_name} | ${r.channel} | ${r.segment ?? "N/A"} | open: ${r.open_rate ?? "?"}% | reply: ${r.reply_rate ?? "?"}%`)
-    .join("\n");
+  const hasContent = campaignData.some((r) => r.sequence_steps && r.sequence_steps.length > 0);
+  const dataSection = hasContent
+    ? formatCampaignsWithContent(campaignData)
+    : formatCampaignsStatsOnly(campaignData);
 
   return `You are a synthesis engine. Generate a comprehensive strategic playbook from the analyst debate.
 
-## Campaign Data
-${dataTable}
+## Campaign Data & Messaging Content
+${dataSection}
 
 ## Analysis Transcript
 ${analysisTranscript}
@@ -114,6 +146,7 @@ Generate a strategic playbook with:
 - Executive summary (2-3 sentences)
 - Segment analysis with performance ratings, metrics, insights, and recommendations
 - Channel analysis with effectiveness ratings and optimization tips
+${hasContent ? "- **Messaging analysis**: Which subject lines, opening hooks, value props, and CTAs performed best? What patterns emerge in top-performing vs low-performing campaigns?\n- **Positioning insights**: What angles resonated? What language worked? What should be replicated vs abandoned?" : ""}
 - Cadence insights (optimal touchpoints, best days/times, spacing)
 - KPI benchmarks (current vs industry benchmark)
 - Lessons learned with evidence and actions

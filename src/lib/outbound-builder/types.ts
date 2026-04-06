@@ -4,6 +4,14 @@ import type { AgentConfig, DebateMessage } from "@/lib/debate/types";
 
 export type CampaignChannel = "email" | "linkedin" | "call" | "other";
 
+export type SequenceStep = {
+  step_number: number;
+  channel: CampaignChannel;
+  subject?: string;
+  body?: string;
+  delay_days?: number;
+};
+
 export type CampaignRow = {
   campaign_name: string;
   channel: CampaignChannel;
@@ -19,6 +27,7 @@ export type CampaignRow = {
   period?: string;
   notes?: string;
   extras?: Record<string, string | number>;
+  sequence_steps?: SequenceStep[];
 };
 
 export type CampaignDataSourceType =

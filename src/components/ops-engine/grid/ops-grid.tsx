@@ -41,6 +41,7 @@ import { ScoreBadge } from "../scoring/score-badge";
 import { GridToolbar } from "./grid-toolbar";
 import { AddColumnDialog } from "./add-column-dialog";
 import { RowDetailSheet } from "./row-detail-sheet";
+import { CsvMappingDialog } from "./csv-mapping-dialog";
 
 const TYPE_ICONS: Record<OpsColumnType, React.ComponentType<{ className?: string }>> = {
   enricher: Database,
@@ -81,6 +82,9 @@ export function OpsGrid({
   // Dialogs
   const [addColumnOpen, setAddColumnOpen] = useState(false);
   const [detailRow, setDetailRow] = useState<OpsRow | null>(null);
+  const [csvMappingOpen, setCsvMappingOpen] = useState(false);
+  const [csvParsedData, setCsvParsedData] = useState<Record<string, string>[]>([]);
+  const [csvHeaders, setCsvHeaders] = useState<string[]>([]);
 
   // Data fetching
   const fetchTable = useCallback(async () => {
@@ -316,26 +320,85 @@ export function OpsGrid({
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ domain: null, data: {}, source: "manual" }),
+          body: JSON.stringify({ data: {}, source: "manual" }),
         }
       );
-      if (res.ok) fetchRows();
+      if (res.ok) {
+        const { row } = await res.json();
+        setRows((prev) => [row, ...prev]);
+        setTotal((prev) => prev + 1);
+      }
     } catch (err) {
       console.error(err);
     }
   }
 
   async function handleImportCsv(file: File) {
-    const formData = new FormData();
-    formData.append("file", file);
     try {
+      const text = await file.text();
+      const Papa = (await import("papaparse")).default;
+      const result = Papa.parse<Record<string, string>>(text, {
+        header: true,
+        skipEmptyLines: true,
+      });
+      if (result.data.length === 0) return;
+      setCsvHeaders(result.meta.fields ?? Object.keys(result.data[0]));
+      setCsvParsedData(result.data);
+      setCsvMappingOpen(true);
+    } catch (err) {
+      console.error("CSV parse error:", err);
+    }
+  }
+
+  async function handleCsvMappingConfirm(mapping: Record<string, string>, domainColumn: string | null, createNewColumns: string[]) {
+    try {
+      // 1. Create new columns if needed
+      for (const csvCol of createNewColumns) {
+        const key = mapping[csvCol]; // the target key we already computed
+        await fetch(`/api/ops-engine/tables/${tableId}/columns`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: csvCol,
+            key,
+            column_type: "static",
+            position: columns.length + createNewColumns.indexOf(csvCol),
+          }),
+        });
+      }
+
+      // 2. Map CSV rows → API rows with correct column keys
+      const mappedRows = csvParsedData.map((csvRow) => {
+        const data: Record<string, unknown> = {};
+        for (const [csvCol, targetKey] of Object.entries(mapping)) {
+          if (targetKey && csvRow[csvCol] != null && csvRow[csvCol] !== "") {
+            data[targetKey] = csvRow[csvCol];
+          }
+        }
+        return data;
+      });
+
+      // 3. Detect domain_column target key for the API
+      const domainTargetKey = domainColumn ? mapping[domainColumn] ?? null : null;
+
+      // 4. Bulk insert
       await fetch(`/api/ops-engine/tables/${tableId}/rows/bulk`, {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          rows: mappedRows,
+          source: "csv_import",
+          domain_column: domainTargetKey ?? undefined,
+        }),
       });
+
+      setCsvMappingOpen(false);
+      setCsvParsedData([]);
+      setCsvHeaders([]);
+      fetchColumns();
       fetchRows();
     } catch (err) {
-      console.error(err);
+      console.error("CSV import error:", err);
     }
   }
 
@@ -515,6 +578,17 @@ export function OpsGrid({
           fetchColumns();
           fetchRows();
         }}
+      />
+
+      {/* CSV mapping dialog */}
+      <CsvMappingDialog
+        open={csvMappingOpen}
+        onOpenChange={setCsvMappingOpen}
+        csvHeaders={csvHeaders}
+        csvPreview={csvParsedData.slice(0, 3)}
+        totalRows={csvParsedData.length}
+        existingColumns={columns}
+        onConfirm={handleCsvMappingConfirm}
       />
 
       {/* Row detail sheet */}

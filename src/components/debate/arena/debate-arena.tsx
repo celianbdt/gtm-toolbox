@@ -107,7 +107,9 @@ export function DebateArena({ sessionId, workspaceId, onConcluded }: Props) {
             metadata: {},
             created_at: new Date().toISOString(),
           };
-          setMessages((prev) => [...prev, msg]);
+          setMessages((prev) =>
+            prev.some((m) => m.id === messageId) ? prev : [...prev, msg]
+          );
         },
         (stepNumber) => {
           const nextTurn = stepNumber + 1;

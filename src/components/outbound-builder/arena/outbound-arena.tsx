@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { OBSSEEvent } from "@/lib/outbound-builder/types";
 import { PixelArenaWrapper } from "@/components/shared/pixel-arena-wrapper";
 
@@ -41,72 +41,92 @@ export function OutboundArena({ sessionId, mode, onComplete }: Props) {
   const [error, setError] = useState("");
   const [estimatedCost, setEstimatedCost] = useState(0);
 
-  const hasStarted = useRef(false);
   const abortControllerRef = useRef<AbortController | null>(null);
   const feedRef = useRef<HTMLDivElement>(null);
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
 
   const runEndpoint = mode === "analyzer" ? "/api/outbound-builder/run" : "/api/outbound-builder/build";
 
-  const startStream = useCallback(async () => {
-    if (isRunning) return;
-    setIsRunning(true);
-    setError("");
-
+  useEffect(() => {
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
-    try {
-      const res = await fetch(runEndpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId }),
-        signal: controller.signal,
-      });
+    setIsRunning(true);
+    setError("");
+    setMessages([]);
+    setStreamingAgents(new Map());
+    setPhaseNumber(0);
+    setCurrentPhase("");
 
-      if (!res.ok || !res.body) {
-        setError("Failed to start analysis");
-        setIsRunning(false);
-        return;
-      }
+    async function run() {
+      try {
+        const res = await fetch(runEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId }),
+          signal: controller.signal,
+        });
 
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
+        if (!res.ok || !res.body) {
+          const errBody = await res.text().catch(() => "");
+          console.error("OB run failed:", res.status, errBody);
+          setError(`Failed to start analysis (${res.status})`);
+          setIsRunning(false);
+          return;
+        }
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
 
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n\n");
-        buffer = lines.pop() ?? "";
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
 
-        for (const line of lines) {
-          const trimmed = line.trim();
-          if (!trimmed.startsWith("data: ")) continue;
-          try {
-            const event: OBSSEEvent = JSON.parse(trimmed.slice(6));
-            handleEvent(event);
-          } catch {
-            // Skip malformed events
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n\n");
+          buffer = lines.pop() ?? "";
+
+          for (const line of lines) {
+            const trimmed = line.trim();
+            if (!trimmed.startsWith("data: ")) continue;
+            try {
+              const event: OBSSEEvent = JSON.parse(trimmed.slice(6));
+              handleEvent(event);
+            } catch {
+              // Skip malformed events
+            }
           }
         }
+      } catch (e) {
+        if ((e as Error).name !== "AbortError") {
+          console.error("OB stream error:", e);
+          setError("Stream interrupted — try reloading the page.");
+        }
+      } finally {
+        setIsRunning(false);
       }
-    } catch (e) {
-      if ((e as Error).name !== "AbortError") {
-        setError("Stream interrupted");
-      }
-    } finally {
-      setIsRunning(false);
     }
+
+    run();
+
+    return () => {
+      controller.abort();
+    };
+    // Only re-run if sessionId or endpoint actually changes (not on every render)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sessionId, runEndpoint, isRunning]);
+  }, [sessionId, runEndpoint]);
 
   function handleEvent(event: OBSSEEvent) {
     switch (event.type) {
       case "phase_start":
         setCurrentPhase(event.phase);
         setPhaseNumber(event.phaseNumber);
+        break;
+
+      case "phase_done":
+        // Phase complete, no-op — phaseNumber already tracks progress
         break;
 
       case "agent_start":
@@ -136,23 +156,27 @@ export function OutboundArena({ sessionId, mode, onComplete }: Props) {
         break;
 
       case "agent_done": {
-        const streaming = streamingAgents.get(event.agentId);
-        if (streaming) {
-          setMessages((prev) => [
-            ...prev,
-            {
-              id: event.messageId,
-              agentId: event.agentId,
-              agentName: streaming.agentName,
-              emoji: streaming.emoji,
-              color: streaming.color,
-              content: event.fullContent,
-              phase: streaming.phase,
-              role: "agent",
-            },
-          ]);
-        }
         setStreamingAgents((prev) => {
+          const streaming = prev.get(event.agentId);
+          if (streaming) {
+            setMessages((msgs) =>
+              msgs.some((m) => m.id === event.messageId)
+                ? msgs
+                : [
+                    ...msgs,
+                    {
+                      id: event.messageId,
+                      agentId: event.agentId,
+                      agentName: streaming.agentName,
+                      emoji: streaming.emoji,
+                      color: streaming.color,
+                      content: event.fullContent,
+                      phase: streaming.phase,
+                      role: "agent" as const,
+                    },
+                  ]
+            );
+          }
           const next = new Map(prev);
           next.delete(event.agentId);
           return next;
@@ -160,8 +184,12 @@ export function OutboundArena({ sessionId, mode, onComplete }: Props) {
         break;
       }
 
+      case "output_ready":
+        // Output generated, no special UI action needed
+        break;
+
       case "analysis_complete":
-        onComplete();
+        onCompleteRef.current();
         break;
 
       case "error":
@@ -169,16 +197,6 @@ export function OutboundArena({ sessionId, mode, onComplete }: Props) {
         break;
     }
   }
-
-  useEffect(() => {
-    if (!hasStarted.current) {
-      hasStarted.current = true;
-      startStream();
-    }
-    return () => {
-      abortControllerRef.current?.abort();
-    };
-  }, [startStream]);
 
   // Auto-scroll
   useEffect(() => {
@@ -235,7 +253,9 @@ export function OutboundArena({ sessionId, mode, onComplete }: Props) {
             )}
             <div>
               <span className="text-sm font-medium text-foreground">
-                Phase {phaseNumber}/{totalPhases}: {phaseLabels[currentPhase] ?? currentPhase}
+                {phaseNumber === 0 && isRunning
+                  ? "Starting analysis..."
+                  : `Phase ${phaseNumber}/${totalPhases}: ${phaseLabels[currentPhase] ?? currentPhase}`}
               </span>
             </div>
           </div>
@@ -297,6 +317,13 @@ export function OutboundArena({ sessionId, mode, onComplete }: Props) {
               </div>
             </div>
           ))}
+
+          {/* Error or waiting state */}
+          {!isRunning && messages.length === 0 && !error && (
+            <p className="text-sm text-muted-foreground text-center py-8">
+              Analysis finished with no output. Try creating a new session.
+            </p>
+          )}
         </div>
       </div>
 

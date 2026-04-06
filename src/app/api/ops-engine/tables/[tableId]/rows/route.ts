@@ -60,7 +60,11 @@ export async function POST(
       );
     }
 
-    const row = await createRow(tableId, parsed.data);
+    const { domain, ...rest } = parsed.data;
+    const row = await createRow(tableId, {
+      ...rest,
+      domain: domain ?? undefined,
+    });
     return NextResponse.json({ row }, { status: 201 });
   } catch (error) {
     console.error("Failed to create row:", error);
