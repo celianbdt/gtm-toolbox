@@ -8,6 +8,10 @@ import {
   weeklyDigestJob,
   cleanupJob,
 } from "@/lib/ops-engine/inngest/functions";
+import {
+  integrationSyncJob,
+  dailyIntegrationSyncJob,
+} from "@/lib/integrations/inngest/functions";
 
 export const { GET, POST, PUT } = serve({
   client: inngest,
@@ -18,5 +22,7 @@ export const { GET, POST, PUT } = serve({
     automationJob,
     weeklyDigestJob,
     cleanupJob,
+    integrationSyncJob,
+    dailyIntegrationSyncJob,
   ],
 });

@@ -67,6 +67,7 @@ export function AppSidebar({
   }
 
   const workspaceLinks = [
+    { label: "Project", href: `/${wsSlug}/project`, icon: LucideIcons.Kanban },
     { label: "Context", href: `/${wsSlug}/context`, icon: FileText },
     { label: "Agents", href: `/${wsSlug}/agents`, icon: Bot },
     { label: "Settings", href: `/${wsSlug}/settings`, icon: Settings },
@@ -202,7 +203,7 @@ export function AppSidebar({
             <SidebarMenuButton asChild>
               <Link href="/workspaces">
                 <LayoutGrid className="size-4" />
-                <span>All workspaces</span>
+                <span>Dashboard</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

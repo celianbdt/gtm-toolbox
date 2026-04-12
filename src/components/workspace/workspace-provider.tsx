@@ -8,6 +8,8 @@ export type Workspace = {
   slug: string;
   description: string | null;
   color: string;
+  status: "active" | "paused" | "completed";
+  priority: "urgent" | "normal" | "low";
   created_at: string;
 };
 
