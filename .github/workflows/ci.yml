@@ -1,0 +1,45 @@
+# CI workflow — runs on every push and on PRs targeting master.
+# Catches build failures and test regressions before they reach Vercel.
+
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Check out the repository
+      - uses: actions/checkout@v4
+
+      # 2. Set up Node.js 20 with npm cache enabled
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      # 3. Install dependencies (clean install, respects package-lock.json)
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Build the Next.js app.
+      #    NEXT_PUBLIC_* vars are required at build time; dummy values are
+      #    sufficient here since we only verify the build compiles.
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+
+      # 5. Run the Vitest test suite
+      - name: Test
+        run: npm run test
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
