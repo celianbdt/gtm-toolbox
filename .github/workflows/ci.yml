@@ -1,5 +1,6 @@
 # CI workflow — runs on every push and on PRs targeting master.
 # Catches build failures and test regressions before they reach Vercel.
+
 name: CI
 
 on:
@@ -10,6 +11,7 @@ on:
 
 jobs:
   build-and-test:
+    name: Build & Test
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +25,8 @@ jobs:
           cache: "npm"
 
       # 3. Install dependencies (clean install, respects package-lock.json)
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
       # 4. Build the Next.js app.
       #    NEXT_PUBLIC_* vars are required at build time; dummy values are
