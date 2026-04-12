@@ -1,0 +1,41 @@
+# CI workflow — runs on every push and on PRs targeting master.
+# Ensures the project compiles and all tests pass before merging.
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check out the repository at the current ref
+      - uses: actions/checkout@v4
+
+      # Set up Node.js 20 with npm cache for faster installs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      # Install dependencies using the lockfile (reproducible builds)
+      - name: Install dependencies
+        run: npm ci
+
+      # Next.js embeds NEXT_PUBLIC_* vars at build time — provide dummy values
+      # so the build does not fail due to missing env vars in CI.
+      # Real values are injected at runtime via Vercel environment variables.
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key
+
+      # Run the Vitest test suite
+      - name: Test
+        run: npm run test
