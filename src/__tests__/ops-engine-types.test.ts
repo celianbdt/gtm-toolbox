@@ -143,9 +143,11 @@ describe("Ops Engine Constants", () => {
     expect(TIER_LABELS.priority).toBe("Priority");
   });
 
-  it("ENRICHER_LABELS covers all 13 providers", () => {
-    expect(Object.keys(ENRICHER_LABELS)).toHaveLength(13);
+  it("ENRICHER_LABELS covers all 15 providers", () => {
+    expect(Object.keys(ENRICHER_LABELS)).toHaveLength(15);
     expect(ENRICHER_LABELS.apollo).toBe("Apollo");
+    expect(ENRICHER_LABELS.enrow).toBeDefined();
+    expect(ENRICHER_LABELS.magilead).toBeDefined();
   });
 
   it("SIGNAL_LABELS covers all sources", () => {
