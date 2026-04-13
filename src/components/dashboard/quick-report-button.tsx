@@ -11,7 +11,7 @@ export function QuickReportButton({
 }) {
   return (
     <Button variant="ghost" size="xs" asChild>
-      <Link href={`/workspaces/${workspaceSlug}/projects?tab=reports`}>
+      <Link href={`/${workspaceSlug}/project?tab=reports`}>
         <FileTextIcon data-icon="inline-start" />
         Report
       </Link>

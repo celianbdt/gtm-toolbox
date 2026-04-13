@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as LucideIcons from "lucide-react";
@@ -34,6 +35,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { tools } from "@/lib/tools/registry";
 import { createClient } from "@/lib/supabase/client";
+import { CreateWorkspaceDialog } from "@/components/workspace/create-workspace-dialog";
 import { useRouter } from "next/navigation";
 
 type Workspace = {
@@ -59,6 +61,7 @@ export function AppSidebar({
   const pathname = usePathname();
   const router = useRouter();
   const wsSlug = currentWorkspace?.slug;
+  const [createOpen, setCreateOpen] = useState(false);
 
   async function handleLogout() {
     const supabase = createClient();
@@ -111,14 +114,13 @@ export function AppSidebar({
                     </Link>
                   </DropdownMenuItem>
                 ))}
-                <DropdownMenuItem asChild>
-                  <Link href="/workspaces">
-                    <Plus className="size-4" />
-                    New workspace
-                  </Link>
+                <DropdownMenuItem onSelect={() => setCreateOpen(true)}>
+                  <Plus className="size-4" />
+                  New workspace
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            <CreateWorkspaceDialog open={createOpen} onOpenChange={setCreateOpen} />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>

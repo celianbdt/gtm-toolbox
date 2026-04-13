@@ -73,7 +73,7 @@ export function DashboardWorkspaceCard({ workspace: initial }: Props) {
       <CardHeader>
         <div className="flex items-start justify-between gap-2">
           <Link
-            href={`/workspaces/${workspace.slug}`}
+            href={`/${workspace.slug}`}
             className="flex items-center gap-2 hover:opacity-80 transition-opacity min-w-0"
           >
             <span
@@ -206,7 +206,7 @@ export function DashboardWorkspaceCard({ workspace: initial }: Props) {
         <div className="flex items-center gap-1">
           <QuickReportButton workspaceSlug={workspace.slug} />
           <Button variant="ghost" size="xs" asChild>
-            <Link href={`/workspaces/${workspace.slug}`}>
+            <Link href={`/${workspace.slug}`}>
               Ouvrir
               <ArrowRightIcon data-icon="inline-end" />
             </Link>

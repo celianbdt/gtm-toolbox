@@ -114,6 +114,16 @@ export function IntegrationCard({
                   )}
                   Sync
                 </Button>
+                {provider === "slack" && (
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setConnectOpen(true)}
+                    className="text-xs"
+                  >
+                    Channels
+                  </Button>
+                )}
                 <Button
                   size="sm"
                   variant="ghost"
@@ -156,6 +166,11 @@ export function IntegrationCard({
         onOpenChange={setConnectOpen}
         onConnected={onRefresh}
         workspaceId={workspaceId}
+        existingConfig={
+          integration
+            ? { connected: isConnected, ...(integration.config as Record<string, unknown>) }
+            : undefined
+        }
       />
     </>
   );

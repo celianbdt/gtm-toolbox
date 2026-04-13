@@ -46,7 +46,7 @@ export function DashboardTaskSummary({ workspaces }: Props) {
           {blockedItems.map((item) => (
             <li key={item.workspaceSlug} className="flex items-center gap-2">
               <Link
-                href={`/workspaces/${item.workspaceSlug}/projects`}
+                href={`/${item.workspaceSlug}/project`}
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 <Badge variant="secondary" className="text-xs">

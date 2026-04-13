@@ -23,11 +23,23 @@ function slugify(text: string) {
     .replace(/(^-|-$)+/g, "");
 }
 
-export function CreateWorkspaceDialog() {
-  const [open, setOpen] = useState(false);
+export function CreateWorkspaceDialog({
+  open: controlledOpen,
+  onOpenChange: controlledOnOpenChange,
+}: {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+} = {}) {
+  const [internalOpen, setInternalOpen] = useState(false);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
+  const setOpen = isControlled
+    ? (v: boolean) => controlledOnOpenChange?.(v)
+    : setInternalOpen;
 
   async function handleCreate(e: React.FormEvent) {
     e.preventDefault();
@@ -37,9 +49,13 @@ export function CreateWorkspaceDialog() {
     const supabase = createClient();
     const slug = slugify(name);
 
-    // Get current user
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { setLoading(false); return; }
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
     const { data, error } = await supabase
       .from("workspaces")
@@ -48,7 +64,6 @@ export function CreateWorkspaceDialog() {
       .single();
 
     if (!error && data) {
-      // Add creator as workspace owner
       await supabase
         .from("workspace_members")
         .insert({ workspace_id: data.id, user_id: user.id, role: "owner" });
@@ -63,12 +78,14 @@ export function CreateWorkspaceDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button size="sm">
-          <Plus className="size-4" />
-          New workspace
-        </Button>
-      </DialogTrigger>
+      {!isControlled && (
+        <DialogTrigger asChild>
+          <Button size="sm">
+            <Plus className="size-4" />
+            New workspace
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent>
         <form onSubmit={handleCreate}>
           <DialogHeader>
