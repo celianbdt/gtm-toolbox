@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -61,9 +61,9 @@ export function TaskDialog({
   const [saving, setSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
 
-  // Reset form when dialog opens with different task
-  const handleOpenChange = (v: boolean) => {
-    if (v) {
+  // Reset form whenever dialog opens or task/defaultStatus changes
+  useEffect(() => {
+    if (open) {
       setTitle(task?.title ?? "");
       setDescription(task?.description ?? "");
       setStatus(task?.status ?? defaultStatus);
@@ -72,6 +72,9 @@ export function TaskDialog({
       setDueDate(task?.due_date ?? "");
       setConfirmDelete(false);
     }
+  }, [open, task, defaultStatus]);
+
+  const handleOpenChange = (v: boolean) => {
     onOpenChange(v);
   };
 
