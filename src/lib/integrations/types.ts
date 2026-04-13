@@ -31,7 +31,7 @@ export interface IntegrationConnector {
   sync(credentials: Record<string, unknown>, config: Record<string, unknown>): Promise<SyncResult>;
 }
 
-export const COMING_SOON_PROVIDERS: Set<IntegrationProvider> = new Set(["attio", "folk"]);
+export const COMING_SOON_PROVIDERS: Set<IntegrationProvider> = new Set([]);
 
 export const PROVIDER_META: Record<IntegrationProvider, { label: string; description: string; icon: string }> = {
   hubspot: { label: "HubSpot", description: "Deals, contacts, email activity", icon: "Building2" },

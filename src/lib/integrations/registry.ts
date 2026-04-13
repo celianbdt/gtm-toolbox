@@ -3,12 +3,16 @@ import { hubspotIntegrationConnector } from "./connectors/hubspot";
 import { notionIntegrationConnector } from "./connectors/notion";
 import { pipedriveIntegrationConnector } from "./connectors/pipedrive";
 import { slackIntegrationConnector } from "./connectors/slack";
+import { attioIntegrationConnector } from "./connectors/attio";
+import { folkIntegrationConnector } from "./connectors/folk";
 
 const CONNECTORS: Partial<Record<IntegrationProvider, IntegrationConnector>> = {
   hubspot: hubspotIntegrationConnector,
   notion: notionIntegrationConnector,
   pipedrive: pipedriveIntegrationConnector,
   slack: slackIntegrationConnector,
+  attio: attioIntegrationConnector,
+  folk: folkIntegrationConnector,
 };
 
 export function getIntegrationConnector(provider: IntegrationProvider): IntegrationConnector {
