@@ -6,6 +6,10 @@ import { slackIntegrationConnector } from "./connectors/slack";
 import { attioIntegrationConnector } from "./connectors/attio";
 import { folkIntegrationConnector } from "./connectors/folk";
 import { lemlistIntegrationConnector } from "./connectors/lemlist";
+import { instantlyIntegrationConnector } from "./connectors/instantly";
+import { smartleadIntegrationConnector } from "./connectors/smartlead";
+import { plusvibeIntegrationConnector } from "./connectors/plusvibe";
+import { clayIntegrationConnector } from "./connectors/clay";
 
 const CONNECTORS: Partial<Record<IntegrationProvider, IntegrationConnector>> = {
   hubspot: hubspotIntegrationConnector,
@@ -15,6 +19,10 @@ const CONNECTORS: Partial<Record<IntegrationProvider, IntegrationConnector>> = {
   attio: attioIntegrationConnector,
   folk: folkIntegrationConnector,
   lemlist: lemlistIntegrationConnector,
+  instantly: instantlyIntegrationConnector,
+  smartlead: smartleadIntegrationConnector,
+  plusvibe: plusvibeIntegrationConnector,
+  clay: clayIntegrationConnector,
 };
 
 export function getIntegrationConnector(provider: IntegrationProvider): IntegrationConnector {

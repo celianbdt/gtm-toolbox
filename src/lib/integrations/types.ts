@@ -1,4 +1,4 @@
-export type IntegrationProvider = "hubspot" | "pipedrive" | "attio" | "folk" | "notion" | "slack" | "lemlist";
+export type IntegrationProvider = "hubspot" | "pipedrive" | "attio" | "folk" | "notion" | "slack" | "lemlist" | "instantly" | "smartlead" | "plusvibe" | "clay";
 export type IntegrationStatus = "connected" | "disconnected" | "error" | "syncing";
 
 export type Integration = {
@@ -41,4 +41,8 @@ export const PROVIDER_META: Record<IntegrationProvider, { label: string; descrip
   notion: { label: "Notion", description: "Pages, databases", icon: "BookOpen" },
   slack: { label: "Slack", description: "Channel messages, send reports", icon: "MessageSquare" },
   lemlist: { label: "Lemlist", description: "Campagnes outbound, stats, leads", icon: "Send" },
+  instantly: { label: "Instantly", description: "Cold email campaigns, analytics", icon: "Zap" },
+  smartlead: { label: "SmartLead", description: "Email campaigns, lead management", icon: "BarChart3" },
+  plusvibe: { label: "PlusVibe", description: "Multi-channel sequences, analytics", icon: "Activity" },
+  clay: { label: "Clay", description: "Enrichment tables (webhook)", icon: "Layers" },
 };

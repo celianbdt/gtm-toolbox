@@ -62,6 +62,30 @@ const CREDENTIAL_CONFIG: Record<
     helpText: "Trouvez votre clé API dans Lemlist > Settings > Integrations > API.",
     credKey: "api_key",
   },
+  instantly: {
+    field: "API Key",
+    placeholder: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    helpText: "Trouvez votre clé API dans Instantly > Settings > API > API Key.",
+    credKey: "api_key",
+  },
+  smartlead: {
+    field: "API Key",
+    placeholder: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    helpText: "Trouvez votre clé API dans SmartLead > Settings > API.",
+    credKey: "api_key",
+  },
+  plusvibe: {
+    field: "API Key",
+    placeholder: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    helpText: "Trouvez votre clé API dans PlusVibe > Settings > API Access (Business Plan requis).",
+    credKey: "api_key",
+  },
+  clay: {
+    field: "API Key",
+    placeholder: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    helpText: "Entrez votre clé API Clay (Enterprise) ou un identifiant webhook.",
+    credKey: "api_key",
+  },
 };
 
 type SlackChannelInfo = {
