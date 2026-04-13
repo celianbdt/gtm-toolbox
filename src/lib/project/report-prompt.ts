@@ -2,7 +2,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { listTasks, getMetrics, listMetricDefinitions } from "@/lib/project/db";
 import type { Task } from "@/lib/types/project";
 
-type ReportContext = {
+export type ReportContext = {
   workspaceName: string;
   weekStart: string;
   weekEnd: string;

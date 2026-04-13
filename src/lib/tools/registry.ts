@@ -62,6 +62,16 @@ export const tools: GTMTool[] = [
     status: "active",
   },
   {
+    id: "copywriting",
+    name: "Copywriting",
+    description:
+      "Generate multi-step copy sequences for LinkedIn, Cold Email, and Cold Calling.",
+    icon: "PenLine",
+    href: "copywriting",
+    category: "messaging",
+    status: "active",
+  },
+  {
     id: "ops-engine",
     name: "Ops Engine",
     description:

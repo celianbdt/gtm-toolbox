@@ -12,6 +12,7 @@ import {
   ChevronDown,
   Plus,
   LayoutGrid,
+  FileBarChart,
 } from "lucide-react";
 import {
   Sidebar,
@@ -73,6 +74,7 @@ export function AppSidebar({
 
   const workspaceLinks = [
     { label: "Project", href: `/${wsSlug}/project`, icon: LucideIcons.Kanban },
+    { label: "Ops", href: `/${wsSlug}/ops`, icon: LucideIcons.BookmarkCheck },
     { label: "Context", href: `/${wsSlug}/context`, icon: FileText },
     { label: "Agents", href: `/${wsSlug}/agents`, icon: Bot },
     { label: "Settings", href: `/${wsSlug}/settings`, icon: Settings },
@@ -212,6 +214,14 @@ export function AppSidebar({
               <Link href="/workspaces">
                 <LayoutGrid className="size-4" />
                 <span>Dashboard</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild>
+              <Link href="/workspaces/reports">
+                <FileBarChart className="size-4" />
+                <span>Reports</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

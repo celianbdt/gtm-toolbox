@@ -1,6 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
+import { FileBarChart } from "lucide-react";
 import type { DashboardFilters, WorkspaceWithMeta } from "@/lib/types/dashboard";
 import { DashboardFiltersBar } from "./dashboard-filters";
 import { DashboardTaskSummary } from "./dashboard-task-summary";
@@ -58,6 +60,14 @@ export function DashboardContent({ workspaces }: Props) {
             Kanban global
           </button>
         </div>
+
+        <Link
+          href="/workspaces/reports"
+          className="flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-md border border-border hover:border-violet-500/30 transition-colors text-muted-foreground hover:text-foreground"
+        >
+          <FileBarChart className="size-3" />
+          Reports
+        </Link>
 
         <DashboardFiltersBar
           filters={filters}

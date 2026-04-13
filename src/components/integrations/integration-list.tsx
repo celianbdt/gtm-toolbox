@@ -8,7 +8,7 @@ import type {
   Integration,
   IntegrationProvider,
 } from "@/lib/integrations/types";
-import { PROVIDER_META } from "@/lib/integrations/types";
+import { PROVIDER_META, COMING_SOON_PROVIDERS } from "@/lib/integrations/types";
 
 const ALL_PROVIDERS = Object.keys(PROVIDER_META) as IntegrationProvider[];
 
@@ -62,6 +62,7 @@ export function IntegrationList() {
           integration={getIntegration(provider)}
           workspaceId={workspace.id}
           onRefresh={fetchIntegrations}
+          comingSoon={COMING_SOON_PROVIDERS.has(provider)}
         />
       ))}
     </div>
