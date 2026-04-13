@@ -34,6 +34,7 @@ export function WorkspaceSettingsForm({ workspace }: Props) {
   const [name, setName] = useState(workspace.name);
   const [description, setDescription] = useState(workspace.description ?? "");
   const [color, setColor] = useState(workspace.color);
+  const [missionStage, setMissionStage] = useState(workspace.mission_stage);
   const [logoUrl, setLogoUrl] = useState<string | null>(workspace.logo_url);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -89,7 +90,7 @@ export function WorkspaceSettingsForm({ workspace }: Props) {
     const res = await fetch(`/api/workspaces/${workspace.slug}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: name.trim(), description: description.trim() || null, color }),
+      body: JSON.stringify({ name: name.trim(), description: description.trim() || null, color, mission_stage: missionStage }),
     });
 
     if (res.ok) {
@@ -188,6 +189,20 @@ export function WorkspaceSettingsForm({ workspace }: Props) {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Description optionnelle"
             />
+          </div>
+
+          <div className="space-y-1.5">
+            <label className="text-sm text-zinc-400">Phase mission</label>
+            <select
+              value={missionStage}
+              onChange={(e) => setMissionStage(e.target.value as typeof missionStage)}
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            >
+              <option value="discovery">Discovery</option>
+              <option value="foundation">Foundation</option>
+              <option value="optimization">Optimization</option>
+              <option value="scaling">Scaling</option>
+            </select>
           </div>
 
           <div className="space-y-1.5">

@@ -8,6 +8,7 @@ export type WorkspaceWithMeta = {
   description: string | null;
   color: string;
   logo_url: string | null;
+  mission_stage: "discovery" | "foundation" | "optimization" | "scaling";
   status: WorkspaceStatus;
   priority: WorkspacePriority;
   created_at: string;

@@ -1,19 +1,15 @@
 import type { EnricherConnector, EnrichmentRequest, EnrichmentResult } from "../types";
+import { enrichFetch } from "../http";
 
-/**
- * Icypeas — Email finder
- *
- * Endpoint:
- *   POST https://app.icypeas.com/api/email-search
- *
- * Real request structure:
- *   {
- *     "firstname": "John",
- *     "lastname": "Doe",
- *     "domainOrCompany": "acme.com"
- *   }
- *   Headers: { "Authorization": "Bearer <API_KEY>" }
- */
+const ICYPEAS_API = "https://app.icypeas.com/api/email-search";
+
+type IcypeasResponse = {
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  status?: string;
+};
+
 const icypeasConnector: EnricherConnector = {
   provider: "icypeas",
   supportedFields: ["email", "first_name", "last_name"],
@@ -21,41 +17,65 @@ const icypeasConnector: EnricherConnector = {
 
   async enrich(
     request: EnrichmentRequest,
-    _apiKey: string
+    apiKey: string
   ): Promise<EnrichmentResult> {
-    console.log(
-      `[icypeas] Enriching ${request.domain} for fields: ${request.fields.join(", ")}`
-    );
-
     const data: EnrichmentResult["data"] = {};
     const confidence: EnrichmentResult["confidence"] = {};
+    let creditsUsed = 0;
 
-    for (const field of request.fields) {
-      if (!icypeasConnector.supportedFields.includes(field)) continue;
+    const parts = request.name?.split(" ") ?? [];
+    const firstname = parts[0] ?? "";
+    const lastname = parts.length > 1 ? parts.slice(1).join(" ") : "";
 
-      switch (field) {
-        case "email":
-          data.email = `info@${request.domain}`;
-          confidence.email = 0.88;
-          break;
-        case "first_name":
-          data.first_name = request.name?.split(" ")[0] ?? "Jane";
-          confidence.first_name = 0.92;
-          break;
-        case "last_name":
-          data.last_name = request.name?.split(" ").slice(1).join(" ") ?? "Smith";
-          confidence.last_name = 0.92;
-          break;
+    if (!firstname) {
+      return {
+        provider: "icypeas",
+        success: false,
+        data: {},
+        confidence: {},
+        raw_response: { error: "name is required for Icypeas email search" },
+        credits_used: 0,
+      };
+    }
+
+    const res = await enrichFetch<IcypeasResponse>(ICYPEAS_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        firstname,
+        lastname,
+        domainOrCompany: request.domain,
+      }),
+    });
+
+    if (res.ok && res.data) {
+      const r = res.data;
+      creditsUsed++;
+
+      if (r.email && request.fields.includes("email")) {
+        data.email = r.email;
+        confidence.email = 0.88;
+      }
+      if (r.firstName && request.fields.includes("first_name")) {
+        data.first_name = r.firstName;
+        confidence.first_name = 0.92;
+      }
+      if (r.lastName && request.fields.includes("last_name")) {
+        data.last_name = r.lastName;
+        confidence.last_name = 0.92;
       }
     }
 
     return {
       provider: "icypeas",
-      success: true,
+      success: Object.keys(data).length > 0,
       data,
       confidence,
-      raw_response: { _stub: true, domain: request.domain },
-      credits_used: 1,
+      raw_response: { domain: request.domain, credits_used: creditsUsed },
+      credits_used: creditsUsed,
     };
   },
 };

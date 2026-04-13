@@ -46,6 +46,7 @@ type Workspace = {
   slug: string;
   color: string;
   logo_url: string | null;
+  mission_stage: string;
 };
 
 function getIcon(iconName: string) {

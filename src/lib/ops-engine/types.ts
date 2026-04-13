@@ -31,7 +31,9 @@ export type EnricherProvider =
   | "builtwith"
   | "wappalyzer"
   | "firecrawl"
-  | "serper";
+  | "serper"
+  | "enrow"
+  | "magilead";
 
 export type AutomationType =
   | "slack_webhook"
@@ -325,6 +327,8 @@ export const ENRICHER_LABELS: Record<EnricherProvider, string> = {
   wappalyzer: "Wappalyzer",
   firecrawl: "Firecrawl",
   serper: "Serper",
+  enrow: "Enrow",
+  magilead: "MagiLead",
 };
 
 export const SIGNAL_LABELS: Record<SignalSource, string> = {

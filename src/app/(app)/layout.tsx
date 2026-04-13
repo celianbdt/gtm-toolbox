@@ -9,7 +9,7 @@ export default async function AppLayout({
   children: React.ReactNode;
 }) {
   const supabase = await createClient();
-  let workspaces: { id: string; name: string; slug: string; color: string; logo_url: string | null }[] = [];
+  let workspaces: { id: string; name: string; slug: string; color: string; logo_url: string | null; mission_stage: string }[] = [];
 
   try {
     const { data: { user } } = await supabase.auth.getUser();
@@ -23,7 +23,7 @@ export default async function AppLayout({
       if (wsIds.length > 0) {
         const { data } = await supabase
           .from("workspaces")
-          .select("id, name, slug, color, logo_url")
+          .select("id, name, slug, color, logo_url, mission_stage")
           .in("id", wsIds)
           .order("created_at", { ascending: true });
         workspaces = data ?? [];

@@ -1,16 +1,17 @@
 import type { EnricherConnector, EnrichmentRequest, EnrichmentResult } from "../types";
+import { enrichFetch } from "../http";
 
-/**
- * Wappalyzer — Tech stack detection (lighter alternative to BuiltWith)
- *
- * Endpoint:
- *   GET https://api.wappalyzer.com/v2/lookup/?urls=https://acme.com
- *
- * Real request structure:
- *   Headers: { "x-api-key": "<API_KEY>" }
- *   Query params: urls (comma-separated)
- *   Response: [{ technologies: [{ name, categories, versions, ... }] }]
- */
+const WAPPALYZER_API = "https://api.wappalyzer.com/v2/lookup/";
+
+type WappalyzerResponse = Array<{
+  url?: string;
+  technologies?: Array<{
+    name?: string;
+    categories?: Array<{ name?: string }>;
+    versions?: string[];
+  }>;
+}>;
+
 const wappalyzerConnector: EnricherConnector = {
   provider: "wappalyzer",
   supportedFields: ["tech_stack"],
@@ -18,33 +19,49 @@ const wappalyzerConnector: EnricherConnector = {
 
   async enrich(
     request: EnrichmentRequest,
-    _apiKey: string
+    apiKey: string
   ): Promise<EnrichmentResult> {
-    console.log(
-      `[wappalyzer] Enriching ${request.domain} for fields: ${request.fields.join(", ")}`
-    );
-
     const data: EnrichmentResult["data"] = {};
     const confidence: EnrichmentResult["confidence"] = {};
+    let creditsUsed = 0;
 
-    if (request.fields.includes("tech_stack")) {
-      data.tech_stack = [
-        "Next.js",
-        "Vercel",
-        "Google Tag Manager",
-        "Mixpanel",
-        "Zendesk",
-      ];
-      confidence.tech_stack = 0.85;
+    if (!request.fields.includes("tech_stack")) {
+      return {
+        provider: "wappalyzer",
+        success: false,
+        data: {},
+        confidence: {},
+        raw_response: { domain: request.domain, credits_used: 0 },
+        credits_used: 0,
+      };
+    }
+
+    const url = `${WAPPALYZER_API}?urls=https://${encodeURIComponent(request.domain)}`;
+    const res = await enrichFetch<WappalyzerResponse>(url, {
+      method: "GET",
+      headers: { "x-api-key": apiKey },
+    });
+
+    if (res.ok && res.data && res.data.length > 0) {
+      creditsUsed++;
+      const techs = res.data[0].technologies ?? [];
+      const techNames = techs
+        .map((t) => t.name)
+        .filter((n): n is string => !!n);
+
+      if (techNames.length > 0) {
+        data.tech_stack = techNames;
+        confidence.tech_stack = 0.85;
+      }
     }
 
     return {
       provider: "wappalyzer",
-      success: true,
+      success: Object.keys(data).length > 0,
       data,
       confidence,
-      raw_response: { _stub: true, domain: request.domain },
-      credits_used: 0,
+      raw_response: { domain: request.domain, credits_used: creditsUsed },
+      credits_used: creditsUsed,
     };
   },
 };

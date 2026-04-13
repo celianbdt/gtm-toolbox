@@ -47,7 +47,7 @@ export async function GET(_request: NextRequest) {
         admin
           .from("workspaces")
           .select(
-            "id, name, slug, description, color, logo_url, status, priority, created_at, updated_at"
+            "id, name, slug, description, color, logo_url, mission_stage, status, priority, created_at, updated_at"
           )
           .in("id", workspaceIds),
         admin
@@ -169,6 +169,7 @@ export async function GET(_request: NextRequest) {
         description: ws.description,
         color: ws.color,
         logo_url: ws.logo_url,
+        mission_stage: ws.mission_stage ?? "discovery",
         status: ws.status,
         priority: ws.priority,
         created_at: ws.created_at,

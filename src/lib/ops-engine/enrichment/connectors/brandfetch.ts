@@ -1,19 +1,19 @@
 import type { EnricherConnector, EnrichmentRequest, EnrichmentResult } from "../types";
+import { enrichFetch } from "../http";
 
-/**
- * Brandfetch — Brand info & logo
- *
- * Endpoint:
- *   GET https://api.brandfetch.io/v2/brands/:domain
- *
- * Real request structure:
- *   Headers: { "Authorization": "Bearer <API_KEY>" }
- *   URL param: domain (e.g., acme.com)
- *   Response: {
- *     name, description, logos: [{ type, formats: [{ src }] }],
- *     links, colors, fonts, ...
- *   }
- */
+const BRANDFETCH_API = "https://api.brandfetch.io/v2/brands";
+
+type BrandfetchResponse = {
+  name?: string;
+  description?: string;
+  logos?: Array<{
+    type?: string;
+    formats?: Array<{ src?: string; format?: string }>;
+  }>;
+  links?: Array<{ name?: string; url?: string }>;
+  colors?: Array<{ hex?: string; type?: string }>;
+};
+
 const brandfetchConnector: EnricherConnector = {
   provider: "brandfetch",
   supportedFields: ["logo_url", "company_name", "company_description"],
@@ -21,42 +21,49 @@ const brandfetchConnector: EnricherConnector = {
 
   async enrich(
     request: EnrichmentRequest,
-    _apiKey: string
+    apiKey: string
   ): Promise<EnrichmentResult> {
-    console.log(
-      `[brandfetch] Enriching ${request.domain} for fields: ${request.fields.join(", ")}`
-    );
-
     const data: EnrichmentResult["data"] = {};
     const confidence: EnrichmentResult["confidence"] = {};
-    const domainName = request.domain.replace(/\.\w+$/, "");
+    let creditsUsed = 0;
 
-    for (const field of request.fields) {
-      if (!brandfetchConnector.supportedFields.includes(field)) continue;
+    const url = `${BRANDFETCH_API}/${encodeURIComponent(request.domain)}`;
+    const res = await enrichFetch<BrandfetchResponse>(url, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${apiKey}` },
+    });
 
-      switch (field) {
-        case "logo_url":
-          data.logo_url = `https://asset.brandfetch.io/id/${request.domain}/logo.png`;
+    if (res.ok && res.data) {
+      const b = res.data;
+      creditsUsed++;
+
+      if (b.name && request.fields.includes("company_name")) {
+        data.company_name = b.name;
+        confidence.company_name = 0.92;
+      }
+      if (b.description && request.fields.includes("company_description")) {
+        data.company_description = b.description;
+        confidence.company_description = 0.8;
+      }
+      if (b.logos && b.logos.length > 0 && request.fields.includes("logo_url")) {
+        // Prefer "logo" type, fall back to first available
+        const logoEntry =
+          b.logos.find((l) => l.type === "logo") ?? b.logos[0];
+        const logoSrc = logoEntry?.formats?.[0]?.src;
+        if (logoSrc) {
+          data.logo_url = logoSrc;
           confidence.logo_url = 0.95;
-          break;
-        case "company_name":
-          data.company_name = domainName.replace(/^./, (c) => c.toUpperCase());
-          confidence.company_name = 0.92;
-          break;
-        case "company_description":
-          data.company_description = `${domainName} — brand identity and digital presence.`;
-          confidence.company_description = 0.7;
-          break;
+        }
       }
     }
 
     return {
       provider: "brandfetch",
-      success: true,
+      success: Object.keys(data).length > 0,
       data,
       confidence,
-      raw_response: { _stub: true, domain: request.domain },
-      credits_used: 0,
+      raw_response: { domain: request.domain, credits_used: creditsUsed },
+      credits_used: creditsUsed,
     };
   },
 };

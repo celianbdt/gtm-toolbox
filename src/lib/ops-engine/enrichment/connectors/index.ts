@@ -14,6 +14,8 @@ import builtwithConnector from "./builtwith";
 import wappalyzerConnector from "./wappalyzer";
 import firecrawlConnector from "./firecrawl";
 import serperConnector from "./serper";
+import enrowConnector from "./enrow";
+import magileadConnector from "./magilead";
 
 const CONNECTORS: Record<EnricherProvider, EnricherConnector> = {
   apollo: apolloConnector,
@@ -29,6 +31,8 @@ const CONNECTORS: Record<EnricherProvider, EnricherConnector> = {
   wappalyzer: wappalyzerConnector,
   firecrawl: firecrawlConnector,
   serper: serperConnector,
+  enrow: enrowConnector,
+  magilead: magileadConnector,
 };
 
 export function getConnector(provider: EnricherProvider): EnricherConnector {

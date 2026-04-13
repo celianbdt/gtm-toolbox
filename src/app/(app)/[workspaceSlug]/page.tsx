@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
-import { ToolGrid } from "@/components/workspace/tool-grid";
+import { ToolFlow } from "@/components/workspace/tool-flow";
+import { StageBadge } from "@/components/workspace/stage-badge";
 
 export default async function WorkspaceDashboard({
   params,
@@ -18,12 +19,23 @@ export default async function WorkspaceDashboard({
   return (
     <div className="flex-1 p-6">
       <div className="mb-6">
-        <h2 className="text-lg font-semibold">GTM Tools</h2>
-        <p className="text-sm text-muted-foreground">
-          Select a tool to start working on your go-to-market strategy.
-        </p>
+        <div className="flex items-center gap-3">
+          <h2 className="text-lg font-semibold">{workspace?.name ?? "GTM Tools"}</h2>
+          {workspace?.mission_stage && (
+            <StageBadge stage={workspace.mission_stage} />
+          )}
+        </div>
+        {workspace?.description ? (
+          <p className="text-sm text-muted-foreground mt-0.5">
+            {workspace.description}
+          </p>
+        ) : (
+          <p className="text-sm text-muted-foreground mt-0.5">
+            Select a tool to start working on your go-to-market strategy.
+          </p>
+        )}
       </div>
-      <ToolGrid workspaceSlug={workspaceSlug} />
+      <ToolFlow workspaceSlug={workspaceSlug} workspaceId={workspace?.id ?? ""} />
     </div>
   );
 }

@@ -130,5 +130,7 @@ export function getProviderCosts(): Record<EnricherProvider, number> {
     wappalyzer: 0,
     firecrawl: 0.001,
     serper: 0.001,
+    enrow: 0.01,
+    magilead: 0.01,
   };
 }

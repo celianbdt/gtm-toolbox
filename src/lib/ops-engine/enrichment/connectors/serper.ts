@@ -1,19 +1,22 @@
 import type { EnricherConnector, EnrichmentRequest, EnrichmentResult } from "../types";
+import { enrichFetch } from "../http";
 
-/**
- * Serper — Google Search API
- *
- * Endpoint:
- *   POST https://google.serper.dev/search
- *
- * Real request structure:
- *   Headers: { "X-API-KEY": "<API_KEY>", "Content-Type": "application/json" }
- *   Body: {
- *     "q": "acme.com company funding",
- *     "num": 10
- *   }
- *   Response: { organic: [{ title, link, snippet }], knowledgeGraph: { ... } }
- */
+const SERPER_API = "https://google.serper.dev/search";
+
+type SerperResponse = {
+  organic?: Array<{
+    title?: string;
+    link?: string;
+    snippet?: string;
+  }>;
+  knowledgeGraph?: {
+    title?: string;
+    description?: string;
+    type?: string;
+    attributes?: Record<string, string>;
+  };
+};
+
 const serperConnector: EnricherConnector = {
   provider: "serper",
   supportedFields: ["company_description", "funding_total", "social_profiles"],
@@ -21,46 +24,87 @@ const serperConnector: EnricherConnector = {
 
   async enrich(
     request: EnrichmentRequest,
-    _apiKey: string
+    apiKey: string
   ): Promise<EnrichmentResult> {
-    console.log(
-      `[serper] Enriching ${request.domain} for fields: ${request.fields.join(", ")}`
-    );
-
     const data: EnrichmentResult["data"] = {};
     const confidence: EnrichmentResult["confidence"] = {};
-    const domainName = request.domain.replace(/\.\w+$/, "");
+    let creditsUsed = 0;
 
-    for (const field of request.fields) {
-      if (!serperConnector.supportedFields.includes(field)) continue;
+    const query = `${request.domain} company`;
+    const res = await enrichFetch<SerperResponse>(SERPER_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-API-KEY": apiKey,
+      },
+      body: JSON.stringify({ q: query, num: 10 }),
+    });
 
-      switch (field) {
-        case "company_description":
-          data.company_description = `${domainName} is a fast-growing startup in the B2B SaaS space, founded by industry veterans.`;
-          confidence.company_description = 0.6;
-          break;
-        case "funding_total":
-          data.funding_total = "$15M Series A";
-          confidence.funding_total = 0.55;
-          break;
-        case "social_profiles":
-          data.social_profiles = [
-            `https://twitter.com/${domainName}`,
-            `https://linkedin.com/company/${domainName}`,
-            `https://github.com/${domainName}`,
-          ];
-          confidence.social_profiles = 0.65;
-          break;
+    if (res.ok && res.data) {
+      const s = res.data;
+      creditsUsed++;
+
+      // Extract from knowledge graph first (higher confidence)
+      if (s.knowledgeGraph) {
+        const kg = s.knowledgeGraph;
+        if (kg.description && request.fields.includes("company_description")) {
+          data.company_description = kg.description;
+          confidence.company_description = 0.7;
+        }
+        if (kg.attributes?.["Funding"] && request.fields.includes("funding_total")) {
+          data.funding_total = kg.attributes["Funding"];
+          confidence.funding_total = 0.65;
+        }
+      }
+
+      // Fall back to organic results for description
+      if (!data.company_description && s.organic?.[0]?.snippet && request.fields.includes("company_description")) {
+        data.company_description = s.organic[0].snippet;
+        confidence.company_description = 0.55;
+      }
+
+      // Extract social profiles from organic results
+      if (request.fields.includes("social_profiles") && s.organic) {
+        const socialLinks: string[] = [];
+        for (const result of s.organic) {
+          if (!result.link) continue;
+          if (
+            result.link.includes("linkedin.com/company") ||
+            result.link.includes("twitter.com/") ||
+            result.link.includes("x.com/") ||
+            result.link.includes("github.com/") ||
+            result.link.includes("crunchbase.com/")
+          ) {
+            socialLinks.push(result.link);
+          }
+        }
+        if (socialLinks.length > 0) {
+          data.social_profiles = socialLinks;
+          confidence.social_profiles = 0.6;
+        }
+      }
+
+      // Search specifically for funding if not found in KG
+      if (!data.funding_total && request.fields.includes("funding_total") && s.organic) {
+        for (const result of s.organic) {
+          const text = `${result.title ?? ""} ${result.snippet ?? ""}`;
+          const fundingMatch = text.match(/\$[\d,.]+[MBK]?\s*(?:Series\s+[A-Z]|funding|raised|round)/i);
+          if (fundingMatch) {
+            data.funding_total = fundingMatch[0].trim();
+            confidence.funding_total = 0.5;
+            break;
+          }
+        }
       }
     }
 
     return {
       provider: "serper",
-      success: true,
+      success: Object.keys(data).length > 0,
       data,
       confidence,
-      raw_response: { _stub: true, domain: request.domain },
-      credits_used: 1,
+      raw_response: { domain: request.domain, credits_used: creditsUsed },
+      credits_used: creditsUsed,
     };
   },
 };

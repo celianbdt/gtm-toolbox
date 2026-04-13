@@ -1,20 +1,23 @@
 import type { EnricherConnector, EnrichmentRequest, EnrichmentResult } from "../types";
+import { enrichFetch } from "../http";
 
-/**
- * Clearbit — Company enrichment
- *
- * Endpoint:
- *   GET https://company.clearbit.com/v2/companies/find?domain=acme.com
- *
- * Real request structure:
- *   Headers: { "Authorization": "Bearer <API_KEY>" }
- *   Query params: domain
- *   Response: {
- *     name, description, category.industry, metrics.employees,
- *     metrics.estimatedAnnualRevenue, tech, logo, geo.city,
- *     foundedYear, metrics.raised, ...
- *   }
- */
+const CLEARBIT_API = "https://company.clearbit.com/v2/companies/find";
+
+type ClearbitCompanyResponse = {
+  name?: string;
+  description?: string;
+  category?: { industry?: string };
+  metrics?: {
+    employees?: number;
+    estimatedAnnualRevenue?: string;
+    raised?: string;
+  };
+  tech?: string[];
+  logo?: string;
+  geo?: { city?: string; country?: string };
+  foundedYear?: number;
+};
+
 const clearbitConnector: EnricherConnector = {
   provider: "clearbit",
   supportedFields: [
@@ -33,70 +36,73 @@ const clearbitConnector: EnricherConnector = {
 
   async enrich(
     request: EnrichmentRequest,
-    _apiKey: string
+    apiKey: string
   ): Promise<EnrichmentResult> {
-    console.log(
-      `[clearbit] Enriching ${request.domain} for fields: ${request.fields.join(", ")}`
-    );
-
     const data: EnrichmentResult["data"] = {};
     const confidence: EnrichmentResult["confidence"] = {};
-    const domainName = request.domain.replace(/\.\w+$/, "");
+    let creditsUsed = 0;
 
-    for (const field of request.fields) {
-      if (!clearbitConnector.supportedFields.includes(field)) continue;
+    const url = `${CLEARBIT_API}?domain=${encodeURIComponent(request.domain)}`;
+    const res = await enrichFetch<ClearbitCompanyResponse>(url, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${apiKey}` },
+    });
 
-      switch (field) {
-        case "company_name":
-          data.company_name = domainName.replace(/^./, (c) => c.toUpperCase());
-          confidence.company_name = 0.97;
-          break;
-        case "company_description":
-          data.company_description = `${domainName} is a technology company focused on innovative solutions.`;
-          confidence.company_description = 0.85;
-          break;
-        case "industry":
-          data.industry = "Technology";
-          confidence.industry = 0.88;
-          break;
-        case "employee_count":
-          data.employee_count = 250;
-          confidence.employee_count = 0.8;
-          break;
-        case "revenue_range":
-          data.revenue_range = "$10M-$50M";
-          confidence.revenue_range = 0.65;
-          break;
-        case "tech_stack":
-          data.tech_stack = ["React", "Node.js", "AWS", "Segment", "HubSpot"];
-          confidence.tech_stack = 0.75;
-          break;
-        case "logo_url":
-          data.logo_url = `https://logo.clearbit.com/${request.domain}`;
-          confidence.logo_url = 0.99;
-          break;
-        case "location":
-          data.location = "San Francisco, CA, United States";
-          confidence.location = 0.9;
-          break;
-        case "founded_year":
-          data.founded_year = 2018;
-          confidence.founded_year = 0.85;
-          break;
-        case "funding_total":
-          data.funding_total = "$25M";
-          confidence.funding_total = 0.7;
-          break;
+    if (res.ok && res.data) {
+      const c = res.data;
+      creditsUsed++;
+
+      if (c.name && request.fields.includes("company_name")) {
+        data.company_name = c.name;
+        confidence.company_name = 0.95;
+      }
+      if (c.description && request.fields.includes("company_description")) {
+        data.company_description = c.description;
+        confidence.company_description = 0.9;
+      }
+      if (c.category?.industry && request.fields.includes("industry")) {
+        data.industry = c.category.industry;
+        confidence.industry = 0.88;
+      }
+      if (c.metrics?.employees && request.fields.includes("employee_count")) {
+        data.employee_count = c.metrics.employees;
+        confidence.employee_count = 0.8;
+      }
+      if (c.metrics?.estimatedAnnualRevenue && request.fields.includes("revenue_range")) {
+        data.revenue_range = c.metrics.estimatedAnnualRevenue;
+        confidence.revenue_range = 0.7;
+      }
+      if (c.tech && c.tech.length > 0 && request.fields.includes("tech_stack")) {
+        data.tech_stack = c.tech;
+        confidence.tech_stack = 0.85;
+      }
+      if (c.logo && request.fields.includes("logo_url")) {
+        data.logo_url = c.logo;
+        confidence.logo_url = 0.95;
+      }
+      if (c.geo?.city && request.fields.includes("location")) {
+        data.location = c.geo.country
+          ? `${c.geo.city}, ${c.geo.country}`
+          : c.geo.city;
+        confidence.location = 0.9;
+      }
+      if (c.foundedYear && request.fields.includes("founded_year")) {
+        data.founded_year = c.foundedYear;
+        confidence.founded_year = 0.9;
+      }
+      if (c.metrics?.raised && request.fields.includes("funding_total")) {
+        data.funding_total = c.metrics.raised;
+        confidence.funding_total = 0.75;
       }
     }
 
     return {
       provider: "clearbit",
-      success: true,
+      success: Object.keys(data).length > 0,
       data,
       confidence,
-      raw_response: { _stub: true, domain: request.domain },
-      credits_used: 1,
+      raw_response: { domain: request.domain, credits_used: creditsUsed },
+      credits_used: creditsUsed,
     };
   },
 };

@@ -11,12 +11,13 @@ export async function PATCH(
     if (auth.error) return auth.error;
     const { slug } = await params;
     const body = await request.json();
-    const { name, description, color, logo_url, api_keys } = body as {
+    const { name, description, color, logo_url, api_keys, mission_stage } = body as {
       name?: string;
       description?: string;
       color?: string;
       logo_url?: string | null;
       api_keys?: { anthropic_api_key?: string; openai_api_key?: string };
+      mission_stage?: "discovery" | "foundation" | "optimization" | "scaling";
     };
 
     // Build update payload — only include fields that were sent
@@ -26,6 +27,7 @@ export async function PATCH(
     if (color !== undefined) update.color = color;
     if (logo_url !== undefined) update.logo_url = logo_url;
     if (api_keys !== undefined) update.api_keys = api_keys;
+    if (mission_stage !== undefined) update.mission_stage = mission_stage;
 
     const supabase = createAdminClient();
     const { data, error } = await supabase

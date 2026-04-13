@@ -28,6 +28,7 @@ import {
   WorkspaceStatusBadge,
   WorkspacePriorityBadge,
 } from "./workspace-status-badge";
+import { StageBadge } from "@/components/workspace/stage-badge";
 import { WorkspaceLogo } from "@/components/workspace/workspace-logo";
 import { QuickReportButton } from "./quick-report-button";
 import type {
@@ -87,8 +88,15 @@ export function DashboardWorkspaceCard({ workspace: initial }: Props) {
           </Link>
         </div>
 
-        {/* Status & Priority badges with inline editing */}
+        {workspace.description && (
+          <p className="text-xs text-muted-foreground truncate mt-0.5">
+            {workspace.description}
+          </p>
+        )}
+
+        {/* Status, Priority & Stage badges with inline editing */}
         <div className="flex items-center gap-1.5 mt-1">
+          <StageBadge stage={workspace.mission_stage} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="cursor-pointer">

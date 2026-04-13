@@ -1,22 +1,23 @@
 import type { EnricherConnector, EnrichmentRequest, EnrichmentResult } from "../types";
+import { enrichFetch } from "../http";
 
-/**
- * Proxycurl — LinkedIn company profile scraping
- *
- * Endpoint:
- *   GET https://nubela.co/proxycurl/api/linkedin/company
- *
- * Real request structure:
- *   Headers: { "Authorization": "Bearer <API_KEY>" }
- *   Query params:
- *     url=https://www.linkedin.com/company/acme
- *     resolve_numeric_id=true
- *     categories=include
- *   Response: {
- *     name, description, industry, company_size, hq_city,
- *     founded_on, similar_companies, ...
- *   }
- */
+const PROXYCURL_API = "https://nubela.co/proxycurl/api/linkedin/company";
+
+type ProxycurlCompanyResponse = {
+  name?: string;
+  description?: string;
+  industry?: string;
+  company_size?: number[];
+  company_size_on_linkedin?: number;
+  hq_city?: string;
+  hq_country?: string;
+  founded_year?: number;
+  specialities?: string[];
+  website?: string;
+  linkedin_internal_id?: string;
+  similar_companies?: Array<{ name?: string; link?: string }>;
+};
+
 const proxycurlConnector: EnricherConnector = {
   provider: "proxycurl",
   supportedFields: [
@@ -33,65 +34,75 @@ const proxycurlConnector: EnricherConnector = {
 
   async enrich(
     request: EnrichmentRequest,
-    _apiKey: string
+    apiKey: string
   ): Promise<EnrichmentResult> {
-    console.log(
-      `[proxycurl] Enriching ${request.domain} for fields: ${request.fields.join(", ")}`
-    );
-
     const data: EnrichmentResult["data"] = {};
     const confidence: EnrichmentResult["confidence"] = {};
-    const domainName = request.domain.replace(/\.\w+$/, "");
+    let creditsUsed = 0;
 
-    for (const field of request.fields) {
-      if (!proxycurlConnector.supportedFields.includes(field)) continue;
+    // Proxycurl needs a LinkedIn URL; fall back to constructing one from domain
+    const linkedinUrl =
+      request.linkedin_url ??
+      `https://www.linkedin.com/company/${request.domain.replace(/\.\w+$/, "")}`;
 
-      switch (field) {
-        case "company_name":
-          data.company_name = domainName.replace(/^./, (c) => c.toUpperCase());
-          confidence.company_name = 0.95;
-          break;
-        case "company_description":
-          data.company_description = `${domainName} provides cutting-edge B2B solutions.`;
-          confidence.company_description = 0.82;
-          break;
-        case "industry":
-          data.industry = "Information Technology & Services";
-          confidence.industry = 0.86;
-          break;
-        case "employee_count":
-          data.employee_count = 200;
-          confidence.employee_count = 0.78;
-          break;
-        case "location":
-          data.location = "Paris, Île-de-France, France";
-          confidence.location = 0.88;
-          break;
-        case "founded_year":
-          data.founded_year = 2019;
-          confidence.founded_year = 0.82;
-          break;
-        case "social_profiles":
-          data.social_profiles = [
-            `https://twitter.com/${domainName}`,
-            `https://linkedin.com/company/${domainName}`,
-          ];
-          confidence.social_profiles = 0.8;
-          break;
-        case "website_description":
-          data.website_description = `Official website of ${domainName} — SaaS platform for modern teams.`;
-          confidence.website_description = 0.75;
-          break;
+    const url = `${PROXYCURL_API}?url=${encodeURIComponent(linkedinUrl)}&resolve_numeric_id=true&categories=include`;
+    const res = await enrichFetch<ProxycurlCompanyResponse>(url, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${apiKey}` },
+    });
+
+    if (res.ok && res.data) {
+      const c = res.data;
+      creditsUsed++;
+
+      if (c.name && request.fields.includes("company_name")) {
+        data.company_name = c.name;
+        confidence.company_name = 0.95;
+      }
+      if (c.description && request.fields.includes("company_description")) {
+        data.company_description = c.description;
+        confidence.company_description = 0.85;
+      }
+      if (c.industry && request.fields.includes("industry")) {
+        data.industry = c.industry;
+        confidence.industry = 0.86;
+      }
+      if (request.fields.includes("employee_count")) {
+        const count = c.company_size_on_linkedin ?? c.company_size?.[1];
+        if (count) {
+          data.employee_count = count;
+          confidence.employee_count = 0.75;
+        }
+      }
+      if (c.hq_city && request.fields.includes("location")) {
+        data.location = c.hq_country
+          ? `${c.hq_city}, ${c.hq_country}`
+          : c.hq_city;
+        confidence.location = 0.88;
+      }
+      if (c.founded_year && request.fields.includes("founded_year")) {
+        data.founded_year = c.founded_year;
+        confidence.founded_year = 0.85;
+      }
+      if (c.similar_companies && request.fields.includes("social_profiles")) {
+        // Return the LinkedIn URL itself as a social profile
+        data.social_profiles = [linkedinUrl];
+        if (c.website) data.social_profiles.push(c.website);
+        confidence.social_profiles = 0.8;
+      }
+      if (c.specialities && c.specialities.length > 0 && request.fields.includes("website_description")) {
+        data.website_description = c.specialities.join(", ");
+        confidence.website_description = 0.7;
       }
     }
 
     return {
       provider: "proxycurl",
-      success: true,
+      success: Object.keys(data).length > 0,
       data,
       confidence,
-      raw_response: { _stub: true, domain: request.domain },
-      credits_used: 1,
+      raw_response: { domain: request.domain, credits_used: creditsUsed },
+      credits_used: creditsUsed,
     };
   },
 };

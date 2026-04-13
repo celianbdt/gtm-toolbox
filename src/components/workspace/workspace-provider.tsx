@@ -9,6 +9,7 @@ export type Workspace = {
   description: string | null;
   color: string;
   logo_url: string | null;
+  mission_stage: "discovery" | "foundation" | "optimization" | "scaling";
   status: "active" | "paused" | "completed";
   priority: "urgent" | "normal" | "low";
   created_at: string;

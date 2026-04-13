@@ -15,7 +15,7 @@ export const waterfallStepSchema = z.object({
   provider: z.enum([
     "apollo", "icypeas", "fullenrich", "dropcontact", "datagma",
     "hunter", "clearbit", "proxycurl", "brandfetch", "builtwith",
-    "wappalyzer", "firecrawl", "serper",
+    "wappalyzer", "firecrawl", "serper", "enrow", "magilead",
   ]),
   fields: z.array(z.string()),
   timeout_ms: z.number().optional(),

@@ -1,21 +1,20 @@
 import type { EnricherConnector, EnrichmentRequest, EnrichmentResult } from "../types";
+import { enrichFetch } from "../http";
 
-/**
- * Firecrawl — Website scraping & content extraction
- *
- * Endpoint:
- *   POST https://api.firecrawl.dev/v1/scrape
- *
- * Real request structure:
- *   Headers: { "Authorization": "Bearer <API_KEY>" }
- *   Body: {
- *     "url": "https://acme.com",
- *     "formats": ["markdown"],
- *     "onlyMainContent": true,
- *     "waitFor": 3000
- *   }
- *   Response: { success: true, data: { markdown, metadata: { title, description, ... } } }
- */
+const FIRECRAWL_API = "https://api.firecrawl.dev/v1/scrape";
+
+type FirecrawlResponse = {
+  success?: boolean;
+  data?: {
+    markdown?: string;
+    metadata?: {
+      title?: string;
+      description?: string;
+      ogDescription?: string;
+    };
+  };
+};
+
 const firecrawlConnector: EnricherConnector = {
   provider: "firecrawl",
   supportedFields: ["company_description", "website_description"],
@@ -23,38 +22,58 @@ const firecrawlConnector: EnricherConnector = {
 
   async enrich(
     request: EnrichmentRequest,
-    _apiKey: string
+    apiKey: string
   ): Promise<EnrichmentResult> {
-    console.log(
-      `[firecrawl] Enriching ${request.domain} for fields: ${request.fields.join(", ")}`
-    );
-
     const data: EnrichmentResult["data"] = {};
     const confidence: EnrichmentResult["confidence"] = {};
-    const domainName = request.domain.replace(/\.\w+$/, "");
+    let creditsUsed = 0;
 
-    for (const field of request.fields) {
-      if (!firecrawlConnector.supportedFields.includes(field)) continue;
+    const res = await enrichFetch<FirecrawlResponse>(FIRECRAWL_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        url: `https://${request.domain}`,
+        formats: ["markdown"],
+        onlyMainContent: true,
+        waitFor: 3000,
+      }),
+    });
 
-      switch (field) {
-        case "company_description":
-          data.company_description = `${domainName} helps teams collaborate and ship faster with AI-powered workflows.`;
-          confidence.company_description = 0.8;
-          break;
-        case "website_description":
-          data.website_description = `${domainName}.com — The modern platform for GTM teams. Features include pipeline management, enrichment, and automated outreach.`;
+    if (res.ok && res.data?.success && res.data.data) {
+      const page = res.data.data;
+      creditsUsed++;
+
+      const description =
+        page.metadata?.description ??
+        page.metadata?.ogDescription ??
+        page.metadata?.title;
+
+      if (description && request.fields.includes("company_description")) {
+        data.company_description = description;
+        confidence.company_description = 0.8;
+      }
+      if (request.fields.includes("website_description")) {
+        // Use markdown excerpt as website description (first 500 chars)
+        const websiteDesc =
+          description ??
+          page.markdown?.slice(0, 500);
+        if (websiteDesc) {
+          data.website_description = websiteDesc;
           confidence.website_description = 0.85;
-          break;
+        }
       }
     }
 
     return {
       provider: "firecrawl",
-      success: true,
+      success: Object.keys(data).length > 0,
       data,
       confidence,
-      raw_response: { _stub: true, domain: request.domain },
-      credits_used: 1,
+      raw_response: { domain: request.domain, credits_used: creditsUsed },
+      credits_used: creditsUsed,
     };
   },
 };
