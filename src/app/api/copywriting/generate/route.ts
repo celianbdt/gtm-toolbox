@@ -10,6 +10,7 @@ import {
 } from "@/lib/copywriting/db";
 import { buildGenerationPrompt, buildDebatePrompt, DEBATE_AGENTS } from "@/lib/copywriting/prompts";
 import { getWorkspaceAPIKeys, createWorkspaceAnthropic } from "@/lib/ai/provider";
+import { loadInsightsForTool } from "@/lib/insights/auto-load";
 import { streamText, generateObject } from "ai";
 import type { CWSSEEvent, CWSessionConfig } from "@/lib/copywriting/types";
 
@@ -43,9 +44,12 @@ export async function POST(request: NextRequest) {
         };
 
         try {
-          // Phase 1: Load context
+          // Phase 1: Load context + insights from prior sessions
           send({ type: "phase_start", phase: "context-loading" });
-          const context = await getWorkspaceContext(workspace_id);
+          const [context, insights] = await Promise.all([
+            getWorkspaceContext(workspace_id),
+            loadInsightsForTool(workspace_id, "copywriting"),
+          ]);
           await updateSessionPhase(session_id, "context-loading");
           send({ type: "phase_done", phase: "context-loading" });
 
@@ -56,7 +60,7 @@ export async function POST(request: NextRequest) {
             send({ type: "phase_start", phase: "debate" });
             await updateSessionPhase(session_id, "debate");
 
-            const debatePrompt = buildDebatePrompt(config, context);
+            const debatePrompt = buildDebatePrompt(config, context, insights);
 
             // Stream each agent's take
             for (const agent of DEBATE_AGENTS) {
@@ -108,7 +112,7 @@ export async function POST(request: NextRequest) {
           send({ type: "phase_start", phase: "generation" });
           await updateSessionPhase(session_id, "generation");
 
-          const generationPrompt = buildGenerationPrompt(config, context, debateSummaryText);
+          const generationPrompt = buildGenerationPrompt(config, context, debateSummaryText, insights);
 
           const { object: sequence } = await generateObject({
             model: anthropic("claude-sonnet-4-5-20250514"),

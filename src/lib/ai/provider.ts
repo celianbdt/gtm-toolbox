@@ -2,6 +2,7 @@ import { createAnthropic } from "@ai-sdk/anthropic";
 import { createOpenAI } from "@ai-sdk/openai";
 import type { LanguageModel } from "ai";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getModelForUseCase, type UseCase } from "./models";
 
 export type WorkspaceAPIKeys = {
   anthropic_api_key?: string;
@@ -68,6 +69,15 @@ export function resolveModel(modelId: string, keys: WorkspaceAPIKeys): LanguageM
   // Anthropic models (claude-*)
   const anthropic = createWorkspaceAnthropic(keys);
   return anthropic(modelId) as LanguageModel;
+}
+
+/**
+ * Resolve a model for a specific use-case using the centralized strategy.
+ * Uses GPT-4o-mini for cheap tasks, Sonnet for quality-critical tasks.
+ */
+export function resolveModelForUseCase(useCase: UseCase, keys: WorkspaceAPIKeys): LanguageModel {
+  const modelId = getModelForUseCase(useCase);
+  return resolveModel(modelId, keys);
 }
 
 /**

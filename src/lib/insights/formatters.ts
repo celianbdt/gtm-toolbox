@@ -157,6 +157,15 @@ const formatters: Record<string, Record<string, OutputFormatter>> = {
     },
     "executive-summary": formatExecutiveSummary,
   },
+  copywriting: {
+    sequence: (o) => {
+      const m = o.metadata as Record<string, unknown>;
+      const channel = m.channel ?? "unknown";
+      const steps = (m.steps as unknown[])?.length ?? "?";
+      return `**${o.title}** (Channel: ${channel}, Steps: ${steps})\n${o.description}`;
+    },
+    "debate-summary": (o) => `**${o.title}**\n${o.description}`,
+  },
 };
 
 export function formatOutput(toolId: string, output: SessionOutputRecord): string {
@@ -171,4 +180,5 @@ export const TOOL_DISPLAY_NAMES: Record<string, string> = {
   "icp-audit": "ICP Audit",
   "messaging-lab": "Messaging Lab",
   "channel-planner": "Channel Planner",
+  copywriting: "Copywriting",
 };

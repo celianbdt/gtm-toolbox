@@ -39,7 +39,8 @@ const TONE_INSTRUCTIONS: Record<string, string> = {
 export function buildGenerationPrompt(
   config: CWSessionConfig,
   context: string,
-  debateSummary?: string
+  debateSummary?: string,
+  insights?: string
 ): string {
   const channelInstr = CHANNEL_INSTRUCTIONS[config.channel] ?? "";
   const toneInstr = TONE_INSTRUCTIONS[config.tone] ?? "";
@@ -60,6 +61,8 @@ ${config.brief}
 
 ${debateSummary ? `## Recommandations du debat d'agents\n${debateSummary}` : ""}
 
+${insights ? `## Insights des sessions precedentes\n${insights}` : ""}
+
 ## Instructions
 Genere une sequence de exactement ${config.sequence_length} message(s) pour le canal "${config.channel}".
 Chaque message doit etre pret a envoyer — pas de placeholder [Nom], [Entreprise], etc.
@@ -70,7 +73,8 @@ Sois concis, impactant, et specifique. Pas de fluff.`;
 
 export function buildDebatePrompt(
   config: CWSessionConfig,
-  context: string
+  context: string,
+  insights?: string
 ): string {
   return `Tu es dans un debat entre experts copywriting pour determiner le meilleur angle de prospection.
 
@@ -80,6 +84,8 @@ export function buildDebatePrompt(
 
 ## Contexte du workspace
 ${context || "Aucun contexte fourni."}
+
+${insights ? `## Insights des sessions precedentes\n${insights}` : ""}
 
 Ton role: Propose un angle de messaging unique et argumente. Challenge les idees convenues.
 Sois specifique (pas de generalites type "il faut etre pertinent").

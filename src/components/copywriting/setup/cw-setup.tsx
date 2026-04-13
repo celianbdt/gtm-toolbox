@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, MessageCircle, Mail, Phone, Zap, Brain } from "lucide-react";
+import { CostEstimateBadge } from "@/components/ui/cost-estimate-badge";
+import { estimateToolCost } from "@/lib/ai/cost-estimator";
 import {
   type CopywritingChannel,
   type CopywritingTone,
@@ -176,17 +178,20 @@ export function CWSetup({ workspaceId, onSessionCreated }: Props) {
         </p>
       </div>
 
-      {/* Submit */}
-      <Button
-        onClick={handleCreate}
-        disabled={creating || !brief.trim()}
-        className="w-full"
-      >
-        {creating ? (
-          <Loader2 className="size-4 animate-spin mr-2" />
-        ) : null}
-        {creating ? "Creation..." : "Lancer la generation"}
-      </Button>
+      {/* Cost estimate + Submit */}
+      <div className="flex items-center gap-3">
+        <CostEstimateBadge estimate={estimateToolCost("copywriting")} />
+        <Button
+          onClick={handleCreate}
+          disabled={creating || !brief.trim()}
+          className="flex-1"
+        >
+          {creating ? (
+            <Loader2 className="size-4 animate-spin mr-2" />
+          ) : null}
+          {creating ? "Creation..." : "Lancer la generation"}
+        </Button>
+      </div>
     </div>
   );
 }
