@@ -1,4 +1,4 @@
-export type IntegrationProvider = "hubspot" | "pipedrive" | "attio" | "folk" | "notion" | "slack";
+export type IntegrationProvider = "hubspot" | "pipedrive" | "attio" | "folk" | "notion" | "slack" | "lemlist";
 export type IntegrationStatus = "connected" | "disconnected" | "error" | "syncing";
 
 export type Integration = {
@@ -40,4 +40,5 @@ export const PROVIDER_META: Record<IntegrationProvider, { label: string; descrip
   folk: { label: "Folk", description: "Contacts, companies", icon: "Users" },
   notion: { label: "Notion", description: "Pages, databases", icon: "BookOpen" },
   slack: { label: "Slack", description: "Channel messages, send reports", icon: "MessageSquare" },
+  lemlist: { label: "Lemlist", description: "Campagnes outbound, stats, leads", icon: "Send" },
 };

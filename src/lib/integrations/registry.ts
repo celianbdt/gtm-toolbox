@@ -5,6 +5,7 @@ import { pipedriveIntegrationConnector } from "./connectors/pipedrive";
 import { slackIntegrationConnector } from "./connectors/slack";
 import { attioIntegrationConnector } from "./connectors/attio";
 import { folkIntegrationConnector } from "./connectors/folk";
+import { lemlistIntegrationConnector } from "./connectors/lemlist";
 
 const CONNECTORS: Partial<Record<IntegrationProvider, IntegrationConnector>> = {
   hubspot: hubspotIntegrationConnector,
@@ -13,6 +14,7 @@ const CONNECTORS: Partial<Record<IntegrationProvider, IntegrationConnector>> = {
   slack: slackIntegrationConnector,
   attio: attioIntegrationConnector,
   folk: folkIntegrationConnector,
+  lemlist: lemlistIntegrationConnector,
 };
 
 export function getIntegrationConnector(provider: IntegrationProvider): IntegrationConnector {

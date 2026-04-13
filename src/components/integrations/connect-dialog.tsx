@@ -56,6 +56,12 @@ const CREDENTIAL_CONFIG: Record<
     helpText: "Créez une app sur api.slack.com/apps, ajoutez les scopes channels:read, channels:history, chat:write, puis installez dans votre workspace Slack.",
     credKey: "access_token",
   },
+  lemlist: {
+    field: "API Key",
+    placeholder: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    helpText: "Trouvez votre clé API dans Lemlist > Settings > Integrations > API.",
+    credKey: "api_key",
+  },
 };
 
 type SlackChannelInfo = {
