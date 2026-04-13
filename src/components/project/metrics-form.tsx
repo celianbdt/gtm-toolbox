@@ -62,10 +62,11 @@ export function MetricsForm() {
         ),
       ]);
 
-      const defs: MetricDefinition[] = defsRes.ok ? await defsRes.json() : [];
-      const metrics: WorkspaceMetric[] = metricsRes.ok
-        ? await metricsRes.json()
-        : [];
+      const defsBody = defsRes.ok ? await defsRes.json() : {};
+      const metricsBody = metricsRes.ok ? await metricsRes.json() : {};
+
+      const defs: MetricDefinition[] = defsBody.definitions ?? [];
+      const metrics: WorkspaceMetric[] = metricsBody.metrics ?? [];
 
       setDefinitions(defs);
 

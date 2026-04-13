@@ -28,6 +28,7 @@ import {
   WorkspaceStatusBadge,
   WorkspacePriorityBadge,
 } from "./workspace-status-badge";
+import { WorkspaceLogo } from "@/components/workspace/workspace-logo";
 import { QuickReportButton } from "./quick-report-button";
 import type {
   WorkspaceWithMeta,
@@ -76,9 +77,11 @@ export function DashboardWorkspaceCard({ workspace: initial }: Props) {
             href={`/${workspace.slug}`}
             className="flex items-center gap-2 hover:opacity-80 transition-opacity min-w-0"
           >
-            <span
-              className="size-2.5 shrink-0 rounded-full"
-              style={{ backgroundColor: workspace.color }}
+            <WorkspaceLogo
+              logoUrl={workspace.logo_url}
+              color={workspace.color}
+              name={workspace.name}
+              size="sm"
             />
             <CardTitle className="truncate">{workspace.name}</CardTitle>
           </Link>

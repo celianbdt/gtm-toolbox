@@ -8,6 +8,7 @@ type Workspace = {
   name: string;
   slug: string;
   color: string;
+  logo_url: string | null;
 };
 
 export function SidebarWrapper({ workspaces }: { workspaces: Workspace[] }) {

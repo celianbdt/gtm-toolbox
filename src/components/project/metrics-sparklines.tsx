@@ -168,13 +168,11 @@ export function MetricsSparklines() {
         ),
       ]);
 
-      const defs: MetricDefinition[] = defsRes.ok ? await defsRes.json() : [];
-      const data: WorkspaceMetric[] = metricsRes.ok
-        ? await metricsRes.json()
-        : [];
+      const defsBody = defsRes.ok ? await defsRes.json() : {};
+      const metricsBody = metricsRes.ok ? await metricsRes.json() : {};
 
-      setDefinitions(defs);
-      setMetrics(data);
+      setDefinitions(defsBody.definitions ?? []);
+      setMetrics(metricsBody.metrics ?? []);
     } catch {
       // silently fail
     } finally {

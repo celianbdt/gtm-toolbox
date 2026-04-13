@@ -32,24 +32,6 @@ export async function GET(_request: NextRequest) {
 
     const workspaceIds = memberships.map((m) => m.workspace_id);
 
-    // Fetch workspaces with status and priority
-    const { data: workspaces, error: wsError } = await admin
-      .from("workspaces")
-      .select("id, name, slug, description, color, status, priority, created_at, updated_at")
-      .in("id", workspaceIds);
-
-    if (wsError) {
-      console.error("Failed to fetch workspaces:", wsError);
-      return NextResponse.json(
-        { error: "Failed to fetch workspaces" },
-        { status: 500 }
-      );
-    }
-
-    if (!workspaces || workspaces.length === 0) {
-      return NextResponse.json({ workspaces: [] });
-    }
-
     // Compute start of current week (Monday)
     const now = new Date();
     const day = now.getDay();
@@ -59,119 +41,143 @@ export async function GET(_request: NextRequest) {
     weekStart.setHours(0, 0, 0, 0);
     const weekStartISO = weekStart.toISOString();
 
-    // Enrich each workspace in parallel
-    const results = await Promise.allSettled(
-      workspaces.map(async (ws): Promise<WorkspaceWithMeta> => {
-        // a. Latest week metrics with labels from definitions
-        const [metricsResult, taskSummaryResult, nextTaskResult] = await Promise.all([
-          // Metrics: join workspace_metrics with workspace_metric_definitions
-          (async () => {
-            const { data: definitions } = await admin
-              .from("workspace_metric_definitions")
-              .select("metric_name, label, unit")
-              .eq("workspace_id", ws.id);
+    // Batch: fetch all data in parallel (4 queries total instead of N×6)
+    const [wsResult, tasksResult, metricsResult, defsResult] =
+      await Promise.all([
+        admin
+          .from("workspaces")
+          .select(
+            "id, name, slug, description, color, logo_url, status, priority, created_at, updated_at"
+          )
+          .in("id", workspaceIds),
+        admin
+          .from("tasks")
+          .select("id, workspace_id, status, title, due_date, position, updated_at")
+          .in("workspace_id", workspaceIds),
+        admin
+          .from("workspace_metrics")
+          .select("workspace_id, metric_name, metric_value, week_date")
+          .in("workspace_id", workspaceIds)
+          .order("week_date", { ascending: false }),
+        admin
+          .from("workspace_metric_definitions")
+          .select("workspace_id, metric_name, label, unit")
+          .in("workspace_id", workspaceIds),
+      ]);
 
-            if (!definitions || definitions.length === 0) return [];
+    if (wsResult.error) {
+      console.error("Failed to fetch workspaces:", wsResult.error);
+      return NextResponse.json(
+        { error: "Failed to fetch workspaces" },
+        { status: 500 }
+      );
+    }
 
-            // Get latest week_date for this workspace
-            const { data: latestMetric } = await admin
-              .from("workspace_metrics")
-              .select("week_date")
-              .eq("workspace_id", ws.id)
-              .order("week_date", { ascending: false })
-              .limit(1)
-              .single();
+    const workspaces = wsResult.data ?? [];
+    if (workspaces.length === 0) {
+      return NextResponse.json({ workspaces: [] });
+    }
 
-            if (!latestMetric) return [];
+    const allTasks = tasksResult.data ?? [];
+    const allMetrics = metricsResult.data ?? [];
+    const allDefs = defsResult.data ?? [];
 
-            const { data: metrics } = await admin
-              .from("workspace_metrics")
-              .select("metric_name, metric_value")
-              .eq("workspace_id", ws.id)
-              .eq("week_date", latestMetric.week_date);
+    // Group tasks by workspace
+    const tasksByWs = new Map<string, typeof allTasks>();
+    for (const t of allTasks) {
+      const arr = tasksByWs.get(t.workspace_id) ?? [];
+      arr.push(t);
+      tasksByWs.set(t.workspace_id, arr);
+    }
 
-            if (!metrics) return [];
+    // Group metric definitions by workspace
+    const defsByWs = new Map<
+      string,
+      Map<string, { label: string; unit: string }>
+    >();
+    for (const d of allDefs) {
+      if (!defsByWs.has(d.workspace_id))
+        defsByWs.set(d.workspace_id, new Map());
+      defsByWs.get(d.workspace_id)!.set(d.metric_name, {
+        label: d.label,
+        unit: d.unit || "",
+      });
+    }
 
-            const defMap = new Map(
-              definitions.map((d) => [d.metric_name, { label: d.label, unit: d.unit || "" }])
-            );
+    // Group metrics by workspace, keeping only latest week per workspace
+    const latestMetricsByWs = new Map<
+      string,
+      { metric_name: string; metric_value: number }[]
+    >();
+    const latestWeekByWs = new Map<string, string>();
+    for (const m of allMetrics) {
+      const existingWeek = latestWeekByWs.get(m.workspace_id);
+      if (!existingWeek) {
+        latestWeekByWs.set(m.workspace_id, m.week_date);
+      }
+      // Only keep metrics from the latest week for each workspace
+      if (m.week_date === (latestWeekByWs.get(m.workspace_id) ?? m.week_date)) {
+        const arr = latestMetricsByWs.get(m.workspace_id) ?? [];
+        arr.push({
+          metric_name: m.metric_name,
+          metric_value: Number(m.metric_value),
+        });
+        latestMetricsByWs.set(m.workspace_id, arr);
+      }
+    }
 
-            return metrics
-              .filter((m) => defMap.has(m.metric_name))
-              .map((m) => ({
-                metric_name: m.metric_name,
-                label: defMap.get(m.metric_name)!.label,
-                value: Number(m.metric_value),
-                unit: defMap.get(m.metric_name)!.unit,
-              }));
-          })(),
+    // Build enriched workspaces
+    const enrichedWorkspaces: WorkspaceWithMeta[] = workspaces.map((ws) => {
+      // Metrics
+      const wsDefs = defsByWs.get(ws.id);
+      const wsMetrics = latestMetricsByWs.get(ws.id) ?? [];
+      const metrics = wsMetrics
+        .filter((m) => wsDefs?.has(m.metric_name))
+        .map((m) => ({
+          metric_name: m.metric_name,
+          label: wsDefs!.get(m.metric_name)!.label,
+          value: m.metric_value,
+          unit: wsDefs!.get(m.metric_name)!.unit,
+        }));
 
-          // b. Task summary
-          (async () => {
-            const { count: total } = await admin
-              .from("tasks")
-              .select("*", { count: "exact", head: true })
-              .eq("workspace_id", ws.id);
+      // Tasks
+      const wsTasks = tasksByWs.get(ws.id) ?? [];
+      const total = wsTasks.length;
+      const blocked = wsTasks.filter((t) => t.status === "blocked").length;
+      const doneThisWeek = wsTasks.filter(
+        (t) =>
+          t.status === "done" &&
+          new Date(t.updated_at) >= new Date(weekStartISO)
+      ).length;
 
-            const { count: blocked } = await admin
-              .from("tasks")
-              .select("*", { count: "exact", head: true })
-              .eq("workspace_id", ws.id)
-              .eq("status", "blocked");
+      // Next task
+      const todoTasks = wsTasks
+        .filter((t) => t.status === "todo")
+        .sort((a, b) => a.position - b.position);
+      const next =
+        todoTasks.length > 0
+          ? {
+              title: todoTasks[0].title,
+              due_date: todoTasks[0].due_date,
+            }
+          : null;
 
-            const { count: doneThisWeek } = await admin
-              .from("tasks")
-              .select("*", { count: "exact", head: true })
-              .eq("workspace_id", ws.id)
-              .eq("status", "done")
-              .gte("updated_at", weekStartISO);
-
-            return {
-              total: total ?? 0,
-              blocked: blocked ?? 0,
-              done_this_week: doneThisWeek ?? 0,
-            };
-          })(),
-
-          // c. Next task (first todo by position)
-          (async () => {
-            const { data: task } = await admin
-              .from("tasks")
-              .select("title, due_date")
-              .eq("workspace_id", ws.id)
-              .eq("status", "todo")
-              .order("position", { ascending: true })
-              .limit(1)
-              .single();
-
-            if (!task) return null;
-            return { title: task.title, due_date: task.due_date };
-          })(),
-        ]);
-
-        return {
-          id: ws.id,
-          name: ws.name,
-          slug: ws.slug,
-          description: ws.description,
-          color: ws.color,
-          status: ws.status,
-          priority: ws.priority,
-          created_at: ws.created_at,
-          updated_at: ws.updated_at,
-          metrics: metricsResult,
-          task_summary: taskSummaryResult,
-          next_task: nextTaskResult,
-        };
-      })
-    );
-
-    const enrichedWorkspaces: WorkspaceWithMeta[] = results
-      .filter(
-        (r): r is PromiseFulfilledResult<WorkspaceWithMeta> =>
-          r.status === "fulfilled"
-      )
-      .map((r) => r.value);
+      return {
+        id: ws.id,
+        name: ws.name,
+        slug: ws.slug,
+        description: ws.description,
+        color: ws.color,
+        logo_url: ws.logo_url,
+        status: ws.status,
+        priority: ws.priority,
+        created_at: ws.created_at,
+        updated_at: ws.updated_at,
+        metrics,
+        task_summary: { total, blocked, done_this_week: doneThisWeek },
+        next_task: next,
+      };
+    });
 
     return NextResponse.json({ workspaces: enrichedWorkspaces });
   } catch (error) {

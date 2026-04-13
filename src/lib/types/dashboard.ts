@@ -7,6 +7,7 @@ export type WorkspaceWithMeta = {
   slug: string;
   description: string | null;
   color: string;
+  logo_url: string | null;
   status: WorkspaceStatus;
   priority: WorkspacePriority;
   created_at: string;

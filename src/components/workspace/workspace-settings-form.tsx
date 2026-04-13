@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { ImagePlus, Trash2 } from "lucide-react";
 import type { Workspace } from "@/components/workspace/workspace-provider";
 
 const COLORS = [
@@ -33,10 +34,51 @@ export function WorkspaceSettingsForm({ workspace }: Props) {
   const [name, setName] = useState(workspace.name);
   const [description, setDescription] = useState(workspace.description ?? "");
   const [color, setColor] = useState(workspace.color);
+  const [logoUrl, setLogoUrl] = useState<string | null>(workspace.logo_url);
+  const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [saved, setSaved] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  async function handleLogoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("workspace_id", workspace.id);
+
+    try {
+      const res = await fetch("/api/workspaces/logo", {
+        method: "POST",
+        body: formData,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setLogoUrl(data.logo_url);
+        router.refresh();
+      }
+    } catch {
+      // upload failed silently
+    }
+    setUploading(false);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  async function handleLogoRemove() {
+    const res = await fetch(`/api/workspaces/${workspace.slug}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ logo_url: null }),
+    });
+    if (res.ok) {
+      setLogoUrl(null);
+      router.refresh();
+    }
+  }
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
@@ -73,6 +115,62 @@ export function WorkspaceSettingsForm({ workspace }: Props) {
       {/* General */}
       <section>
         <h2 className="text-base font-semibold text-white mb-4">Général</h2>
+
+        {/* Logo upload */}
+        <div className="space-y-1.5 mb-6">
+          <label className="text-sm text-zinc-400">Logo</label>
+          <div className="flex items-center gap-4">
+            {logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={logoUrl}
+                alt={`${workspace.name} logo`}
+                className="size-12 rounded-lg object-cover border border-border"
+              />
+            ) : (
+              <div
+                className="size-12 rounded-lg flex items-center justify-center border border-dashed border-border"
+                style={{ backgroundColor: `${color}15` }}
+              >
+                <span
+                  className="size-5 rounded-full"
+                  style={{ backgroundColor: color }}
+                />
+              </div>
+            )}
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+              >
+                <ImagePlus className="size-4 mr-1.5" />
+                {uploading ? "Upload..." : logoUrl ? "Changer" : "Ajouter un logo"}
+              </Button>
+              {logoUrl && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleLogoRemove}
+                >
+                  <Trash2 className="size-4" />
+                </Button>
+              )}
+            </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleLogoUpload}
+            />
+          </div>
+          <p className="text-[11px] text-muted-foreground">PNG, JPG ou SVG. Max 2 MB.</p>
+        </div>
+
         <form onSubmit={handleSave} className="space-y-4">
           <div className="space-y-1.5">
             <label className="text-sm text-zinc-400">Nom</label>

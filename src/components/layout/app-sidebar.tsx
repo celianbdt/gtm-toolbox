@@ -36,6 +36,7 @@ import { Badge } from "@/components/ui/badge";
 import { tools } from "@/lib/tools/registry";
 import { createClient } from "@/lib/supabase/client";
 import { CreateWorkspaceDialog } from "@/components/workspace/create-workspace-dialog";
+import { WorkspaceLogo } from "@/components/workspace/workspace-logo";
 import { useRouter } from "next/navigation";
 
 type Workspace = {
@@ -43,6 +44,7 @@ type Workspace = {
   name: string;
   slug: string;
   color: string;
+  logo_url: string | null;
 };
 
 function getIcon(iconName: string) {
@@ -86,9 +88,11 @@ export function AppSidebar({
                 <SidebarMenuButton className="h-10">
                   {currentWorkspace ? (
                     <>
-                      <span
-                        className="size-2.5 rounded-full shrink-0"
-                        style={{ backgroundColor: currentWorkspace.color }}
+                      <WorkspaceLogo
+                        logoUrl={currentWorkspace.logo_url}
+                        color={currentWorkspace.color}
+                        name={currentWorkspace.name}
+                        size="sm"
                       />
                       <span className="font-semibold truncate">
                         {currentWorkspace.name}
@@ -106,9 +110,11 @@ export function AppSidebar({
                 {workspaces.map((ws) => (
                   <DropdownMenuItem key={ws.id} asChild>
                     <Link href={`/${ws.slug}`}>
-                      <span
-                        className="size-2 rounded-full shrink-0"
-                        style={{ backgroundColor: ws.color }}
+                      <WorkspaceLogo
+                        logoUrl={ws.logo_url}
+                        color={ws.color}
+                        name={ws.name}
+                        size="xs"
                       />
                       {ws.name}
                     </Link>
