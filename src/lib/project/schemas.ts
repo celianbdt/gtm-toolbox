@@ -5,7 +5,7 @@ import { z } from "zod";
 export const createTaskSchema = z.object({
   workspace_id: z.string().uuid(),
   title: z.string().min(1).max(200),
-  description: z.string().max(2000).optional(),
+  description: z.string().max(2000).nullable().optional(),
   status: z.enum(["todo", "in_progress", "blocked", "done"]).default("todo"),
   priority: z.enum(["urgent", "normal", "low"]).default("normal"),
   tag: z.enum(["outbound", "inbound", "strategy", "admin"]).nullable().optional(),
@@ -15,7 +15,7 @@ export const createTaskSchema = z.object({
 
 export const updateTaskSchema = z.object({
   title: z.string().min(1).max(200).optional(),
-  description: z.string().max(2000).optional(),
+  description: z.string().max(2000).nullable().optional(),
   status: z.enum(["todo", "in_progress", "blocked", "done"]).optional(),
   priority: z.enum(["urgent", "normal", "low"]).optional(),
   tag: z.enum(["outbound", "inbound", "strategy", "admin"]).nullable().optional(),

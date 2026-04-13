@@ -202,7 +202,7 @@ export function DashboardWorkspaceCard({ workspace: initial }: Props) {
       </CardContent>
 
       <CardFooter className="flex items-center justify-between border-t border-border/50 pt-3">
-        <span className="text-[10px] text-muted-foreground">{relativeTime}</span>
+        <span className="text-[10px] text-muted-foreground" suppressHydrationWarning>{relativeTime}</span>
         <div className="flex items-center gap-1">
           <QuickReportButton workspaceSlug={workspace.slug} />
           <Button variant="ghost" size="xs" asChild>

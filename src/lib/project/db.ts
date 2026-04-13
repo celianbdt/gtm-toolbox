@@ -40,7 +40,7 @@ export async function listTasks(
 export async function createTask(payload: {
   workspace_id: string;
   title: string;
-  description?: string;
+  description?: string | null;
   status?: TaskStatus;
   priority?: TaskPriority;
   tag?: TaskTag | null;
