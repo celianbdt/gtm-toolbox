@@ -11,6 +11,11 @@ import { TaskListView } from "@/components/project/task-list-view";
 import { TaskDialog } from "@/components/project/task-dialog";
 import { TaskFilters, type Filters } from "@/components/project/task-filters";
 import { ViewToggle, type ViewMode } from "@/components/project/view-toggle";
+import { MetricsForm } from "@/components/project/metrics-form";
+import { MetricsSparklines } from "@/components/project/metrics-sparklines";
+import { MetricDefinitionForm } from "@/components/project/metric-definition-form";
+import { ReportGenerator } from "@/components/project/report-generator";
+import { ReportHistory } from "@/components/project/report-history";
 import type { Task, TaskStatus } from "@/lib/types/project";
 
 export default function ProjectPage() {
@@ -125,19 +130,18 @@ export default function ProjectPage() {
           )}
         </TabsContent>
 
-        <TabsContent value="metrics" className="flex-1 min-h-0 px-4 py-3">
-          <div className="flex items-center justify-center h-full">
-            <p className="text-sm text-muted-foreground">
-              MetricsForm + MetricsSparklines — Sprint 2B
-            </p>
+        <TabsContent value="metrics" className="flex-1 min-h-0 px-4 py-3 overflow-y-auto">
+          <div className="max-w-4xl mx-auto space-y-8">
+            <MetricsSparklines />
+            <MetricsForm />
+            <MetricDefinitionForm />
           </div>
         </TabsContent>
 
-        <TabsContent value="reports" className="flex-1 min-h-0 px-4 py-3">
-          <div className="flex items-center justify-center h-full">
-            <p className="text-sm text-muted-foreground">
-              ReportGenerator + ReportHistory — Sprint 3
-            </p>
+        <TabsContent value="reports" className="flex-1 min-h-0 px-4 py-3 overflow-y-auto">
+          <div className="max-w-3xl mx-auto space-y-8">
+            <ReportGenerator />
+            <ReportHistory />
           </div>
         </TabsContent>
       </Tabs>
