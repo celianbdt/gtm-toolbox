@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/server";
-import { ToolFlow } from "@/components/workspace/tool-flow";
+import { redirect } from "next/navigation";
+import { WorkspaceProvider } from "@/components/workspace/workspace-provider";
 import { StageBadge } from "@/components/workspace/stage-badge";
+import { WorkspaceChat } from "@/components/workspace-chat/workspace-chat";
 
 export default async function WorkspaceDashboard({
   params,
@@ -16,26 +18,32 @@ export default async function WorkspaceDashboard({
     .eq("slug", workspaceSlug)
     .single();
 
+  if (!workspace) redirect("/workspaces");
+
   return (
-    <div className="flex-1 p-6">
-      <div className="mb-6">
-        <div className="flex items-center gap-3">
-          <h2 className="text-lg font-semibold">{workspace?.name ?? "GTM Tools"}</h2>
-          {workspace?.mission_stage && (
-            <StageBadge stage={workspace.mission_stage} />
+    <WorkspaceProvider workspace={workspace}>
+      <div className="flex-1 p-6 flex flex-col">
+        <div className="mb-4">
+          <div className="flex items-center gap-3">
+            <h2 className="text-lg font-semibold">{workspace.name}</h2>
+            {workspace.mission_stage && (
+              <StageBadge stage={workspace.mission_stage} />
+            )}
+          </div>
+          {workspace.description && (
+            <p className="text-sm text-muted-foreground mt-0.5">
+              {workspace.description}
+            </p>
           )}
         </div>
-        {workspace?.description ? (
-          <p className="text-sm text-muted-foreground mt-0.5">
-            {workspace.description}
-          </p>
-        ) : (
-          <p className="text-sm text-muted-foreground mt-0.5">
-            Select a tool to start working on your go-to-market strategy.
-          </p>
-        )}
+
+        <div className="flex-1">
+          <WorkspaceChat
+            workspaceId={workspace.id}
+            workspaceName={workspace.name}
+          />
+        </div>
       </div>
-      <ToolFlow workspaceSlug={workspaceSlug} workspaceId={workspace?.id ?? ""} />
-    </div>
+    </WorkspaceProvider>
   );
 }

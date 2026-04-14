@@ -5,7 +5,7 @@ import Link from "next/link";
 import * as LucideIcons from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Lock, ChevronRight } from "lucide-react";
+import { CheckCircle2, ChevronRight } from "lucide-react";
 import { tools } from "@/lib/tools/registry";
 import type { ToolStage } from "@/lib/tools/types";
 
@@ -22,29 +22,34 @@ const STAGE_CONFIG: Record<ToolStage, { label: string; color: string; bgColor: s
   scaling: { label: "Scaling", color: "text-emerald-400", bgColor: "bg-emerald-500/10" },
 };
 
-type PrereqData = Record<string, { met: boolean; missing: { toolId: string; toolName: string }[] }>;
+type CompletedTools = Set<string>;
 
 export function ToolFlow({ workspaceSlug, workspaceId }: { workspaceSlug: string; workspaceId: string }) {
-  const [prereqs, setPrereqs] = useState<PrereqData>({});
-  const [loading, setLoading] = useState(true);
+  const [completedTools, setCompletedTools] = useState<CompletedTools>(new Set());
 
-  const fetchPrereqs = useCallback(async () => {
+  const fetchCompleted = useCallback(async () => {
     try {
       const res = await fetch(`/api/tools/prerequisites?workspace_id=${workspaceId}`);
       if (res.ok) {
         const data = await res.json();
-        setPrereqs(data.prerequisites ?? {});
+        const prereqs = data.prerequisites ?? {};
+        // A tool is "completed" if it has concluded sessions (check via completed prereqs of others)
+        const completed = new Set<string>();
+        for (const [, result] of Object.entries(prereqs) as [string, { completed: string[] }][]) {
+          for (const toolId of result.completed ?? []) {
+            completed.add(toolId);
+          }
+        }
+        setCompletedTools(completed);
       }
     } catch {
-      // fallback: all tools unlocked
-    } finally {
-      setLoading(false);
+      // fallback
     }
   }, [workspaceId]);
 
   useEffect(() => {
-    fetchPrereqs();
-  }, [fetchPrereqs]);
+    fetchCompleted();
+  }, [fetchCompleted]);
 
   const stages: ToolStage[] = ["discovery", "foundation", "optimization", "scaling"];
   const stageTools = stages.map((stage) => ({
@@ -54,12 +59,8 @@ export function ToolFlow({ workspaceSlug, workspaceId }: { workspaceSlug: string
       .sort((a, b) => (a.sequence_order ?? 99) - (b.sequence_order ?? 99)),
   }));
 
-  // Tools without a stage (sandbox, etc.)
-  const otherTools = tools.filter((t) => !t.stage);
-
   return (
     <div className="space-y-6">
-      {/* Stage pipeline */}
       {stageTools.map(({ stage, tools: stageToolList }, stageIdx) => {
         const config = STAGE_CONFIG[stage];
         if (stageToolList.length === 0) return null;
@@ -76,94 +77,48 @@ export function ToolFlow({ workspaceSlug, workspaceId }: { workspaceSlug: string
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {stageToolList.map((tool) => {
                 const Icon = getIcon(tool.icon);
-                const prereq = prereqs[tool.id];
-                const isLocked = !loading && prereq && !prereq.met;
-                const isActive = tool.status === "active" && !isLocked;
+                const isCompleted = completedTools.has(tool.id);
+                const hasUnmetPrereqs = tool.prerequisites?.some((p) => !completedTools.has(p));
 
-                const card = (
-                  <Card
-                    className={`group transition-all ${
-                      isLocked
-                        ? "opacity-40 cursor-not-allowed border-dashed"
-                        : isActive
-                          ? "cursor-pointer hover:border-violet-500/50"
-                          : "opacity-50 cursor-not-allowed"
-                    }`}
-                  >
-                    <CardContent>
-                      <div className="flex items-start gap-3">
-                        <div className={`flex size-8 shrink-0 items-center justify-center rounded-md ${isLocked ? "bg-muted" : "bg-secondary"}`}>
-                          {isLocked ? (
-                            <Lock className="size-4 text-muted-foreground" />
-                          ) : (
+                return (
+                  <Link key={tool.id} href={`/${workspaceSlug}/tools/${tool.href}`}>
+                    <Card className="group cursor-pointer hover:border-violet-500/50 transition-all">
+                      <CardContent>
+                        <div className="flex items-start gap-3">
+                          <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-secondary">
                             <Icon className="size-4" />
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-0.5">
-                            <span className="text-sm font-medium leading-snug">
-                              {tool.name}
-                            </span>
-                            {isLocked && prereq?.missing && (
-                              <Badge variant="secondary" className="text-[9px] px-1 py-0 shrink-0">
-                                Requiert {prereq.missing.map((m) => m.toolName).join(", ")}
-                              </Badge>
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-0.5">
+                              <span className="text-sm font-medium leading-snug">
+                                {tool.name}
+                              </span>
+                              {isCompleted && (
+                                <CheckCircle2 className="size-3.5 text-emerald-500 shrink-0" />
+                              )}
+                            </div>
+                            <p className="text-xs text-muted-foreground line-clamp-2">
+                              {tool.description}
+                            </p>
+                            {hasUnmetPrereqs && tool.prerequisites && (
+                              <p className="text-[10px] text-muted-foreground/60 mt-1">
+                                Recommande apres {tool.prerequisites.map((p) => {
+                                  const t = tools.find((t) => t.id === p);
+                                  return t?.name ?? p;
+                                }).join(", ")}
+                              </p>
                             )}
                           </div>
-                          <p className="text-xs text-muted-foreground line-clamp-2">
-                            {tool.description}
-                          </p>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 );
-
-                if (isActive) {
-                  return (
-                    <Link key={tool.id} href={`/${workspaceSlug}/tools/${tool.href}`}>
-                      {card}
-                    </Link>
-                  );
-                }
-
-                return <div key={tool.id}>{card}</div>;
               })}
             </div>
           </div>
         );
       })}
-
-      {/* Other tools (no stage) */}
-      {otherTools.length > 0 && (
-        <div>
-          <Badge variant="secondary" className="text-[10px] mb-3">Autres</Badge>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {otherTools.map((tool) => {
-              const Icon = getIcon(tool.icon);
-              return (
-                <Link key={tool.id} href={`/${workspaceSlug}/tools/${tool.href}`}>
-                  <Card className="group cursor-pointer hover:border-violet-500/50 transition-colors">
-                    <CardContent>
-                      <div className="flex items-start gap-3">
-                        <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-secondary">
-                          <Icon className="size-4" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <span className="text-sm font-medium">{tool.name}</span>
-                          <p className="text-xs text-muted-foreground line-clamp-2">
-                            {tool.description}
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

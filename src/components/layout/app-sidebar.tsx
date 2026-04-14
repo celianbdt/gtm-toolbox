@@ -10,9 +10,13 @@ import {
   Settings,
   LogOut,
   ChevronDown,
+  ChevronRight,
   Plus,
   LayoutGrid,
   FileBarChart,
+  StickyNote,
+  Kanban,
+  MessageSquare,
 } from "lucide-react";
 import {
   Sidebar,
@@ -33,12 +37,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import { tools } from "@/lib/tools/registry";
+import { tools, getToolsByStage } from "@/lib/tools/registry";
 import { createClient } from "@/lib/supabase/client";
 import { CreateWorkspaceDialog } from "@/components/workspace/create-workspace-dialog";
 import { WorkspaceLogo } from "@/components/workspace/workspace-logo";
 import { useRouter } from "next/navigation";
+import type { ToolStage } from "@/lib/tools/types";
 
 type Workspace = {
   id: string;
@@ -55,6 +59,15 @@ function getIcon(iconName: string) {
   return icons[iconName] ?? LucideIcons.Box;
 }
 
+const STAGE_CONFIG: Record<ToolStage, { label: string; icon: typeof LucideIcons.Search; color: string }> = {
+  discovery: { label: "Discovery", icon: LucideIcons.Search, color: "text-blue-400" },
+  foundation: { label: "Foundation", icon: LucideIcons.Layers, color: "text-violet-400" },
+  optimization: { label: "Optimization", icon: LucideIcons.TrendingUp, color: "text-amber-400" },
+  scaling: { label: "Scaling", icon: LucideIcons.Rocket, color: "text-emerald-400" },
+};
+
+const STAGES: ToolStage[] = ["discovery", "foundation", "optimization", "scaling"];
+
 export function AppSidebar({
   workspaces,
   currentWorkspace,
@@ -66,6 +79,7 @@ export function AppSidebar({
   const router = useRouter();
   const wsSlug = currentWorkspace?.slug;
   const [createOpen, setCreateOpen] = useState(false);
+  const [openStages, setOpenStages] = useState<Set<ToolStage>>(new Set(STAGES));
 
   async function handleLogout() {
     const supabase = createClient();
@@ -73,13 +87,14 @@ export function AppSidebar({
     router.push("/login");
   }
 
-  const workspaceLinks = [
-    { label: "Project", href: `/${wsSlug}/project`, icon: LucideIcons.Kanban },
-    { label: "Ops", href: `/${wsSlug}/ops`, icon: LucideIcons.BookmarkCheck },
-    { label: "Context", href: `/${wsSlug}/context`, icon: FileText },
-    { label: "Agents", href: `/${wsSlug}/agents`, icon: Bot },
-    { label: "Settings", href: `/${wsSlug}/settings`, icon: Settings },
-  ];
+  function toggleStage(stage: ToolStage) {
+    setOpenStages((prev) => {
+      const next = new Set(prev);
+      if (next.has(stage)) next.delete(stage);
+      else next.add(stage);
+      return next;
+    });
+  }
 
   return (
     <Sidebar>
@@ -139,68 +154,110 @@ export function AppSidebar({
       <SidebarContent>
         {wsSlug && (
           <>
-            <SidebarGroup>
-              <SidebarGroupLabel>Tools</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {tools.map((tool) => {
-                    const Icon = getIcon(tool.icon);
-                    const href = `/${wsSlug}/tools/${tool.href}`;
-                    const isActive = pathname.startsWith(href);
-                    const isComingSoon = tool.status === "coming-soon";
+            {/* Tools grouped by stage */}
+            {STAGES.map((stage) => {
+              const config = STAGE_CONFIG[stage];
+              const StageIcon = config.icon;
+              const stageTools = getToolsByStage(stage);
+              const isOpen = openStages.has(stage);
 
-                    return (
-                      <SidebarMenuItem key={tool.id}>
-                        <SidebarMenuButton
-                          asChild={!isComingSoon}
-                          isActive={isActive}
-                          disabled={isComingSoon}
-                          tooltip={tool.description}
-                        >
-                          {isComingSoon ? (
-                            <>
-                              <Icon className="size-4" />
-                              <span>{tool.name}</span>
-                              <Badge
-                                variant="secondary"
-                                className="ml-auto text-[10px] px-1.5 py-0"
+              if (stageTools.length === 0) return null;
+
+              return (
+                <SidebarGroup key={stage}>
+                  <button
+                    onClick={() => toggleStage(stage)}
+                    className="flex items-center gap-2 px-3 py-1.5 w-full text-left hover:bg-accent/50 rounded-md transition-colors"
+                  >
+                    {isOpen ? (
+                      <ChevronDown className={`size-3 ${config.color}`} />
+                    ) : (
+                      <ChevronRight className={`size-3 ${config.color}`} />
+                    )}
+                    <StageIcon className={`size-3.5 ${config.color}`} />
+                    <span className={`text-xs font-semibold uppercase tracking-wider ${config.color}`}>
+                      {config.label}
+                    </span>
+                  </button>
+
+                  {isOpen && (
+                    <SidebarGroupContent>
+                      <SidebarMenu>
+                        {stageTools.map((tool) => {
+                          const Icon = getIcon(tool.icon);
+                          const href = `/${wsSlug}/tools/${tool.href}`;
+                          const isActive = pathname.startsWith(href);
+
+                          return (
+                            <SidebarMenuItem key={tool.id}>
+                              <SidebarMenuButton
+                                asChild
+                                isActive={isActive}
+                                tooltip={tool.description}
+                                className="pl-8"
                               >
-                                Soon
-                              </Badge>
-                            </>
-                          ) : (
-                            <Link href={href}>
-                              <Icon className="size-4" />
-                              <span>{tool.name}</span>
-                            </Link>
-                          )}
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    );
-                  })}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
+                                <Link href={href}>
+                                  <Icon className="size-4" />
+                                  <span>{tool.name}</span>
+                                </Link>
+                              </SidebarMenuButton>
+                            </SidebarMenuItem>
+                          );
+                        })}
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  )}
+                </SidebarGroup>
+              );
+            })}
 
             <SidebarSeparator />
 
+            {/* Workspace sections */}
             <SidebarGroup>
               <SidebarGroupLabel>Workspace</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  {workspaceLinks.map((link) => {
-                    const isActive = pathname.startsWith(link.href);
-                    return (
-                      <SidebarMenuItem key={link.href}>
-                        <SidebarMenuButton asChild isActive={isActive}>
-                          <Link href={link.href}>
-                            <link.icon className="size-4" />
-                            <span>{link.label}</span>
-                          </Link>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    );
-                  })}
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild isActive={pathname.startsWith(`/${wsSlug}/project`)}>
+                      <Link href={`/${wsSlug}/project`}>
+                        <Kanban className="size-4" />
+                        <span>Project</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild isActive={pathname.startsWith(`/${wsSlug}/ops`)}>
+                      <Link href={`/${wsSlug}/ops`}>
+                        <StickyNote className="size-4" />
+                        <span>Notes</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild isActive={pathname.startsWith(`/${wsSlug}/context`)}>
+                      <Link href={`/${wsSlug}/context`}>
+                        <FileText className="size-4" />
+                        <span>Context</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild isActive={pathname.startsWith(`/${wsSlug}/agents`)}>
+                      <Link href={`/${wsSlug}/agents`}>
+                        <Bot className="size-4" />
+                        <span>Agents</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild isActive={pathname.startsWith(`/${wsSlug}/settings`)}>
+                      <Link href={`/${wsSlug}/settings`}>
+                        <Settings className="size-4" />
+                        <span>Settings</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>

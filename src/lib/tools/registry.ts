@@ -111,17 +111,6 @@ export const tools: GTMTool[] = [
     prerequisites: [],
     sequence_order: 8,
   },
-  {
-    id: "sandbox",
-    name: "Sandbox",
-    description:
-      "Test et preview des designs d'agents animés. Environnement de test.",
-    icon: "FlaskConical",
-    href: "sandbox",
-    category: "dev",
-    status: "active",
-    sequence_order: 99,
-  },
 ];
 
 export function getToolById(id: string) {
