@@ -150,7 +150,7 @@ export function DeliverablesDashboard({ sessionId, onBack }: Props) {
             <button
               onClick={runSynthesis}
               disabled={synthesizing}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-white bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-foreground bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 rounded-lg transition-colors"
             >
               <Play className="size-3.5" />
               {synthesizing ? "Generating..." : "Generate deliverables"}
@@ -291,7 +291,7 @@ function EmptyState({
         <button
           onClick={onGenerate}
           disabled={synthesizing}
-          className="px-4 py-2 text-xs bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 text-white rounded-lg transition-colors"
+          className="px-4 py-2 text-xs bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 text-foreground rounded-lg transition-colors"
         >
           {synthesizing ? "Generating..." : `Generate from transcript`}
         </button>

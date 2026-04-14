@@ -108,7 +108,7 @@ export function BuilderChannelsStep({
                 onClick={() => onParamsChange({ ...params, tone: opt.value })}
                 className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                   params.tone === opt.value
-                    ? "bg-[#8a6e4e] text-white"
+                    ? "bg-[#8a6e4e] text-foreground"
                     : "bg-secondary text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -128,7 +128,7 @@ export function BuilderChannelsStep({
                 onClick={() => onParamsChange({ ...params, language: lang })}
                 className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                   params.language === lang
-                    ? "bg-[#8a6e4e] text-white"
+                    ? "bg-[#8a6e4e] text-foreground"
                     : "bg-secondary text-muted-foreground hover:text-foreground"
                 }`}
               >

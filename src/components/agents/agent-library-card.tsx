@@ -14,11 +14,11 @@ type Props = {
 export function AgentLibraryCard({ agent, isTemplate, onClone, onEdit, onDelete }: Props) {
   return (
     <div
-      className="relative rounded-xl border border-zinc-800 p-4 transition-colors hover:border-zinc-700 bg-zinc-900/50"
+      className="relative rounded-xl border border-border p-4 transition-colors hover:border-border bg-card"
     >
       {/* Badge */}
       {isTemplate && (
-        <span className="absolute top-3 right-3 text-[10px] uppercase tracking-wider text-zinc-500 border border-zinc-700 rounded px-1.5 py-0.5">
+        <span className="absolute top-3 right-3 text-[10px] uppercase tracking-wider text-muted-foreground border border-border rounded px-1.5 py-0.5">
           Template
         </span>
       )}
@@ -31,10 +31,10 @@ export function AgentLibraryCard({ agent, isTemplate, onClone, onEdit, onDelete 
           {agent.avatar_emoji}
         </div>
         <div className="min-w-0 flex-1 pr-14">
-          <div className="font-semibold text-sm text-white">{agent.name}</div>
-          <div className="text-xs text-zinc-400 mt-0.5">{agent.role}</div>
+          <div className="font-semibold text-sm text-foreground">{agent.name}</div>
+          <div className="text-xs text-muted-foreground mt-0.5">{agent.role}</div>
           {agent.personality?.speaking_style && (
-            <div className="text-xs text-zinc-500 mt-2 line-clamp-2">
+            <div className="text-xs text-muted-foreground mt-2 line-clamp-2">
               {agent.personality.speaking_style}
             </div>
           )}
@@ -46,10 +46,10 @@ export function AgentLibraryCard({ agent, isTemplate, onClone, onEdit, onDelete 
         <div className="mt-3 grid grid-cols-2 gap-1.5">
           {Object.entries(agent.engagement_weights).map(([key, value]) => (
             <div key={key} className="flex items-center gap-1.5">
-              <div className="text-[10px] text-zinc-500 w-16 truncate capitalize">
+              <div className="text-[10px] text-muted-foreground w-16 truncate capitalize">
                 {key.replace("_", " ")}
               </div>
-              <div className="flex-1 h-1 bg-zinc-800 rounded-full overflow-hidden">
+              <div className="flex-1 h-1 bg-secondary rounded-full overflow-hidden">
                 <div
                   className="h-full rounded-full"
                   style={{ width: `${(value as number) * 100}%`, backgroundColor: agent.color }}
@@ -66,7 +66,7 @@ export function AgentLibraryCard({ agent, isTemplate, onClone, onEdit, onDelete 
           <button
             onClick={onClone}
             title="Cloner dans ce workspace"
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs text-foreground hover:text-foreground hover:bg-secondary transition-colors"
           >
             <Copy className="w-3.5 h-3.5" />
             Cloner
@@ -76,7 +76,7 @@ export function AgentLibraryCard({ agent, isTemplate, onClone, onEdit, onDelete 
           <button
             onClick={onEdit}
             title="Modifier"
-            className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-zinc-800 transition-colors"
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
           >
             <Pencil className="w-3.5 h-3.5" />
           </button>
@@ -85,7 +85,7 @@ export function AgentLibraryCard({ agent, isTemplate, onClone, onEdit, onDelete 
           <button
             onClick={onDelete}
             title="Supprimer"
-            className="p-1.5 rounded-lg text-zinc-500 hover:text-red-400 hover:bg-zinc-800 transition-colors"
+            className="p-1.5 rounded-lg text-muted-foreground hover:text-red-400 hover:bg-secondary transition-colors"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>

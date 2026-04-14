@@ -52,8 +52,8 @@ export function ModelSelector({ selected, onChange, maxSelection = 2 }: Props) {
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-medium text-white">AI Models</h3>
-          <p className="text-xs text-zinc-500 mt-0.5">
+          <h3 className="text-sm font-medium text-foreground">AI Models</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">
             {maxSelection === 1
               ? "Choose the model for this session"
               : `Choose up to ${maxSelection} models — agents will alternate between them`}
@@ -82,7 +82,7 @@ export function ModelSelector({ selected, onChange, maxSelection = 2 }: Props) {
             </button>
           ))}
           {selected.length === 0 && (
-            <span className="text-xs text-zinc-500 py-1.5">Aucun modèle sélectionné</span>
+            <span className="text-xs text-muted-foreground py-1.5">Aucun modèle sélectionné</span>
           )}
         </div>
       )}
@@ -91,7 +91,7 @@ export function ModelSelector({ selected, onChange, maxSelection = 2 }: Props) {
       {expanded && (
         <div className="space-y-3">
           <div>
-            <div className="text-[10px] text-zinc-500 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+            <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-orange-400" /> Anthropic
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -101,18 +101,18 @@ export function ModelSelector({ selected, onChange, maxSelection = 2 }: Props) {
                   onClick={() => toggle(m.id)}
                   className={`text-left px-3 py-2 rounded-lg border text-xs transition-colors ${
                     selected.includes(m.id)
-                      ? "border-violet-600 bg-violet-950/50 text-white"
-                      : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-white"
+                      ? "border-violet-600 bg-violet-950/50 text-foreground"
+                      : "border-border bg-card text-muted-foreground hover:border-border hover:text-foreground"
                   }`}
                 >
                   <div className="font-medium">{m.label}</div>
-                  <div className="text-[10px] text-zinc-500 mt-0.5">{m.description}</div>
+                  <div className="text-[10px] text-muted-foreground mt-0.5">{m.description}</div>
                 </button>
               ))}
             </div>
           </div>
           <div>
-            <div className="text-[10px] text-zinc-500 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+            <div className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-400" /> OpenAI
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -122,12 +122,12 @@ export function ModelSelector({ selected, onChange, maxSelection = 2 }: Props) {
                   onClick={() => toggle(m.id)}
                   className={`text-left px-3 py-2 rounded-lg border text-xs transition-colors ${
                     selected.includes(m.id)
-                      ? "border-violet-600 bg-violet-950/50 text-white"
-                      : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-white"
+                      ? "border-violet-600 bg-violet-950/50 text-foreground"
+                      : "border-border bg-card text-muted-foreground hover:border-border hover:text-foreground"
                   }`}
                 >
                   <div className="font-medium">{m.label}</div>
-                  <div className="text-[10px] text-zinc-500 mt-0.5">{m.description}</div>
+                  <div className="text-[10px] text-muted-foreground mt-0.5">{m.description}</div>
                 </button>
               ))}
             </div>

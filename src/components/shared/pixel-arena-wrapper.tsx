@@ -59,7 +59,7 @@ export function PixelArenaWrapper({
       <div className="absolute top-2 right-2 z-50 flex gap-1.5">
         <button
           onClick={() => setView(view === "classic" ? "pixel" : "classic")}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 text-[10px] font-medium bg-zinc-900/90 backdrop-blur-sm text-zinc-300 hover:text-white border border-zinc-700/50 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 text-[10px] font-medium bg-card/90 backdrop-blur-sm text-foreground hover:text-foreground border border-border/50 rounded-lg transition-colors"
         >
           {view === "classic" ? (
             <>
@@ -77,7 +77,7 @@ export function PixelArenaWrapper({
         {view === "pixel" && (
           <button
             onClick={() => setChatOpen(!chatOpen)}
-            className="flex items-center gap-1 px-2 py-1.5 text-[10px] font-medium bg-zinc-900/90 backdrop-blur-sm text-zinc-300 hover:text-white border border-zinc-700/50 rounded-lg transition-colors"
+            className="flex items-center gap-1 px-2 py-1.5 text-[10px] font-medium bg-card/90 backdrop-blur-sm text-foreground hover:text-foreground border border-border/50 rounded-lg transition-colors"
             title={chatOpen ? "Masquer le chat" : "Afficher le chat"}
           >
             {chatOpen ? (
@@ -115,7 +115,7 @@ export function PixelArenaWrapper({
 
           {/* Floating chat overlay on the right */}
           {chatOpen && (
-            <div className="absolute top-0 right-0 h-full w-[350px] z-40 bg-zinc-950/90 backdrop-blur-sm border-l border-zinc-800/40 overflow-y-auto">
+            <div className="absolute top-0 right-0 h-full w-[350px] z-40 bg-zinc-950/90 backdrop-blur-sm border-l border-border/40 overflow-y-auto">
               {children}
             </div>
           )}

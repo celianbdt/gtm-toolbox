@@ -47,7 +47,7 @@ export function IntegrationList() {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {ALL_PROVIDERS.map((p) => (
-          <Skeleton key={p} className="h-48 rounded-xl bg-zinc-800/50" />
+          <Skeleton key={p} className="h-48 rounded-xl bg-secondary" />
         ))}
       </div>
     );

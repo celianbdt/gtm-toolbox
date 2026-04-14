@@ -119,7 +119,7 @@ export function AnalystFeed({ messages, streamingAgents }: Props) {
       {hasNewContent && !autoScroll && (
         <button
           onClick={scrollToBottom}
-          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 px-3 py-1.5 bg-[#8a6e4e] text-white text-xs rounded-full shadow-lg hover:bg-[#6D28D9] transition-colors"
+          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 px-3 py-1.5 bg-[#8a6e4e] text-foreground text-xs rounded-full shadow-lg hover:bg-[#6D28D9] transition-colors"
         >
           <ArrowDown className="size-3" />
           New content

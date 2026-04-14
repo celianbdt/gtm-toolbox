@@ -204,7 +204,7 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
       }}
     >
       <SheetContent className="w-full sm:max-w-2xl overflow-hidden flex flex-col gap-0 p-0">
-        <SheetHeader className="px-6 pt-6 pb-4 border-b border-zinc-800">
+        <SheetHeader className="px-6 pt-6 pb-4 border-b border-border">
           <SheetTitle className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-amber-600" />
             Remodel Context
@@ -225,10 +225,10 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
             {phase === "analyzing" && !error && (
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <Loader2 className="h-8 w-8 text-amber-600 animate-spin mb-4" />
-                <p className="text-sm text-zinc-300 font-medium">
+                <p className="text-sm text-foreground font-medium">
                   Analyse de vos documents...
                 </p>
-                <p className="text-xs text-zinc-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Identification des informations potentiellement obsoletes
                 </p>
               </div>
@@ -238,10 +238,10 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
             {phase === "questions" && (
               <div className="space-y-6">
                 <div>
-                  <p className="text-sm text-zinc-300 font-medium mb-1">
+                  <p className="text-sm text-foreground font-medium mb-1">
                     Questions de clarification
                   </p>
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-xs text-muted-foreground">
                     Repondez aux questions pour mettre a jour votre contexte. Laissez vide pour conserver l&apos;information actuelle.
                   </p>
                 </div>
@@ -250,13 +250,13 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
                   {questions.map((q) => (
                     <div
                       key={q.id}
-                      className="rounded-lg border border-zinc-800 bg-zinc-950 p-4 space-y-2"
+                      className="rounded-lg border border-border bg-zinc-950 p-4 space-y-2"
                     >
-                      <p className="text-sm font-medium text-white">
+                      <p className="text-sm font-medium text-foreground">
                         {q.question}
                       </p>
-                      <p className="text-xs text-zinc-500">
-                        <span className="text-zinc-400">{q.context}</span>
+                      <p className="text-xs text-muted-foreground">
+                        <span className="text-muted-foreground">{q.context}</span>
                         {" — "}
                         {q.reason}
                       </p>
@@ -270,7 +270,7 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
                         }
                         placeholder="Votre reponse (optionnel)..."
                         rows={2}
-                        className="mt-2 bg-zinc-900 border-zinc-700 text-sm"
+                        className="mt-2 bg-card border-border text-sm"
                       />
                     </div>
                   ))}
@@ -282,10 +282,10 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
             {phase === "restructuring" && !error && (
               <div className="flex flex-col items-center justify-center py-16 text-center">
                 <Loader2 className="h-8 w-8 text-amber-600 animate-spin mb-4" />
-                <p className="text-sm text-zinc-300 font-medium">
+                <p className="text-sm text-foreground font-medium">
                   Restructuration en cours...
                 </p>
-                <p className="text-xs text-zinc-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Creation de documents thematiques optimises
                 </p>
               </div>
@@ -296,8 +296,8 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
               <div className="space-y-6">
                 {/* Changelog */}
                 {changelog.length > 0 && (
-                  <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-4 space-y-2">
-                    <p className="text-sm font-medium text-zinc-300 flex items-center gap-2">
+                  <div className="rounded-lg border border-border bg-zinc-950 p-4 space-y-2">
+                    <p className="text-sm font-medium text-foreground flex items-center gap-2">
                       <Check className="h-4 w-4 text-green-400" />
                       Changements
                     </p>
@@ -305,9 +305,9 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
                       {changelog.map((item, i) => (
                         <li
                           key={i}
-                          className="text-xs text-zinc-400 flex items-start gap-2"
+                          className="text-xs text-muted-foreground flex items-start gap-2"
                         >
-                          <span className="text-zinc-600 mt-0.5">-</span>
+                          <span className="text-muted-foreground mt-0.5">-</span>
                           {item}
                         </li>
                       ))}
@@ -315,11 +315,11 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
                   </div>
                 )}
 
-                <Separator className="bg-zinc-800" />
+                <Separator className="bg-secondary" />
 
                 {/* Documents preview */}
                 <div>
-                  <p className="text-sm font-medium text-zinc-300 mb-3">
+                  <p className="text-sm font-medium text-foreground mb-3">
                     Nouveaux documents ({newDocuments.length})
                   </p>
                   <div className="space-y-3">
@@ -329,20 +329,20 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
                       return (
                         <div
                           key={idx}
-                          className="rounded-lg border border-zinc-800 bg-zinc-950 overflow-hidden"
+                          className="rounded-lg border border-border bg-zinc-950 overflow-hidden"
                         >
                           <button
                             onClick={() => toggleExpand(idx)}
-                            className="w-full flex items-center gap-3 p-4 text-left hover:bg-zinc-900/50 transition-colors"
+                            className="w-full flex items-center gap-3 p-4 text-left hover:bg-card transition-colors"
                           >
                             {expanded ? (
-                              <ChevronDown className="h-4 w-4 text-zinc-500 shrink-0" />
+                              <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
                             ) : (
-                              <ChevronRight className="h-4 w-4 text-zinc-500 shrink-0" />
+                              <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
                             )}
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-1">
-                                <span className="text-sm font-medium text-white truncate">
+                                <span className="text-sm font-medium text-foreground truncate">
                                   {doc.title}
                                 </span>
                                 <Badge
@@ -357,7 +357,7 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
                                 </Badge>
                               </div>
                               {!expanded && (
-                                <p className="text-xs text-zinc-500 truncate">
+                                <p className="text-xs text-muted-foreground truncate">
                                   {doc.content.slice(0, 200).replace(/\s+/g, " ")}
                                 </p>
                               )}
@@ -365,12 +365,12 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
                           </button>
                           {expanded && (
                             <div className="px-4 pb-4 pt-0">
-                              <Separator className="bg-zinc-800 mb-3" />
-                              <pre className="text-xs text-zinc-400 whitespace-pre-wrap font-mono leading-relaxed max-h-80 overflow-y-auto">
+                              <Separator className="bg-secondary mb-3" />
+                              <pre className="text-xs text-muted-foreground whitespace-pre-wrap font-mono leading-relaxed max-h-80 overflow-y-auto">
                                 {doc.content}
                               </pre>
                               {doc.sources.length > 0 && (
-                                <p className="text-[10px] text-zinc-600 mt-3">
+                                <p className="text-[10px] text-muted-foreground mt-3">
                                   Sources : {doc.sources.join(", ")}
                                 </p>
                               )}
@@ -395,7 +395,7 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
         </ScrollArea>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-zinc-800 flex items-center justify-end gap-2">
+        <div className="px-6 py-4 border-t border-border flex items-center justify-end gap-2">
           {phase === "questions" && (
             <>
               <Button
@@ -407,7 +407,7 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
                     documentThemes
                   );
                 }}
-                className="text-zinc-400"
+                className="text-muted-foreground"
               >
                 Tout passer
               </Button>
@@ -425,7 +425,7 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
                   reset();
                   onOpenChange(false);
                 }}
-                className="text-zinc-400"
+                className="text-muted-foreground"
               >
                 Annuler
               </Button>
@@ -456,7 +456,7 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
                 reset();
                 onOpenChange(false);
               }}
-              className="text-zinc-400"
+              className="text-muted-foreground"
             >
               Fermer
             </Button>

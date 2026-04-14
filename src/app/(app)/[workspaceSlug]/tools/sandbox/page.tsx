@@ -248,11 +248,11 @@ function SideChat({
       className={`flex flex-col h-full ${fullScreen ? "bg-zinc-950" : ""}`}
     >
       {/* Header */}
-      <div className="shrink-0 px-4 py-3 border-b border-zinc-800/60">
+      <div className="shrink-0 px-4 py-3 border-b border-border/60">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-semibold text-white">Discussion</h3>
-            <p className="text-[10px] text-zinc-500">
+            <h3 className="text-sm font-semibold text-foreground">Discussion</h3>
+            <p className="text-[10px] text-muted-foreground">
               {messages.length} messages \u00B7 {MOCK_AGENTS.length} agents
             </p>
           </div>
@@ -262,14 +262,14 @@ function SideChat({
                 {isPaused ? (
                   <button
                     onClick={onResume}
-                    className="px-2.5 py-1 text-[10px] font-medium bg-violet-600 text-white rounded-md hover:bg-amber-700 transition-colors"
+                    className="px-2.5 py-1 text-[10px] font-medium bg-violet-600 text-foreground rounded-md hover:bg-amber-700 transition-colors"
                   >
                     Resume
                   </button>
                 ) : (
                   <button
                     onClick={onPause}
-                    className="p-1.5 text-zinc-500 hover:text-white bg-zinc-800 rounded-md transition-colors"
+                    className="p-1.5 text-muted-foreground hover:text-foreground bg-secondary rounded-md transition-colors"
                     title="Pause"
                   >
                     <Pause className="h-3 w-3" />
@@ -277,7 +277,7 @@ function SideChat({
                 )}
                 <button
                   onClick={onStop}
-                  className="p-1.5 text-red-400/70 hover:text-red-400 bg-zinc-800 rounded-md transition-colors"
+                  className="p-1.5 text-red-400/70 hover:text-red-400 bg-secondary rounded-md transition-colors"
                   title="Stop"
                 >
                   <Square className="h-3 w-3" />
@@ -306,7 +306,7 @@ function SideChat({
               >
                 <span className="text-xs">{agent.emoji}</span>
                 <span
-                  className={`text-[9px] font-medium ${isActive ? "text-white" : "text-zinc-600"}`}
+                  className={`text-[9px] font-medium ${isActive ? "text-foreground" : "text-muted-foreground"}`}
                 >
                   {agent.name.split(" ").pop()}
                 </span>
@@ -374,7 +374,7 @@ function SideChat({
                   className="pl-4 border-l"
                   style={{ borderColor: `${msg.agentColor}30` }}
                 >
-                  <p className="text-[11px] text-zinc-300 leading-relaxed">
+                  <p className="text-[11px] text-foreground leading-relaxed">
                     {msg.text}
                   </p>
                 </div>
@@ -400,7 +400,7 @@ function SideChat({
               className="pl-4 border-l"
               style={{ borderColor: `${speakingAgent.color}30` }}
             >
-              <p className="text-[11px] text-zinc-300 leading-relaxed">
+              <p className="text-[11px] text-foreground leading-relaxed">
                 {streamingText}
                 <span
                   className="inline-block w-0.5 h-3 ml-0.5 animate-pulse"
@@ -413,7 +413,7 @@ function SideChat({
 
         {messages.length === 0 && !speakingId && (
           <div className="flex items-center justify-center py-8">
-            <p className="text-[11px] text-zinc-600 italic">
+            <p className="text-[11px] text-muted-foreground italic">
               Le debat va commencer...
             </p>
           </div>
@@ -421,7 +421,7 @@ function SideChat({
 
         {isStopped && (
           <div className="text-center py-4">
-            <span className="text-[10px] text-zinc-500 bg-zinc-800 px-3 py-1 rounded-full">
+            <span className="text-[10px] text-muted-foreground bg-secondary px-3 py-1 rounded-full">
               Debat termine
             </span>
           </div>
@@ -438,7 +438,7 @@ function SideChat({
 
       {/* Input */}
       {!isStopped && (
-        <div className="shrink-0 px-3 py-2.5 border-t border-zinc-800/60">
+        <div className="shrink-0 px-3 py-2.5 border-t border-border/60">
           <div className="flex gap-2">
             <input
               value={input}
@@ -452,12 +452,12 @@ function SideChat({
               placeholder={
                 isPaused ? "Interjection..." : "Intervenir dans le debat..."
               }
-              className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-1.5 text-[11px] text-white placeholder-zinc-600 focus:outline-none focus:border-violet-600/50"
+              className="flex-1 bg-card border border-border rounded-lg px-3 py-1.5 text-[11px] text-foreground placeholder-zinc-600 focus:outline-none focus:border-violet-600/50"
             />
             <button
               onClick={handleSend}
               disabled={!input.trim()}
-              className="p-1.5 bg-violet-600 hover:bg-amber-700 disabled:opacity-30 text-white rounded-lg transition-colors"
+              className="p-1.5 bg-violet-600 hover:bg-amber-700 disabled:opacity-30 text-foreground rounded-lg transition-colors"
             >
               <Send className="h-3.5 w-3.5" />
             </button>
@@ -511,7 +511,7 @@ export default function SandboxPage() {
       <div className="absolute top-3 right-3 z-50 flex gap-1.5">
         <button
           onClick={() => setView(view === "game" ? "chat" : "game")}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 text-[10px] font-medium bg-zinc-900/90 backdrop-blur-sm text-zinc-300 hover:text-white border border-zinc-700/50 rounded-lg transition-colors"
+          className="flex items-center gap-1.5 px-2.5 py-1.5 text-[10px] font-medium bg-card/90 backdrop-blur-sm text-foreground hover:text-foreground border border-border/50 rounded-lg transition-colors"
         >
           {view === "game" ? (
             <>
@@ -529,7 +529,7 @@ export default function SandboxPage() {
         {view === "game" && (
           <button
             onClick={() => setChatOpen(!chatOpen)}
-            className="flex items-center gap-1 px-2 py-1.5 text-[10px] font-medium bg-zinc-900/90 backdrop-blur-sm text-zinc-300 hover:text-white border border-zinc-700/50 rounded-lg transition-colors"
+            className="flex items-center gap-1 px-2 py-1.5 text-[10px] font-medium bg-card/90 backdrop-blur-sm text-foreground hover:text-foreground border border-border/50 rounded-lg transition-colors"
             title={chatOpen ? "Hide chat" : "Show chat"}
           >
             {chatOpen ? (
@@ -559,7 +559,7 @@ export default function SandboxPage() {
 
           {/* Floating chat overlay */}
           {chatOpen && (
-            <div className="absolute top-0 right-0 h-full w-[350px] z-40 bg-zinc-950/90 backdrop-blur-sm border-l border-zinc-800/40">
+            <div className="absolute top-0 right-0 h-full w-[350px] z-40 bg-zinc-950/90 backdrop-blur-sm border-l border-border/40">
               <SideChat
                 messages={messages}
                 speakingId={speakingId}

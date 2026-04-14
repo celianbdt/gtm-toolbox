@@ -115,11 +115,11 @@ export function WorkspaceSettingsForm({ workspace }: Props) {
     <div className="max-w-xl space-y-10">
       {/* General */}
       <section>
-        <h2 className="text-base font-semibold text-white mb-4">Général</h2>
+        <h2 className="text-base font-semibold text-foreground mb-4">Général</h2>
 
         {/* Logo upload */}
         <div className="space-y-1.5 mb-6">
-          <label className="text-sm text-zinc-400">Logo</label>
+          <label className="text-sm text-muted-foreground">Logo</label>
           <div className="flex items-center gap-4">
             {logoUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -174,7 +174,7 @@ export function WorkspaceSettingsForm({ workspace }: Props) {
 
         <form onSubmit={handleSave} className="space-y-4">
           <div className="space-y-1.5">
-            <label className="text-sm text-zinc-400">Nom</label>
+            <label className="text-sm text-muted-foreground">Nom</label>
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -183,7 +183,7 @@ export function WorkspaceSettingsForm({ workspace }: Props) {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm text-zinc-400">Description</label>
+            <label className="text-sm text-muted-foreground">Description</label>
             <Input
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -192,7 +192,7 @@ export function WorkspaceSettingsForm({ workspace }: Props) {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm text-zinc-400">Phase mission</label>
+            <label className="text-sm text-muted-foreground">Phase mission</label>
             <select
               value={missionStage}
               onChange={(e) => setMissionStage(e.target.value as typeof missionStage)}
@@ -206,7 +206,7 @@ export function WorkspaceSettingsForm({ workspace }: Props) {
           </div>
 
           <div className="space-y-1.5">
-            <label className="text-sm text-zinc-400">Couleur</label>
+            <label className="text-sm text-muted-foreground">Couleur</label>
             <div className="flex gap-2">
               {COLORS.map((c) => (
                 <button
@@ -233,7 +233,7 @@ export function WorkspaceSettingsForm({ workspace }: Props) {
       {/* Danger zone */}
       <section className="border border-red-900/50 rounded-xl p-5 space-y-3">
         <h2 className="text-base font-semibold text-red-400">Zone de danger</h2>
-        <p className="text-sm text-zinc-400">
+        <p className="text-sm text-muted-foreground">
           Supprimer ce workspace supprime définitivement toutes les données associées (contexte, agents, sessions).
         </p>
         <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>

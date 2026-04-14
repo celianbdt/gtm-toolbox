@@ -90,8 +90,8 @@ export function ContextManager({ workspaceId, initialDocs }: Props) {
                 onClick={() => setFilter(f.value)}
                 className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                   filter === f.value
-                    ? "bg-zinc-700 text-white"
-                    : "bg-zinc-900 text-zinc-500 hover:text-white"
+                    ? "bg-zinc-700 text-foreground"
+                    : "bg-card text-muted-foreground hover:text-foreground"
                 }`}
                 style={
                   filter === f.value && typeInfo
@@ -120,7 +120,7 @@ export function ContextManager({ workspaceId, initialDocs }: Props) {
           {docs.length >= 2 && (
             <button
               onClick={() => setRemodelOpen(true)}
-              className="flex items-center gap-1.5 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white text-sm font-medium rounded-lg transition-colors border border-zinc-700"
+              className="flex items-center gap-1.5 px-4 py-2 bg-secondary hover:bg-zinc-700 text-foreground hover:text-foreground text-sm font-medium rounded-lg transition-colors border border-border"
             >
               <Sparkles className="h-3.5 w-3.5" />
               Remodel Context
@@ -128,7 +128,7 @@ export function ContextManager({ workspaceId, initialDocs }: Props) {
           )}
           <button
             onClick={openAdd}
-            className="px-4 py-2 bg-violet-600 hover:bg-amber-700 text-white text-sm font-medium rounded-lg transition-colors"
+            className="px-4 py-2 bg-violet-600 hover:bg-amber-700 text-foreground text-sm font-medium rounded-lg transition-colors"
           >
             + Add document
           </button>
@@ -148,15 +148,15 @@ export function ContextManager({ workspaceId, initialDocs }: Props) {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-zinc-800 rounded-xl">
+        <div className="flex flex-col items-center justify-center py-24 text-center border border-dashed border-border rounded-xl">
           <div className="text-4xl mb-4">📂</div>
-          <p className="text-sm text-zinc-500 mb-1">No context documents yet</p>
+          <p className="text-sm text-muted-foreground mb-1">No context documents yet</p>
           <p className="text-xs text-zinc-700 mb-4">
             Add ICPs, product descriptions, competitor analyses, and more.
           </p>
           <button
             onClick={openAdd}
-            className="px-4 py-2 bg-violet-600 hover:bg-amber-700 text-white text-sm font-medium rounded-lg transition-colors"
+            className="px-4 py-2 bg-violet-600 hover:bg-amber-700 text-foreground text-sm font-medium rounded-lg transition-colors"
           >
             Add your first document
           </button>

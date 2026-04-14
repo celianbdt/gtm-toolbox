@@ -62,22 +62,22 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
   return (
     <div className="flex flex-col h-full">
       {/* Progress indicator */}
-      <div className="px-6 py-4 border-b border-zinc-800">
+      <div className="px-6 py-4 border-b border-border">
         <div className="flex items-center gap-2 max-w-xl mx-auto">
           {steps.map((s, i) => (
             <div key={s} className="flex items-center gap-2 flex-1">
               <div
                 className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition-colors ${
                   i <= stepIndex
-                    ? "bg-violet-600 text-white"
-                    : "bg-zinc-800 text-zinc-500"
+                    ? "bg-violet-600 text-foreground"
+                    : "bg-secondary text-muted-foreground"
                 }`}
               >
                 {i + 1}
               </div>
               <span
                 className={`text-xs capitalize transition-colors ${
-                  i === stepIndex ? "text-white" : "text-zinc-500"
+                  i === stepIndex ? "text-foreground" : "text-muted-foreground"
                 }`}
               >
                 {s === "team" ? "Team" : s === "mission" ? "Mission" : "Review"}
@@ -85,7 +85,7 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
               {i < steps.length - 1 && (
                 <div
                   className={`flex-1 h-px transition-colors ${
-                    i < stepIndex ? "bg-violet-600" : "bg-zinc-800"
+                    i < stepIndex ? "bg-violet-600" : "bg-secondary"
                   }`}
                 />
               )}
@@ -128,12 +128,12 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
       </div>
 
       {/* Navigation */}
-      <div className="px-6 py-4 border-t border-zinc-800">
+      <div className="px-6 py-4 border-t border-border">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <button
             onClick={() => setStep(steps[stepIndex - 1])}
             disabled={stepIndex === 0}
-            className="px-4 py-2 text-sm text-zinc-400 hover:text-white disabled:opacity-0 transition-colors"
+            className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground disabled:opacity-0 transition-colors"
           >
             ← Back
           </button>
@@ -144,7 +144,7 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
             <button
               onClick={() => setStep(steps[stepIndex + 1])}
               disabled={!canAdvance}
-              className="px-5 py-2 bg-violet-600 hover:bg-amber-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
+              className="px-5 py-2 bg-violet-600 hover:bg-amber-700 disabled:opacity-40 disabled:cursor-not-allowed text-foreground text-sm font-medium rounded-lg transition-colors"
             >
               Continue →
             </button>
@@ -153,7 +153,7 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
           ) : (
             <button
               onClick={startDebate}
-              className="px-5 py-2 bg-violet-600 hover:bg-amber-700 text-white text-sm font-medium rounded-lg transition-colors"
+              className="px-5 py-2 bg-violet-600 hover:bg-amber-700 text-foreground text-sm font-medium rounded-lg transition-colors"
             >
               Start Debate ⚡
             </button>

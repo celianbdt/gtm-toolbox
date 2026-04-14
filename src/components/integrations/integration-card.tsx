@@ -37,16 +37,16 @@ export function IntegrationCard({
 
   if (comingSoon) {
     return (
-      <Card className="bg-zinc-900/50 border-zinc-800 opacity-60">
+      <Card className="bg-card border-border opacity-60">
         <CardContent className="space-y-4">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-800">
-                <ProviderIcon icon={meta.icon} className="h-5 w-5 text-zinc-500" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
+                <ProviderIcon icon={meta.icon} className="h-5 w-5 text-muted-foreground" />
               </div>
               <div>
-                <h3 className="text-sm font-medium text-zinc-400">{meta.label}</h3>
-                <p className="text-xs text-zinc-600">{meta.description}</p>
+                <h3 className="text-sm font-medium text-muted-foreground">{meta.label}</h3>
+                <p className="text-xs text-muted-foreground">{meta.description}</p>
               </div>
             </div>
             <Badge variant="secondary" className="text-[10px]">Bientôt</Badge>
@@ -93,17 +93,17 @@ export function IntegrationCard({
 
   return (
     <>
-      <Card className="bg-zinc-900/50 border-zinc-800 hover:border-zinc-700 transition-colors">
+      <Card className="bg-card border-border hover:border-border transition-colors">
         <CardContent className="space-y-4">
           {/* Header */}
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-zinc-800">
-                <ProviderIcon icon={meta.icon} className="h-5 w-5 text-zinc-300" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary">
+                <ProviderIcon icon={meta.icon} className="h-5 w-5 text-foreground" />
               </div>
               <div>
-                <h3 className="text-sm font-medium text-white">{meta.label}</h3>
-                <p className="text-xs text-zinc-500">{meta.description}</p>
+                <h3 className="text-sm font-medium text-foreground">{meta.label}</h3>
+                <p className="text-xs text-muted-foreground">{meta.description}</p>
               </div>
             </div>
           </div>
@@ -154,7 +154,7 @@ export function IntegrationCard({
                   variant="ghost"
                   onClick={handleDisconnect}
                   disabled={disconnecting}
-                  className="text-xs text-zinc-500 hover:text-red-400"
+                  className="text-xs text-muted-foreground hover:text-red-400"
                 >
                   <Unplug className="h-3.5 w-3.5 mr-1.5" />
                   {disconnecting ? "..." : "Déconnecter"}

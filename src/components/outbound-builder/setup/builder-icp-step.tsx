@@ -89,7 +89,7 @@ export function BuilderICPStep({ icp, onChange }: Props) {
               placeholder="e.g., Cannot scale outbound without more headcount"
               className="flex-1 px-3 py-2 bg-secondary rounded-lg text-sm text-foreground placeholder:text-muted-foreground"
             />
-            <button onClick={addPainPoint} className="px-3 py-2 bg-[#8a6e4e] text-white text-xs rounded-lg">+</button>
+            <button onClick={addPainPoint} className="px-3 py-2 bg-[#8a6e4e] text-foreground text-xs rounded-lg">+</button>
           </div>
           {icp.pain_points.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-2">
@@ -115,7 +115,7 @@ export function BuilderICPStep({ icp, onChange }: Props) {
               placeholder="e.g., 3x more meetings without additional SDRs"
               className="flex-1 px-3 py-2 bg-secondary rounded-lg text-sm text-foreground placeholder:text-muted-foreground"
             />
-            <button onClick={addValueProp} className="px-3 py-2 bg-[#8a6e4e] text-white text-xs rounded-lg">+</button>
+            <button onClick={addValueProp} className="px-3 py-2 bg-[#8a6e4e] text-foreground text-xs rounded-lg">+</button>
           </div>
           {icp.value_props.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-2">

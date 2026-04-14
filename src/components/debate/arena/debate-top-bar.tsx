@@ -15,7 +15,7 @@ type Props = {
 
 export function DebateTopBar({ mission, currentTurn, maxTurns, status, agents, estimatedCost }: Props) {
   return (
-    <header className="flex h-12 items-center gap-2 border-b border-zinc-800 px-4 flex-shrink-0">
+    <header className="flex h-12 items-center gap-2 border-b border-border px-4 flex-shrink-0">
       <SidebarTrigger className="-ml-1" />
       <Separator orientation="vertical" className="mr-2 h-4" />
 
@@ -36,7 +36,7 @@ export function DebateTopBar({ mission, currentTurn, maxTurns, status, agents, e
       <Separator orientation="vertical" className="h-4" />
 
       {/* Mission title */}
-      <span className="text-sm text-zinc-300 truncate flex-1 max-w-md">{mission}</span>
+      <span className="text-sm text-foreground truncate flex-1 max-w-md">{mission}</span>
 
       <div className="ml-auto flex items-center gap-3">
         {/* Status badge */}
@@ -45,7 +45,7 @@ export function DebateTopBar({ mission, currentTurn, maxTurns, status, agents, e
             status === "active"
               ? "bg-emerald-950 text-emerald-400"
               : status === "concluded"
-              ? "bg-zinc-800 text-zinc-500"
+              ? "bg-secondary text-muted-foreground"
               : "bg-amber-950 text-amber-400"
           }`}
         >
@@ -53,13 +53,13 @@ export function DebateTopBar({ mission, currentTurn, maxTurns, status, agents, e
         </span>
 
         {/* Turn counter */}
-        <span className="text-xs text-zinc-500 tabular-nums">
+        <span className="text-xs text-muted-foreground tabular-nums">
           {currentTurn}/{maxTurns}
         </span>
 
         {/* Cost */}
         {estimatedCost != null && estimatedCost > 0 && (
-          <span className="text-[10px] text-zinc-600 tabular-nums bg-zinc-800/50 px-2 py-0.5 rounded-full">
+          <span className="text-[10px] text-muted-foreground tabular-nums bg-secondary px-2 py-0.5 rounded-full">
             ~${estimatedCost < 0.01 ? "<0.01" : estimatedCost.toFixed(2)}
           </span>
         )}

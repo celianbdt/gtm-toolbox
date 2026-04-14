@@ -35,9 +35,9 @@ export function PhaseProgress({ currentPhase, estimatedCost }: Props) {
               <div
                 className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-medium transition-colors ${
                   isDone
-                    ? "bg-[#8a6e4e] text-white"
+                    ? "bg-[#8a6e4e] text-foreground"
                     : isActive
-                    ? "bg-[#8a6e4e]/60 text-white animate-pulse"
+                    ? "bg-[#8a6e4e]/60 text-foreground animate-pulse"
                     : "bg-secondary text-muted-foreground"
                 }`}
               >

@@ -14,8 +14,8 @@ export function MessageBubble({ message, agent }: Props) {
   if (isHuman) {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[70%] bg-zinc-800 rounded-2xl rounded-tr-sm px-4 py-3">
-          <p className="text-sm text-white">{message.content}</p>
+        <div className="max-w-[70%] bg-secondary rounded-2xl rounded-tr-sm px-4 py-3">
+          <p className="text-sm text-foreground">{message.content}</p>
         </div>
       </div>
     );
@@ -39,7 +39,7 @@ export function MessageBubble({ message, agent }: Props) {
             <span className="text-xs font-semibold" style={{ color: agent.color }}>
               {agent.name}
             </span>
-            <span className="text-xs text-zinc-600">{agent.role}</span>
+            <span className="text-xs text-muted-foreground">{agent.role}</span>
             {score !== undefined && score > 0.6 && (
               <span
                 className="text-[10px] px-1.5 py-0.5 rounded-full font-medium"

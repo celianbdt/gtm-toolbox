@@ -170,13 +170,13 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
         </SheetHeader>
 
         {!isEdit && (
-          <div className="flex gap-1 p-1 bg-zinc-900 rounded-lg w-fit mx-4 mb-4">
+          <div className="flex gap-1 p-1 bg-card rounded-lg w-fit mx-4 mb-4">
             {(["manual", "generate"] as Mode[]).map((m) => (
               <button
                 key={m}
                 onClick={() => setMode(m)}
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                  mode === m ? "bg-zinc-700 text-white" : "text-zinc-400 hover:text-white"
+                  mode === m ? "bg-zinc-700 text-foreground" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {m === "manual" ? "Manuel" : "Générer avec IA"}
@@ -191,7 +191,7 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
               {/* Emoji + Color */}
               <div className="flex gap-6">
                 <div className="space-y-1.5">
-                  <label className="text-xs text-zinc-400">Emoji</label>
+                  <label className="text-xs text-muted-foreground">Emoji</label>
                   <div className="flex flex-wrap gap-1.5 max-w-[160px]">
                     {EMOJIS.map((e) => (
                       <button
@@ -199,7 +199,7 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
                         type="button"
                         onClick={() => setEmoji(e)}
                         className={`w-8 h-8 rounded-lg text-base flex items-center justify-center transition-all ${
-                          emoji === e ? "bg-zinc-700 ring-1 ring-zinc-500" : "hover:bg-zinc-800"
+                          emoji === e ? "bg-zinc-700 ring-1 ring-zinc-500" : "hover:bg-secondary"
                         }`}
                       >
                         {e}
@@ -208,7 +208,7 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
                   </div>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs text-zinc-400">Couleur</label>
+                  <label className="text-xs text-muted-foreground">Couleur</label>
                   <div className="flex flex-wrap gap-1.5 max-w-[100px]">
                     {COLORS.map((c) => (
                       <button
@@ -239,37 +239,37 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
                   {emoji}
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-white">{name || "Nom de l'agent"}</div>
-                  <div className="text-xs text-zinc-400">{role || "Rôle"}</div>
+                  <div className="text-sm font-medium text-foreground">{name || "Nom de l'agent"}</div>
+                  <div className="text-xs text-muted-foreground">{role || "Rôle"}</div>
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs text-zinc-400">Nom</label>
+                <label className="text-xs text-muted-foreground">Nom</label>
                 <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="ex: The Strategist" />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs text-zinc-400">Rôle</label>
+                <label className="text-xs text-muted-foreground">Rôle</label>
                 <Input value={role} onChange={(e) => setRole(e.target.value)} placeholder="ex: GTM Strategist" />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs text-zinc-400">System prompt</label>
+                <label className="text-xs text-muted-foreground">System prompt</label>
                 <textarea
                   value={systemPrompt}
                   onChange={(e) => setSystemPrompt(e.target.value)}
                   rows={4}
                   placeholder="Décris l'agent à la première personne : son background, son style de débat, ses priorités..."
-                  className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 resize-none focus:outline-none focus:border-zinc-500"
+                  className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder-zinc-500 resize-none focus:outline-none focus:border-zinc-500"
                 />
               </div>
 
               <div className="space-y-3">
-                <label className="text-xs text-zinc-400 block">Poids d'engagement</label>
+                <label className="text-xs text-muted-foreground block">Poids d'engagement</label>
                 {(Object.keys(weights) as (keyof EngagementWeights)[]).map((key) => (
                   <div key={key} className="flex items-center gap-3">
-                    <span className="text-xs text-zinc-500 w-28 capitalize">{key.replace("_", " ")}</span>
+                    <span className="text-xs text-muted-foreground w-28 capitalize">{key.replace("_", " ")}</span>
                     <Slider
                       min={0}
                       max={100}
@@ -278,7 +278,7 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
                       onValueChange={([v]) => setWeight(key, v / 100)}
                       className="flex-1"
                     />
-                    <span className="text-xs text-zinc-400 w-8 text-right">
+                    <span className="text-xs text-muted-foreground w-8 text-right">
                       {Math.round(weights[key] * 100)}%
                     </span>
                   </div>
@@ -290,13 +290,13 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
           {!isEdit && mode === "generate" && (
             <div className="space-y-4">
               <div className="space-y-1.5">
-                <label className="text-xs text-zinc-400">Décris les agents que tu veux générer</label>
+                <label className="text-xs text-muted-foreground">Décris les agents que tu veux générer</label>
                 <textarea
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   rows={3}
                   placeholder="ex: Un expert pricing B2B très data-driven, un sceptique et un CMO expérimenté"
-                  className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 resize-none focus:outline-none focus:border-zinc-500"
+                  className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder-zinc-500 resize-none focus:outline-none focus:border-zinc-500"
                 />
               </div>
               {genError && <p className="text-sm text-red-400">{genError}</p>}
@@ -311,7 +311,7 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
 
               {generatedAgents.length > 0 && !generating && (
                 <div className="space-y-2">
-                  <p className="text-xs text-zinc-400 uppercase tracking-wider">
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider">
                     {selectedGenerated.size}/{generatedAgents.length} sélectionnés
                   </p>
                   {generatedAgents.map((a) => {
@@ -330,7 +330,7 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
                         className={`p-3 rounded-lg border cursor-pointer transition-colors ${
                           isSelected
                             ? "border-amber-700 bg-violet-900/20"
-                            : "border-zinc-700 hover:border-zinc-600"
+                            : "border-border hover:border-zinc-600"
                         }`}
                       >
                         <div className="flex items-center gap-3">
@@ -341,8 +341,8 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
                             {a.avatar_emoji}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="text-sm font-medium text-white">{a.name}</div>
-                            <div className="text-xs text-zinc-400">{a.role}</div>
+                            <div className="text-sm font-medium text-foreground">{a.name}</div>
+                            <div className="text-xs text-muted-foreground">{a.role}</div>
                           </div>
                           <div className={`w-4 h-4 rounded border-2 shrink-0 transition-colors ${
                             isSelected ? "bg-amber-700 border-amber-700" : "border-zinc-600"

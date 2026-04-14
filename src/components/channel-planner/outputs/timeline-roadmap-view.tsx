@@ -16,7 +16,7 @@ export function TimelineRoadmapView({ output }: Props) {
           <div key={i} className="border border-border rounded-xl overflow-hidden">
             <div className="px-5 py-3 border-b border-border flex items-center justify-between bg-secondary/20">
               <div className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-[#8a6e4e] text-white flex items-center justify-center text-xs font-medium">
+                <div className="w-6 h-6 rounded-full bg-[#8a6e4e] text-foreground flex items-center justify-center text-xs font-medium">
                   {i + 1}
                 </div>
                 <div>

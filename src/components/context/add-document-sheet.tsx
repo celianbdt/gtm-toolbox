@@ -52,12 +52,12 @@ function FormFields({
           value={title}
           onChange={(e) => onTitleChange(e.target.value)}
           placeholder="Document title"
-          className="flex-1 bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500"
+          className="flex-1 bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder-zinc-500 focus:outline-none focus:border-zinc-500"
         />
         <select
           value={docType}
           onChange={(e) => onDocTypeChange(e.target.value as DocType)}
-          className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-zinc-500"
+          className="bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:border-zinc-500"
         >
           {DOC_TYPES.map((t) => (
             <option key={t.value} value={t.value}>
@@ -72,7 +72,7 @@ function FormFields({
         readOnly={readonlyContent}
         placeholder={contentPlaceholder ?? "Document content..."}
         rows={14}
-        className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-3 text-sm text-white placeholder-zinc-500 resize-none focus:outline-none focus:border-zinc-500 font-mono"
+        className="w-full bg-card border border-border rounded-lg px-4 py-3 text-sm text-foreground placeholder-zinc-500 resize-none focus:outline-none focus:border-zinc-500 font-mono"
       />
     </div>
   );
@@ -260,19 +260,19 @@ export function AddDocumentSheet({
   return (
     <Sheet open={open} onOpenChange={(v) => { if (!v) reset(); onOpenChange(v); }}>
       <SheetContent className="w-full sm:max-w-2xl overflow-y-auto flex flex-col gap-0 p-0">
-        <SheetHeader className="px-6 pt-6 pb-4 border-b border-zinc-800">
+        <SheetHeader className="px-6 pt-6 pb-4 border-b border-border">
           <SheetTitle>{isEdit ? "Edit document" : "Add context document"}</SheetTitle>
         </SheetHeader>
 
         {/* Tabs */}
         {!isEdit && (
-          <div className="flex gap-1 px-6 py-3 border-b border-zinc-800 bg-zinc-950">
+          <div className="flex gap-1 px-6 py-3 border-b border-border bg-zinc-950">
             {tabs.map((t) => (
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
                 className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-                  tab === t.id ? "bg-zinc-800 text-white" : "text-zinc-500 hover:text-white"
+                  tab === t.id ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {t.label}
@@ -301,13 +301,13 @@ export function AddDocumentSheet({
               {/* Drop zone */}
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-zinc-700 hover:border-zinc-500 rounded-xl p-10 text-center cursor-pointer transition-colors"
+                className="border-2 border-dashed border-border hover:border-zinc-500 rounded-xl p-10 text-center cursor-pointer transition-colors"
               >
                 <div className="text-3xl mb-3">📄</div>
-                <p className="text-sm text-zinc-400 mb-1">
+                <p className="text-sm text-muted-foreground mb-1">
                   Click to select a file
                 </p>
-                <p className="text-xs text-zinc-600">.txt · .md · .pdf · .docx</p>
+                <p className="text-xs text-muted-foreground">.txt · .md · .pdf · .docx</p>
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -316,7 +316,7 @@ export function AddDocumentSheet({
                   className="hidden"
                 />
               </div>
-              {importing && <p className="text-sm text-zinc-400 text-center">Parsing file...</p>}
+              {importing && <p className="text-sm text-muted-foreground text-center">Parsing file...</p>}
               {importError && <p className="text-sm text-red-400">{importError}</p>}
 
               {/* Show form once content is populated */}
@@ -345,7 +345,7 @@ export function AddDocumentSheet({
                     className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
                       toolMode === m
                         ? "border-violet-600 bg-violet-950 text-violet-300"
-                        : "border-zinc-700 text-zinc-500 hover:text-white"
+                        : "border-border text-muted-foreground hover:text-foreground"
                     }`}
                   >
                     {m === "url" ? "🔗 URL" : m === "notion" ? "📓 Notion" : m === "gdocs" ? "📊 Google Docs" : "🏢 CRM"}
@@ -356,14 +356,14 @@ export function AddDocumentSheet({
               {/* URL mode */}
               {toolMode === "url" && (
                 <div className="space-y-3">
-                  <p className="text-xs text-zinc-500">
+                  <p className="text-xs text-muted-foreground">
                     Paste any public URL — blog post, landing page, article. We'll extract the text content.
                   </p>
                   <input
                     value={urlInput}
                     onChange={(e) => setUrlInput(e.target.value)}
                     placeholder="https://example.com/blog/post"
-                    className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder-zinc-500 focus:outline-none focus:border-zinc-500"
                   />
                 </div>
               )}
@@ -371,8 +371,8 @@ export function AddDocumentSheet({
               {/* Notion mode */}
               {toolMode === "notion" && (
                 <div className="space-y-3">
-                  <div className="rounded-lg bg-zinc-900 border border-zinc-800 p-3 text-xs text-zinc-400 space-y-1">
-                    <p className="font-medium text-zinc-300">Setup required</p>
+                  <div className="rounded-lg bg-card border border-border p-3 text-xs text-muted-foreground space-y-1">
+                    <p className="font-medium text-foreground">Setup required</p>
                     <p>1. Go to <span className="text-amber-600">notion.so/my-integrations</span> and create an integration</p>
                     <p>2. Copy the <span className="text-amber-600">Internal Integration Token</span> (starts with <code>secret_</code>)</p>
                     <p>3. Share your Notion page with the integration (page menu → Connections)</p>
@@ -382,13 +382,13 @@ export function AddDocumentSheet({
                     onChange={(e) => setNotionToken(e.target.value)}
                     placeholder="secret_xxxxxxxxxxxxxxxx"
                     type="password"
-                    className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 font-mono"
+                    className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder-zinc-500 focus:outline-none focus:border-zinc-500 font-mono"
                   />
                   <input
                     value={notionUrl}
                     onChange={(e) => setNotionUrl(e.target.value)}
                     placeholder="https://notion.so/My-Page-abc123..."
-                    className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder-zinc-500 focus:outline-none focus:border-zinc-500"
                   />
                 </div>
               )}
@@ -396,8 +396,8 @@ export function AddDocumentSheet({
               {/* CRM mode */}
               {toolMode === "crm" && (
                 <div className="space-y-3">
-                  <div className="rounded-lg bg-zinc-900 border border-zinc-800 p-3 text-xs text-zinc-400 space-y-1">
-                    <p className="font-medium text-zinc-300">CRM Integration</p>
+                  <div className="rounded-lg bg-card border border-border p-3 text-xs text-muted-foreground space-y-1">
+                    <p className="font-medium text-foreground">CRM Integration</p>
                     <p>Import contacts, deals, activities, KPIs and engagement data from your CRM API.</p>
                     <p>Existing CRM documents will be <span className="text-amber-400">replaced</span> with fresh data.</p>
                   </div>
@@ -405,14 +405,14 @@ export function AddDocumentSheet({
                     value={crmUrl}
                     onChange={(e) => setCrmUrl(e.target.value)}
                     placeholder="https://your-crm.vercel.app/api/v1/export/workspace?workspace_id=..."
-                    className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 font-mono"
+                    className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder-zinc-500 focus:outline-none focus:border-zinc-500 font-mono"
                   />
                   <input
                     value={crmApiKey}
                     onChange={(e) => setCrmApiKey(e.target.value)}
                     placeholder="API Key"
                     type="password"
-                    className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 font-mono"
+                    className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder-zinc-500 focus:outline-none focus:border-zinc-500 font-mono"
                   />
                 </div>
               )}
@@ -420,14 +420,14 @@ export function AddDocumentSheet({
               {/* Google Docs mode */}
               {toolMode === "gdocs" && (
                 <div className="space-y-3">
-                  <div className="rounded-lg bg-zinc-900 border border-zinc-800 p-3 text-xs text-zinc-400">
+                  <div className="rounded-lg bg-card border border-border p-3 text-xs text-muted-foreground">
                     <p>The document must be shared with <span className="text-amber-600">"Anyone with the link"</span> (viewer access is enough).</p>
                   </div>
                   <input
                     value={gdocsUrl}
                     onChange={(e) => setGdocsUrl(e.target.value)}
                     placeholder="https://docs.google.com/document/d/..."
-                    className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500"
+                    className="w-full bg-card border border-border rounded-lg px-3 py-2 text-sm text-foreground placeholder-zinc-500 focus:outline-none focus:border-zinc-500"
                   />
                 </div>
               )}
@@ -435,7 +435,7 @@ export function AddDocumentSheet({
               <button
                 onClick={handleToolFetch}
                 disabled={fetching}
-                className="px-4 py-2 bg-violet-600 hover:bg-amber-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
+                className="px-4 py-2 bg-violet-600 hover:bg-amber-700 disabled:opacity-50 text-foreground text-sm font-medium rounded-lg transition-colors"
               >
                 {fetching ? "Importing..." : "Import"}
               </button>
@@ -458,19 +458,19 @@ export function AddDocumentSheet({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-zinc-800 flex items-center justify-between">
+        <div className="px-6 py-4 border-t border-border flex items-center justify-between">
           {error && <p className="text-sm text-red-400">{error}</p>}
           <div className="flex gap-2 ml-auto">
             <button
               onClick={() => { reset(); onOpenChange(false); }}
-              className="px-4 py-2 text-sm text-zinc-400 hover:text-white transition-colors"
+              className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
               disabled={saving || !title.trim() || !content.trim()}
-              className="px-5 py-2 bg-violet-600 hover:bg-amber-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
+              className="px-5 py-2 bg-violet-600 hover:bg-amber-700 disabled:opacity-40 disabled:cursor-not-allowed text-foreground text-sm font-medium rounded-lg transition-colors"
             >
               {saving ? "Saving..." : isEdit ? "Save changes" : "Add document"}
             </button>

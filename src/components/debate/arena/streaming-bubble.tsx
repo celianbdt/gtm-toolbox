@@ -22,9 +22,9 @@ export function StreamingBubble({ agent, content }: Props) {
           <span className="text-xs font-semibold" style={{ color: agent.color }}>
             {agent.name}
           </span>
-          <span className="text-xs text-zinc-600">{agent.role}</span>
+          <span className="text-xs text-muted-foreground">{agent.role}</span>
           {!content && (
-            <span className="text-xs text-zinc-500 italic">thinking...</span>
+            <span className="text-xs text-muted-foreground italic">thinking...</span>
           )}
         </div>
         <div

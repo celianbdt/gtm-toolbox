@@ -247,9 +247,9 @@ export function ConnectDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="bg-zinc-900 border-zinc-800 max-w-lg">
+      <DialogContent className="bg-card border-border max-w-lg">
         <DialogHeader>
-          <DialogTitle className="text-white">
+          <DialogTitle className="text-foreground">
             {status === "channels"
               ? `${meta.label} — Sélectionner les channels`
               : `Connecter ${meta.label}`}
@@ -271,7 +271,7 @@ export function ConnectDialog({
               className="h-8 text-xs"
             />
 
-            <div className="max-h-64 overflow-y-auto space-y-0.5 rounded-md border border-zinc-800 p-1">
+            <div className="max-h-64 overflow-y-auto space-y-0.5 rounded-md border border-border p-1">
               {loadingChannels ? (
                 <div className="flex items-center justify-center py-8">
                   <Loader2 className="size-4 animate-spin text-muted-foreground" />
@@ -290,7 +290,7 @@ export function ConnectDialog({
                       className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-left transition-colors ${
                         isSelected
                           ? "bg-amber-700/10 ring-1 ring-amber-700/30"
-                          : "hover:bg-zinc-800"
+                          : "hover:bg-secondary"
                       }`}
                     >
                       {c.is_private ? (
@@ -342,7 +342,7 @@ export function ConnectDialog({
           /* ── Token input ── */
           <div className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-sm text-zinc-400">{config.field}</label>
+              <label className="text-sm text-muted-foreground">{config.field}</label>
               <Input
                 type="password"
                 value={token}
@@ -354,7 +354,7 @@ export function ConnectDialog({
                   if (e.key === "Enter") handleConnect();
                 }}
               />
-              <p className="text-xs text-zinc-500">{config.helpText}</p>
+              <p className="text-xs text-muted-foreground">{config.helpText}</p>
             </div>
 
             {status === "error" && (

@@ -233,7 +233,7 @@ export function DashboardKanban({
                     <div className={`size-4 rounded border flex items-center justify-center shrink-0 ${
                       isSelected ? "bg-amber-700 border-amber-700" : "border-border"
                     }`}>
-                      {isSelected && <Check className="size-3 text-white" />}
+                      {isSelected && <Check className="size-3 text-foreground" />}
                     </div>
                     <WorkspaceLogo
                       logoUrl={ws.logo_url}

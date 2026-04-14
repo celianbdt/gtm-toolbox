@@ -33,7 +33,7 @@ export function SteeringInput({ onSend, onPause, onStop, isRunning }: Props) {
         <button
           onClick={handleSend}
           disabled={!input.trim()}
-          className="p-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-30 text-white rounded-lg transition-colors"
+          className="p-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-30 text-foreground rounded-lg transition-colors"
           title="Send"
         >
           <Send className="size-4" />

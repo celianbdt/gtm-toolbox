@@ -21,7 +21,7 @@ export function AiLoader({ label, size = "md" }: Props) {
         ))}
       </div>
       {label && (
-        <span className={`${textSize} text-zinc-400`}>{label}</span>
+        <span className={`${textSize} text-muted-foreground`}>{label}</span>
       )}
     </div>
   );

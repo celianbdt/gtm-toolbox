@@ -59,14 +59,14 @@ export function APIKeysForm({ workspaceSlug, initialKeys }: Props) {
     <section>
       <div className="flex items-center gap-2 mb-4">
         <Key className="h-4 w-4 text-amber-400" />
-        <h2 className="text-base font-semibold text-white">Clés API</h2>
+        <h2 className="text-base font-semibold text-foreground">Clés API</h2>
       </div>
-      <p className="text-sm text-zinc-400 mb-4">
+      <p className="text-sm text-muted-foreground mb-4">
         Chaque workspace utilise ses propres clés API pour les appels IA. Si vide, les clés globales du serveur sont utilisées.
       </p>
       <form onSubmit={handleSave} className="space-y-4">
         <div className="space-y-1.5">
-          <label className="text-sm text-zinc-400">Anthropic (Claude)</label>
+          <label className="text-sm text-muted-foreground">Anthropic (Claude)</label>
           <div className="relative">
             <Input
               type={showAnthropic ? "text" : "password"}
@@ -78,7 +78,7 @@ export function APIKeysForm({ workspaceSlug, initialKeys }: Props) {
             <button
               type="button"
               onClick={() => setShowAnthropic(!showAnthropic)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             >
               {showAnthropic ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
@@ -86,7 +86,7 @@ export function APIKeysForm({ workspaceSlug, initialKeys }: Props) {
         </div>
 
         <div className="space-y-1.5">
-          <label className="text-sm text-zinc-400">OpenAI (GPT)</label>
+          <label className="text-sm text-muted-foreground">OpenAI (GPT)</label>
           <div className="relative">
             <Input
               type={showOpenai ? "text" : "password"}
@@ -98,7 +98,7 @@ export function APIKeysForm({ workspaceSlug, initialKeys }: Props) {
             <button
               type="button"
               onClick={() => setShowOpenai(!showOpenai)}
-              className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             >
               {showOpenai ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>

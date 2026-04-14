@@ -26,7 +26,7 @@ export function DocumentCard({ doc, onEdit, onDeleted }: Props) {
   const excerpt = doc.content.slice(0, 180).replace(/\s+/g, " ");
 
   return (
-    <div className="group relative rounded-xl border border-zinc-800 bg-zinc-950 p-4 hover:border-zinc-600 transition-colors">
+    <div className="group relative rounded-xl border border-border bg-zinc-950 p-4 hover:border-zinc-600 transition-colors">
       {/* Type badge */}
       <div className="flex items-start justify-between gap-2 mb-3">
         <span
@@ -42,23 +42,23 @@ export function DocumentCard({ doc, onEdit, onDeleted }: Props) {
         <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
           <button
             onClick={() => onEdit(doc)}
-            className="text-xs px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors"
+            className="text-xs px-2 py-1 rounded bg-secondary hover:bg-zinc-700 text-foreground transition-colors"
           >
             Edit
           </button>
           <button
             onClick={handleDelete}
             disabled={deleting}
-            className="text-xs px-2 py-1 rounded bg-zinc-800 hover:bg-red-900 text-zinc-300 hover:text-red-300 transition-colors disabled:opacity-50"
+            className="text-xs px-2 py-1 rounded bg-secondary hover:bg-red-900 text-foreground hover:text-red-300 transition-colors disabled:opacity-50"
           >
             {deleting ? "..." : "Delete"}
           </button>
         </div>
       </div>
 
-      <h3 className="text-sm font-semibold text-white mb-2 line-clamp-1">{doc.title}</h3>
+      <h3 className="text-sm font-semibold text-foreground mb-2 line-clamp-1">{doc.title}</h3>
 
-      <p className="text-xs text-zinc-500 leading-relaxed line-clamp-3">
+      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
         {excerpt}
         {doc.content.length > 180 && "…"}
       </p>

@@ -13,17 +13,17 @@ export function DebateReview({ agents, mission, maxTurns, insightCount = 0 }: Pr
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold text-white">Ready to debate</h2>
-        <p className="text-sm text-zinc-400 mt-1">Review your setup before starting.</p>
+        <h2 className="text-lg font-semibold text-foreground">Ready to debate</h2>
+        <p className="text-sm text-muted-foreground mt-1">Review your setup before starting.</p>
       </div>
 
-      <div className="rounded-xl border border-zinc-800 divide-y divide-zinc-800">
+      <div className="rounded-xl border border-border divide-y divide-zinc-800">
         <div className="p-4">
-          <div className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Mission</div>
-          <p className="text-sm text-white">{mission}</p>
+          <div className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Mission</div>
+          <p className="text-sm text-foreground">{mission}</p>
         </div>
         <div className="p-4">
-          <div className="text-xs text-zinc-500 uppercase tracking-wider mb-3">
+          <div className="text-xs text-muted-foreground uppercase tracking-wider mb-3">
             Team ({agents.length} agents)
           </div>
           <div className="flex flex-col gap-2">
@@ -36,28 +36,28 @@ export function DebateReview({ agents, mission, maxTurns, insightCount = 0 }: Pr
                   {a.avatar_emoji}
                 </div>
                 <div>
-                  <div className="text-sm font-medium text-white">{a.name}</div>
-                  <div className="text-xs text-zinc-500">{a.role}</div>
+                  <div className="text-sm font-medium text-foreground">{a.name}</div>
+                  <div className="text-xs text-muted-foreground">{a.role}</div>
                 </div>
               </div>
             ))}
           </div>
         </div>
         <div className="p-4">
-          <div className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Max turns</div>
-          <p className="text-sm text-white">{maxTurns} turns</p>
+          <div className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Max turns</div>
+          <p className="text-sm text-foreground">{maxTurns} turns</p>
         </div>
         {insightCount > 0 && (
           <div className="p-4">
-            <div className="text-xs text-zinc-500 uppercase tracking-wider mb-2">Cross-tool insights</div>
-            <p className="text-sm text-white">
+            <div className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Cross-tool insights</div>
+            <p className="text-sm text-foreground">
               {insightCount} session{insightCount > 1 ? "s" : ""} included
             </p>
           </div>
         )}
       </div>
 
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-muted-foreground">
         You will initiate the debate with your first message. Agents will respond based on their
         engagement with your input. You can interject at any time.
       </p>

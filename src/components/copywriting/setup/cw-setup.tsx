@@ -110,7 +110,7 @@ export function CWSetup({ workspaceId, onSessionCreated }: Props) {
               onClick={() => setSequenceLength(n)}
               className={`size-9 rounded-lg text-sm font-medium transition-all ${
                 sequenceLength === n
-                  ? "bg-amber-700 text-white"
+                  ? "bg-amber-700 text-foreground"
                   : "bg-card border border-border hover:border-amber-700/30"
               }`}
             >

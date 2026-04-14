@@ -30,25 +30,25 @@ export default async function SettingsPage({
   return (
     <div className="flex-1 p-6 md:p-8">
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-white">Paramètres</h1>
-        <p className="text-sm text-zinc-400 mt-1">Gérer le workspace {workspace.name}</p>
+        <h1 className="text-xl font-semibold text-foreground">Paramètres</h1>
+        <p className="text-sm text-muted-foreground mt-1">Gérer le workspace {workspace.name}</p>
       </div>
       <div className="max-w-xl space-y-10">
         <WorkspaceSettingsForm workspace={workspace} />
-        <div className="border-t border-zinc-800 pt-10">
+        <div className="border-t border-border pt-10">
           <APIKeysForm
             workspaceSlug={workspace.slug}
             initialKeys={apiKeys ?? {}}
           />
         </div>
       </div>
-      <div className="border-t border-zinc-800 mt-10 pt-10 max-w-4xl">
+      <div className="border-t border-border mt-10 pt-10 max-w-4xl">
         <section>
           <div className="flex items-center gap-2 mb-4">
             <Plug className="h-4 w-4 text-blue-400" />
-            <h2 className="text-base font-semibold text-white">Intégrations</h2>
+            <h2 className="text-base font-semibold text-foreground">Intégrations</h2>
           </div>
-          <p className="text-sm text-zinc-400 mb-6">
+          <p className="text-sm text-muted-foreground mb-6">
             Connectez vos outils externes pour synchroniser les données automatiquement.
           </p>
           <IntegrationList />

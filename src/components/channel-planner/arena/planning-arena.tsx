@@ -297,9 +297,9 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
                 <div
                   className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-medium transition-colors ${
                     isDone
-                      ? "bg-[#8a6e4e] text-white"
+                      ? "bg-[#8a6e4e] text-foreground"
                       : isActive
-                      ? "bg-[#8a6e4e]/60 text-white animate-pulse"
+                      ? "bg-[#8a6e4e]/60 text-foreground animate-pulse"
                       : "bg-secondary text-muted-foreground"
                   }`}
                 >
@@ -421,7 +421,7 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
             </span>
             <button
               onClick={handleResume}
-              className="px-3 py-1.5 text-xs bg-[#8a6e4e] text-white rounded-lg hover:bg-[#6D28D9] transition-colors"
+              className="px-3 py-1.5 text-xs bg-[#8a6e4e] text-foreground rounded-lg hover:bg-[#6D28D9] transition-colors"
             >
               Resume
             </button>
@@ -466,7 +466,7 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
                 }
               }}
               disabled={!steeringInput.trim()}
-              className="p-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-30 text-white rounded-lg transition-colors"
+              className="p-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-30 text-foreground rounded-lg transition-colors"
             >
               <Send className="size-4" />
             </button>

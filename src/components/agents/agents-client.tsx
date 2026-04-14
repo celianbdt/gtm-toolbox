@@ -57,8 +57,8 @@ export function AgentsClient({ workspaceId, workspaceName, initialTemplates, ini
     <div className="flex-1 p-6 md:p-8 space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-white">Agents</h1>
-          <p className="text-sm text-zinc-400 mt-1">
+          <h1 className="text-xl font-semibold text-foreground">Agents</h1>
+          <p className="text-sm text-muted-foreground mt-1">
             Bibliothèque d'agents pour {workspaceName}
           </p>
         </div>
@@ -70,11 +70,11 @@ export function AgentsClient({ workspaceId, workspaceName, initialTemplates, ini
 
       {/* Template agents */}
       <section>
-        <h2 className="text-sm font-medium text-zinc-400 uppercase tracking-wider mb-3">
+        <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
           Templates
         </h2>
         {initialTemplates.length === 0 ? (
-          <p className="text-sm text-zinc-500">Aucun template disponible.</p>
+          <p className="text-sm text-muted-foreground">Aucun template disponible.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {initialTemplates.map((t) => (
@@ -91,14 +91,14 @@ export function AgentsClient({ workspaceId, workspaceName, initialTemplates, ini
 
       {/* Workspace agents */}
       <section>
-        <h2 className="text-sm font-medium text-zinc-400 uppercase tracking-wider mb-3">
+        <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">
           Mes agents
         </h2>
         {agents.length === 0 ? (
-          <div className="flex items-center justify-center rounded-lg border border-dashed border-zinc-800 p-10 text-center">
+          <div className="flex items-center justify-center rounded-lg border border-dashed border-border p-10 text-center">
             <div>
-              <p className="text-sm text-zinc-500">Aucun agent personnalisé.</p>
-              <p className="text-xs text-zinc-600 mt-1">
+              <p className="text-sm text-muted-foreground">Aucun agent personnalisé.</p>
+              <p className="text-xs text-muted-foreground mt-1">
                 Clone un template ou crée un agent depuis zéro.
               </p>
             </div>

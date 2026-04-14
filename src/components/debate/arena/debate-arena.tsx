@@ -192,7 +192,7 @@ export function DebateArena({ sessionId, workspaceId, onConcluded }: Props) {
             {onConcluded && (
               <button
                 onClick={() => onConcluded(sessionId)}
-                className="px-4 py-1.5 text-xs text-white bg-[#8a6e4e] hover:bg-[#6D28D9] rounded-lg transition-colors"
+                className="px-4 py-1.5 text-xs text-foreground bg-[#8a6e4e] hover:bg-[#6D28D9] rounded-lg transition-colors"
               >
                 View deliverables
               </button>

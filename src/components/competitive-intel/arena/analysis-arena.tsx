@@ -284,7 +284,7 @@ export function AnalysisArena({ sessionId, onComplete, onSaveExit }: Props) {
             <span className="text-sm text-muted-foreground">Analysis paused</span>
             <button
               onClick={handleResume}
-              className="px-3 py-1.5 text-xs bg-[#8a6e4e] text-white rounded-lg hover:bg-[#6D28D9] transition-colors"
+              className="px-3 py-1.5 text-xs bg-[#8a6e4e] text-foreground rounded-lg hover:bg-[#6D28D9] transition-colors"
             >
               Resume
             </button>

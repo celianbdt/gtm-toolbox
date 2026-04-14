@@ -66,7 +66,7 @@ export function HumanInput({ onSend, onPause, onStop, isStreaming, currentTurn, 
         <button
           onClick={handleSend}
           disabled={!value.trim() || isMaxReached}
-          className="p-2.5 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-30 text-white rounded-xl transition-colors"
+          className="p-2.5 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-30 text-foreground rounded-xl transition-colors"
           title="Send"
         >
           <Send className="size-4" />

@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`dark h-full antialiased ${geistMono.variable}`}
+      className={`h-full antialiased ${geistMono.variable}`}
     >
       <body className="h-full overflow-hidden flex flex-col">{children}</body>
     </html>

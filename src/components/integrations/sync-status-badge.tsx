@@ -33,7 +33,7 @@ export function SyncStatusBadge({
             Connecté
           </Badge>
           {lastSyncAt && (
-            <span className="text-xs text-zinc-500">
+            <span className="text-xs text-muted-foreground">
               Sync {relativeTime(lastSyncAt)}
             </span>
           )}
@@ -41,7 +41,7 @@ export function SyncStatusBadge({
       );
     case "disconnected":
       return (
-        <Badge className="bg-zinc-500/15 text-zinc-400 border-zinc-500/25">
+        <Badge className="bg-zinc-500/15 text-muted-foreground border-zinc-500/25">
           Non connecté
         </Badge>
       );

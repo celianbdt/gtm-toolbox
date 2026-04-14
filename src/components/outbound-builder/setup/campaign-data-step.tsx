@@ -265,7 +265,7 @@ export function CampaignDataStep({ workspaceId, dataSources, onChange }: Props) 
             onClick={() => { setInputMode(m.key); setError(""); }}
             className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${
               inputMode === m.key
-                ? "bg-[#8a6e4e] text-white"
+                ? "bg-[#8a6e4e] text-foreground"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -418,7 +418,7 @@ export function CampaignDataStep({ workspaceId, dataSources, onChange }: Props) 
               <button
                 onClick={handleToolImport}
                 disabled={!apiKey.trim() || isImporting || (selectedProvider === "plusvibe" && !providerWorkspaceId.trim())}
-                className="px-4 py-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 text-white text-xs font-medium rounded-lg transition-colors"
+                className="px-4 py-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 text-foreground text-xs font-medium rounded-lg transition-colors"
               >
                 {isImporting ? "Importing..." : "Connect & Import"}
               </button>
@@ -469,7 +469,7 @@ export function CampaignDataStep({ workspaceId, dataSources, onChange }: Props) 
           <button
             onClick={addManualRow}
             disabled={!manualRow.campaign_name?.trim()}
-            className="px-4 py-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 text-white text-xs rounded-lg transition-colors"
+            className="px-4 py-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 text-foreground text-xs rounded-lg transition-colors"
           >
             Add Campaign
           </button>

@@ -80,12 +80,12 @@ export function WhitelistPanel() {
   };
 
   return (
-    <div className="border border-zinc-800 rounded-xl overflow-hidden">
+    <div className="border border-border rounded-xl overflow-hidden">
       {/* Header */}
-      <div className="px-5 py-4 border-b border-zinc-800 bg-zinc-900/50">
+      <div className="px-5 py-4 border-b border-border bg-card">
         <div className="flex items-center gap-2 mb-3">
           <Shield className="h-4 w-4 text-amber-600" />
-          <h3 className="text-sm font-semibold text-white">Gestion des accès</h3>
+          <h3 className="text-sm font-semibold text-foreground">Gestion des accès</h3>
         </div>
 
         {/* Add email */}
@@ -95,12 +95,12 @@ export function WhitelistPanel() {
             onChange={(e) => setAddEmail(e.target.value)}
             placeholder="Ajouter un email..."
             type="email"
-            className="flex-1 bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-1.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-violet-600"
+            className="flex-1 bg-secondary border border-border rounded-lg px-3 py-1.5 text-sm text-foreground placeholder-zinc-500 focus:outline-none focus:border-violet-600"
           />
           <button
             type="submit"
             disabled={adding || !addEmail.trim()}
-            className="flex items-center gap-1 px-3 py-1.5 bg-violet-600 hover:bg-amber-700 disabled:opacity-40 text-white text-xs font-medium rounded-lg transition-colors"
+            className="flex items-center gap-1 px-3 py-1.5 bg-violet-600 hover:bg-amber-700 disabled:opacity-40 text-foreground text-xs font-medium rounded-lg transition-colors"
           >
             <UserPlus className="h-3 w-3" />
             {adding ? "..." : "Inviter"}
@@ -115,8 +115,8 @@ export function WhitelistPanel() {
               onClick={() => setFilter(f.value)}
               className={`px-2.5 py-1 rounded-md text-xs font-medium transition-colors ${
                 filter === f.value
-                  ? "bg-zinc-700 text-white"
-                  : "text-zinc-500 hover:text-white"
+                  ? "bg-zinc-700 text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {f.label}
@@ -128,9 +128,9 @@ export function WhitelistPanel() {
       {/* List */}
       <div className="max-h-64 overflow-y-auto">
         {loading ? (
-          <div className="px-5 py-8 text-center text-sm text-zinc-500">Chargement...</div>
+          <div className="px-5 py-8 text-center text-sm text-muted-foreground">Chargement...</div>
         ) : entries.length === 0 ? (
-          <div className="px-5 py-8 text-center text-sm text-zinc-500">Aucune entrée</div>
+          <div className="px-5 py-8 text-center text-sm text-muted-foreground">Aucune entrée</div>
         ) : (
           <div className="divide-y divide-zinc-800/50">
             {entries.map((entry) => {
@@ -142,8 +142,8 @@ export function WhitelistPanel() {
                     <Icon className={`h-3 w-3 ${cfg.color}`} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-white truncate">{entry.email}</p>
-                    <p className="text-[11px] text-zinc-500">
+                    <p className="text-sm text-foreground truncate">{entry.email}</p>
+                    <p className="text-[11px] text-muted-foreground">
                       {new Date(entry.created_at).toLocaleDateString("fr-FR")}
                       {entry.approved_at && ` · Approuvé le ${new Date(entry.approved_at).toLocaleDateString("fr-FR")}`}
                     </p>

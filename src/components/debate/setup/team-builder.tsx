@@ -93,31 +93,31 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-white">Compose your debate team</h2>
-          <p className="text-sm text-zinc-400 mt-1">
+          <h2 className="text-lg font-semibold text-foreground">Compose your debate team</h2>
+          <p className="text-sm text-muted-foreground mt-1">
             Select agents that will debate. Each brings a distinct perspective.
           </p>
         </div>
 
         {/* Team size picker */}
         <div className="flex flex-col items-end gap-1 shrink-0">
-          <span className="text-xs text-zinc-500">Team size</span>
-          <div className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-lg px-2 py-1">
+          <span className="text-xs text-muted-foreground">Team size</span>
+          <div className="flex items-center gap-2 bg-card border border-border rounded-lg px-2 py-1">
             <button
               onClick={() => {
                 const next = Math.max(2, maxAgents - 1);
                 setMaxAgents(next);
                 if (agents.length > next) onChange(agents.slice(0, next));
               }}
-              className="w-5 h-5 flex items-center justify-center text-zinc-400 hover:text-white transition-colors disabled:opacity-30"
+              className="w-5 h-5 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30"
               disabled={maxAgents <= 2}
             >
               <Minus className="w-3 h-3" />
             </button>
-            <span className="text-sm font-medium text-white w-4 text-center">{maxAgents}</span>
+            <span className="text-sm font-medium text-foreground w-4 text-center">{maxAgents}</span>
             <button
               onClick={() => setMaxAgents(maxAgents + 1)}
-              className="w-5 h-5 flex items-center justify-center text-zinc-400 hover:text-white transition-colors disabled:opacity-30"
+              className="w-5 h-5 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors disabled:opacity-30"
               disabled={false}
             >
               <Plus className="w-3 h-3" />
@@ -127,13 +127,13 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
       </div>
 
       {/* Mode tabs */}
-      <div className="flex gap-1 p-1 bg-zinc-900 rounded-lg w-fit">
+      <div className="flex gap-1 p-1 bg-card rounded-lg w-fit">
         {(["templates", "prompt"] as const).map((m) => (
           <button
             key={m}
             onClick={() => setMode(m)}
             className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
-              mode === m ? "bg-zinc-700 text-white" : "text-zinc-400 hover:text-white"
+              mode === m ? "bg-zinc-700 text-foreground" : "text-muted-foreground hover:text-foreground"
             }`}
           >
             {m === "templates" ? "Library" : "Generate with AI"}
@@ -150,7 +150,7 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
             <>
               {workspaceAgents.length > 0 && (
                 <div>
-                  <div className="text-xs text-zinc-500 mb-2 uppercase tracking-wider">My agents</div>
+                  <div className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">My agents</div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                     {workspaceAgents.map((a) => (
                       <div key={a.id} className={`relative ${isFull && !selectedIds.has(a.id) ? "opacity-40 cursor-not-allowed" : ""}`}>
@@ -167,7 +167,7 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
               )}
               <div>
                 {workspaceAgents.length > 0 && (
-                  <div className="text-xs text-zinc-500 mb-2 uppercase tracking-wider">Templates</div>
+                  <div className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Templates</div>
                 )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {templates.map((t) => (
@@ -181,7 +181,7 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
                     </div>
                   ))}
                   {templates.length === 0 && workspaceAgents.length === 0 && (
-                    <p className="text-sm text-zinc-500 col-span-3">No agents available.</p>
+                    <p className="text-sm text-muted-foreground col-span-3">No agents available.</p>
                   )}
                 </div>
               </div>
@@ -199,7 +199,7 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="e.g. I want a growth hacker, a skeptic, and a customer success expert"
               rows={3}
-              className="w-full bg-zinc-900 border border-zinc-700 rounded-lg px-4 py-3 text-sm text-white placeholder-zinc-500 resize-none focus:outline-none focus:border-zinc-500"
+              className="w-full bg-card border border-border rounded-lg px-4 py-3 text-sm text-foreground placeholder-zinc-500 resize-none focus:outline-none focus:border-zinc-500"
             />
             {error && <p className="text-sm text-red-400">{error}</p>}
           </div>
@@ -210,7 +210,7 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
             <button
               onClick={generateFromPrompt}
               disabled={!prompt.trim()}
-              className="px-4 py-2 bg-violet-600 hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
+              className="px-4 py-2 bg-violet-600 hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed text-foreground text-sm font-medium rounded-lg transition-colors"
             >
               Generate Team
             </button>
@@ -219,7 +219,7 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
           {/* Generated results — selectable */}
           {generatedAgents.length > 0 && !isGenerating && (
             <div className="space-y-2">
-              <p className="text-xs text-zinc-400 uppercase tracking-wider">
+              <p className="text-xs text-muted-foreground uppercase tracking-wider">
                 Generated — click to add to your team
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -235,7 +235,7 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
               </div>
               <button
                 onClick={() => { setGeneratedAgents([]); setPrompt(""); }}
-                className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
                 Clear results
               </button>
@@ -246,9 +246,9 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
 
       {/* Selected team */}
       {agents.length > 0 && (
-        <div className="pt-2 border-t border-zinc-800">
+        <div className="pt-2 border-t border-border">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs text-zinc-500 uppercase tracking-wider">
+            <span className="text-xs text-muted-foreground uppercase tracking-wider">
               Team ({agents.length}/{maxAgents})
             </span>
             {isFull && (
