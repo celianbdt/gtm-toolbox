@@ -22,7 +22,7 @@ export const ML_AGENTS: Record<
     name: "Brand Strategist",
     slug: "ml-brand-strategist",
     avatar_emoji: "\u{1F3A8}",
-    color: "#8b5cf6",
+    color: "#8a6e4e",
     role: "Brand & Positioning Strategist",
     personality: {
       traits: {

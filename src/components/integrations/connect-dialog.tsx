@@ -289,7 +289,7 @@ export function ConnectDialog({
                       onClick={() => toggleChannel(c.id)}
                       className={`w-full flex items-center gap-2 px-2 py-1.5 rounded text-left transition-colors ${
                         isSelected
-                          ? "bg-violet-500/10 ring-1 ring-violet-500/30"
+                          ? "bg-amber-700/10 ring-1 ring-amber-700/30"
                           : "hover:bg-zinc-800"
                       }`}
                     >
@@ -305,7 +305,7 @@ export function ConnectDialog({
                         {c.num_members} members
                       </span>
                       {isSelected && (
-                        <CheckCircle2 className="size-3 text-violet-400 shrink-0" />
+                        <CheckCircle2 className="size-3 text-amber-600 shrink-0" />
                       )}
                     </button>
                   );

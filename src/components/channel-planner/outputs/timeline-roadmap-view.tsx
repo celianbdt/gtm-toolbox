@@ -16,7 +16,7 @@ export function TimelineRoadmapView({ output }: Props) {
           <div key={i} className="border border-border rounded-xl overflow-hidden">
             <div className="px-5 py-3 border-b border-border flex items-center justify-between bg-secondary/20">
               <div className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-[#7C3AED] text-white flex items-center justify-center text-xs font-medium">
+                <div className="w-6 h-6 rounded-full bg-[#8a6e4e] text-white flex items-center justify-center text-xs font-medium">
                   {i + 1}
                 </div>
                 <div>
@@ -43,7 +43,7 @@ export function TimelineRoadmapView({ output }: Props) {
                   {phase.channels.map((ch, j) => (
                     <span
                       key={j}
-                      className="text-xs px-2 py-0.5 bg-[#7C3AED]/10 text-[#A78BFA] rounded-full"
+                      className="text-xs px-2 py-0.5 bg-[#8a6e4e]/10 text-[#c4a882] rounded-full"
                     >
                       {ch}
                     </span>
@@ -59,7 +59,7 @@ export function TimelineRoadmapView({ output }: Props) {
                 <ul className="space-y-1">
                   {phase.milestones.map((m, j) => (
                     <li key={j} className="text-xs text-foreground/90 flex items-start gap-2">
-                      <span className="text-[#A78BFA] shrink-0 mt-0.5">&#9670;</span>
+                      <span className="text-[#c4a882] shrink-0 mt-0.5">&#9670;</span>
                       {m}
                     </li>
                   ))}

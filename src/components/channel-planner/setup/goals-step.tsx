@@ -47,7 +47,7 @@ export function GoalsStep({ goals, onChange }: Props) {
             onChange={(e) =>
               onChange({ ...goals, revenue_target: e.target.value })
             }
-            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
           />
         </div>
 
@@ -65,7 +65,7 @@ export function GoalsStep({ goals, onChange }: Props) {
                 }
                 className={`py-2 px-3 text-sm rounded-lg border transition-all ${
                   goals.timeline_months === opt.value
-                    ? "border-[#7C3AED]/40 bg-[#7C3AED]/10 text-foreground"
+                    ? "border-[#8a6e4e]/40 bg-[#8a6e4e]/10 text-foreground"
                     : "border-border text-muted-foreground hover:text-foreground hover:border-border/80"
                 }`}
               >
@@ -87,7 +87,7 @@ export function GoalsStep({ goals, onChange }: Props) {
                 onClick={() => onChange({ ...goals, growth_stage: stage })}
                 className={`py-2 px-3 text-sm rounded-lg border transition-all ${
                   goals.growth_stage === stage
-                    ? "border-[#7C3AED]/40 bg-[#7C3AED]/10 text-foreground"
+                    ? "border-[#8a6e4e]/40 bg-[#8a6e4e]/10 text-foreground"
                     : "border-border text-muted-foreground hover:text-foreground hover:border-border/80"
                 }`}
               >
@@ -109,7 +109,7 @@ export function GoalsStep({ goals, onChange }: Props) {
             onChange={(e) =>
               onChange({ ...goals, primary_objective: e.target.value })
             }
-            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
           />
         </div>
       </div>

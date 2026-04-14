@@ -12,7 +12,7 @@ type Props = {
 
 const ANALYSTS = [
   { emoji: "\u{1F4CA}", name: "Market Analyst", color: "#3b82f6" },
-  { emoji: "\u{1F52C}", name: "Product Strategist", color: "#8b5cf6" },
+  { emoji: "\u{1F52C}", name: "Product Strategist", color: "#8a6e4e" },
   { emoji: "\u{1F3AF}", name: "Sales Tactician", color: "#ef4444" },
   { emoji: "\u{1F9D1}\u200D\u{1F4BC}", name: "Customer Voice", color: "#06b6d4" },
 ];
@@ -59,7 +59,7 @@ export function AnalysisReview({
             {focusDimensions.map((f) => (
               <span
                 key={f}
-                className="text-xs px-2.5 py-1 bg-[#7C3AED]/10 text-[#A78BFA] rounded-full"
+                className="text-xs px-2.5 py-1 bg-[#8a6e4e]/10 text-[#c4a882] rounded-full"
               >
                 {ANALYSIS_FOCUS_LABELS[f]}
               </span>

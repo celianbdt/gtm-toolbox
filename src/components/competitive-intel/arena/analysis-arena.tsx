@@ -87,7 +87,7 @@ export function AnalysisArena({ sessionId, onComplete, onSaveExit }: Props) {
         agentId: "user",
         agentName: "You",
         emoji: "",
-        color: "#7C3AED",
+        color: "#8a6e4e",
         content: text,
         phase: "debate",
         role: "user",
@@ -284,7 +284,7 @@ export function AnalysisArena({ sessionId, onComplete, onSaveExit }: Props) {
             <span className="text-sm text-muted-foreground">Analysis paused</span>
             <button
               onClick={handleResume}
-              className="px-3 py-1.5 text-xs bg-[#7C3AED] text-white rounded-lg hover:bg-[#6D28D9] transition-colors"
+              className="px-3 py-1.5 text-xs bg-[#8a6e4e] text-white rounded-lg hover:bg-[#6D28D9] transition-colors"
             >
               Resume
             </button>
@@ -327,7 +327,7 @@ export function AnalysisArena({ sessionId, onComplete, onSaveExit }: Props) {
           <div className="px-6 py-3 border-t border-border text-center">
             <p className="text-sm text-muted-foreground">
               Analysis stopped.{" "}
-              <button onClick={onSaveExit} className="text-[#A78BFA] hover:underline">
+              <button onClick={onSaveExit} className="text-[#c4a882] hover:underline">
                 View partial results
               </button>
             </p>

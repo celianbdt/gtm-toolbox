@@ -20,13 +20,13 @@ const styles = StyleSheet.create({
   header: {
     marginBottom: 30,
     borderBottomWidth: 2,
-    borderBottomColor: "#7C3AED",
+    borderBottomColor: "#8a6e4e",
     paddingBottom: 15,
   },
   title: {
     fontSize: 22,
     fontFamily: "Helvetica-Bold",
-    color: "#7C3AED",
+    color: "#8a6e4e",
     marginBottom: 4,
   },
   subtitle: {
@@ -243,7 +243,7 @@ export function CIReport({ data }: { data: ReportData }) {
               <View
                 style={[
                   styles.matrixDot,
-                  { backgroundColor: player.is_us ? "#7C3AED" : "#9ca3af" },
+                  { backgroundColor: player.is_us ? "#8a6e4e" : "#9ca3af" },
                 ]}
               />
               <Text style={{ fontSize: 10, fontFamily: player.is_us ? "Helvetica-Bold" : "Helvetica" }}>
@@ -277,7 +277,7 @@ export function CIReport({ data }: { data: ReportData }) {
                   <Text style={{ fontSize: 9, color: "#374151", marginTop: 2 }}>
                     Response: {obj.response_strategy}
                   </Text>
-                  <Text style={{ fontSize: 9, color: "#7C3AED", marginTop: 2 }}>
+                  <Text style={{ fontSize: 9, color: "#8a6e4e", marginTop: 2 }}>
                     Follow-up: &ldquo;{obj.follow_up_question}&rdquo;
                   </Text>
                 </View>

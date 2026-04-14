@@ -249,7 +249,7 @@ export function OutboundArena({ sessionId, mode, onComplete }: Props) {
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             {isRunning && (
-              <div className="w-3 h-3 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin" />
+              <div className="w-3 h-3 border-2 border-[#8a6e4e] border-t-transparent rounded-full animate-spin" />
             )}
             <div>
               <span className="text-sm font-medium text-foreground">
@@ -308,11 +308,11 @@ export function OutboundArena({ sessionId, mode, onComplete }: Props) {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-sm font-medium text-foreground">{agent.agentName}</span>
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#7C3AED] animate-pulse" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#8a6e4e] animate-pulse" />
                 </div>
                 <div className="text-sm text-muted-foreground whitespace-pre-wrap">
                   {agent.content}
-                  <span className="inline-block w-1 h-4 bg-[#7C3AED] animate-pulse ml-0.5" />
+                  <span className="inline-block w-1 h-4 bg-[#8a6e4e] animate-pulse ml-0.5" />
                 </div>
               </div>
             </div>

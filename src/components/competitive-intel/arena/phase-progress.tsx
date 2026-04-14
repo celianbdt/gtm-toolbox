@@ -35,9 +35,9 @@ export function PhaseProgress({ currentPhase, estimatedCost }: Props) {
               <div
                 className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-medium transition-colors ${
                   isDone
-                    ? "bg-[#7C3AED] text-white"
+                    ? "bg-[#8a6e4e] text-white"
                     : isActive
-                    ? "bg-[#7C3AED]/60 text-white animate-pulse"
+                    ? "bg-[#8a6e4e]/60 text-white animate-pulse"
                     : "bg-secondary text-muted-foreground"
                 }`}
               >
@@ -48,7 +48,7 @@ export function PhaseProgress({ currentPhase, estimatedCost }: Props) {
                   isActive
                     ? "text-foreground font-medium"
                     : isDone
-                    ? "text-[#A78BFA]"
+                    ? "text-[#c4a882]"
                     : "text-muted-foreground"
                 }`}
               >
@@ -57,7 +57,7 @@ export function PhaseProgress({ currentPhase, estimatedCost }: Props) {
               {i < PHASES.length - 1 && (
                 <div
                   className={`flex-1 h-px transition-colors ${
-                    isDone ? "bg-[#7C3AED]" : "bg-border"
+                    isDone ? "bg-[#8a6e4e]" : "bg-border"
                   }`}
                 />
               )}

@@ -113,7 +113,7 @@ export function BudgetSettings({
     <Card size="sm">
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Settings2 className="size-4 text-violet-400" />
+          <Settings2 className="size-4 text-amber-600" />
           <CardTitle>Budget Settings</CardTitle>
         </div>
         <CardDescription>

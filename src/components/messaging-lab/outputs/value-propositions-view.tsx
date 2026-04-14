@@ -36,7 +36,7 @@ export function ValuePropositionsView({ output }: Props) {
             {prop.proof_points.length > 0 && (
               <div className="flex flex-wrap gap-1.5">
                 {prop.proof_points.map((pp, j) => (
-                  <span key={j} className="text-[10px] px-2 py-0.5 bg-[#7C3AED]/10 text-[#A78BFA] rounded-full">
+                  <span key={j} className="text-[10px] px-2 py-0.5 bg-[#8a6e4e]/10 text-[#c4a882] rounded-full">
                     {pp}
                   </span>
                 ))}

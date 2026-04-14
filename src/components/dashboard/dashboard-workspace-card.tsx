@@ -192,7 +192,7 @@ export function DashboardWorkspaceCard({ workspace: initial }: Props) {
 
         {/* Next action */}
         {workspace.next_task && (
-          <div className="rounded-md border border-border/50 bg-violet-500/5 px-2.5 py-1.5">
+          <div className="rounded-md border border-border/50 bg-amber-700/5 px-2.5 py-1.5">
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">
               Prochaine action
             </div>

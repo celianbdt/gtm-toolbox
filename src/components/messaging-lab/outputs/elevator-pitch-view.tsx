@@ -12,10 +12,10 @@ export function ElevatorPitchView({ output }: Props) {
   return (
     <div className="space-y-6">
       {/* Key Hook */}
-      <div className="border border-[#7C3AED]/20 rounded-xl p-5 bg-[#7C3AED]/5">
+      <div className="border border-[#8a6e4e]/20 rounded-xl p-5 bg-[#8a6e4e]/5">
         <div className="flex items-center gap-1.5 mb-2">
-          <Zap className="size-3.5 text-[#A78BFA]" />
-          <h3 className="text-xs font-medium text-[#A78BFA] uppercase tracking-wider">Key Hook</h3>
+          <Zap className="size-3.5 text-[#c4a882]" />
+          <h3 className="text-xs font-medium text-[#c4a882] uppercase tracking-wider">Key Hook</h3>
         </div>
         <p className="text-base font-medium text-foreground">{ep.key_hook}</p>
       </div>
@@ -50,13 +50,13 @@ export function ElevatorPitchView({ output }: Props) {
       {/* Conversation Starters */}
       <div className="border border-border rounded-xl p-5">
         <div className="flex items-center gap-1.5 mb-3">
-          <MessageSquare className="size-3.5 text-[#A78BFA]" />
+          <MessageSquare className="size-3.5 text-[#c4a882]" />
           <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Conversation Starters</h3>
         </div>
         <ul className="space-y-2">
           {ep.conversation_starters.map((starter, i) => (
             <li key={i} className="text-sm text-foreground/90 flex items-start gap-2">
-              <span className="text-[#A78BFA] shrink-0 mt-1">&#8226;</span>
+              <span className="text-[#c4a882] shrink-0 mt-1">&#8226;</span>
               {starter}
             </li>
           ))}

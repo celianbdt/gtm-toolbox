@@ -100,12 +100,12 @@ export function ReportEditor({
                   <em className="italic text-foreground/80">{children}</em>
                 ),
                 blockquote: ({ children }) => (
-                  <blockquote className="border-l-2 border-violet-500/50 pl-4 my-3 text-sm text-muted-foreground italic">
+                  <blockquote className="border-l-2 border-amber-700/50 pl-4 my-3 text-sm text-muted-foreground italic">
                     {children}
                   </blockquote>
                 ),
                 code: ({ children }) => (
-                  <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono text-violet-400">
+                  <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono text-amber-600">
                     {children}
                   </code>
                 ),

@@ -69,7 +69,7 @@ export function InsightPicker({ workspaceId, currentToolId, selectedIds, onChang
   return (
     <div className="mt-6 rounded-lg border border-border bg-secondary/30 p-4">
       <div className="flex items-center gap-2 mb-3">
-        <svg className="w-4 h-4 text-[#7C3AED]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="w-4 h-4 text-[#8a6e4e]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
         <span className="text-sm font-medium text-foreground">Include insights from other tools</span>
@@ -109,14 +109,14 @@ export function InsightPicker({ workspaceId, currentToolId, selectedIds, onChang
                   <label
                     key={s.id}
                     className={`flex items-center gap-2.5 py-1.5 px-2 rounded-md cursor-pointer transition-colors ${
-                      checked ? "bg-[#7C3AED]/10" : "hover:bg-secondary"
+                      checked ? "bg-[#8a6e4e]/10" : "hover:bg-secondary"
                     }`}
                   >
                     <input
                       type="checkbox"
                       checked={checked}
                       onChange={() => toggle(s.id)}
-                      className="rounded border-border text-[#7C3AED] focus:ring-[#7C3AED] w-3.5 h-3.5"
+                      className="rounded border-border text-[#8a6e4e] focus:ring-[#8a6e4e] w-3.5 h-3.5"
                     />
                     <span className="text-xs text-foreground flex-1 truncate">{s.title}</span>
                     <span className="text-[10px] text-muted-foreground whitespace-nowrap">
@@ -132,7 +132,7 @@ export function InsightPicker({ workspaceId, currentToolId, selectedIds, onChang
 
       {selectedIds.length > 0 && (
         <div className="mt-3 pt-3 border-t border-border">
-          <span className="text-xs text-[#7C3AED]">
+          <span className="text-xs text-[#8a6e4e]">
             {selectedIds.length} session{selectedIds.length > 1 ? "s" : ""} selected
           </span>
         </div>

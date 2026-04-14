@@ -26,7 +26,7 @@ const MOCK_AGENTS = [
     id: "1",
     name: "The Strategist",
     emoji: "\u{1F3AF}",
-    color: "#8b5cf6",
+    color: "#8a6e4e",
     role: "GTM Strategist",
   },
   {
@@ -262,7 +262,7 @@ function SideChat({
                 {isPaused ? (
                   <button
                     onClick={onResume}
-                    className="px-2.5 py-1 text-[10px] font-medium bg-violet-600 text-white rounded-md hover:bg-violet-500 transition-colors"
+                    className="px-2.5 py-1 text-[10px] font-medium bg-violet-600 text-white rounded-md hover:bg-amber-700 transition-colors"
                   >
                     Resume
                   </button>
@@ -346,7 +346,7 @@ function SideChat({
         {messages.map((msg) => (
           <div key={msg.id} className={msg.isUser ? "flex justify-end" : ""}>
             {msg.isUser ? (
-              <div className="max-w-[85%] bg-violet-600/20 border border-violet-500/20 rounded-xl rounded-tr-sm px-3 py-2">
+              <div className="max-w-[85%] bg-violet-600/20 border border-amber-700/20 rounded-xl rounded-tr-sm px-3 py-2">
                 <p className="text-[11px] text-violet-200 leading-relaxed">
                   {msg.text}
                 </p>
@@ -457,7 +457,7 @@ function SideChat({
             <button
               onClick={handleSend}
               disabled={!input.trim()}
-              className="p-1.5 bg-violet-600 hover:bg-violet-500 disabled:opacity-30 text-white rounded-lg transition-colors"
+              className="p-1.5 bg-violet-600 hover:bg-amber-700 disabled:opacity-30 text-white rounded-lg transition-colors"
             >
               <Send className="h-3.5 w-3.5" />
             </button>

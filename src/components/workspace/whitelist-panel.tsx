@@ -84,7 +84,7 @@ export function WhitelistPanel() {
       {/* Header */}
       <div className="px-5 py-4 border-b border-zinc-800 bg-zinc-900/50">
         <div className="flex items-center gap-2 mb-3">
-          <Shield className="h-4 w-4 text-violet-400" />
+          <Shield className="h-4 w-4 text-amber-600" />
           <h3 className="text-sm font-semibold text-white">Gestion des accès</h3>
         </div>
 
@@ -100,7 +100,7 @@ export function WhitelistPanel() {
           <button
             type="submit"
             disabled={adding || !addEmail.trim()}
-            className="flex items-center gap-1 px-3 py-1.5 bg-violet-600 hover:bg-violet-500 disabled:opacity-40 text-white text-xs font-medium rounded-lg transition-colors"
+            className="flex items-center gap-1 px-3 py-1.5 bg-violet-600 hover:bg-amber-700 disabled:opacity-40 text-white text-xs font-medium rounded-lg transition-colors"
           >
             <UserPlus className="h-3 w-3" />
             {adding ? "..." : "Inviter"}

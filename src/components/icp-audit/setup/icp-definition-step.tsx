@@ -79,7 +79,7 @@ export function ICPDefinitionStep({
           value={icpDefinition}
           onChange={(e) => onIcpDefinitionChange(e.target.value)}
           rows={5}
-          className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 resize-none"
+          className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30 resize-none"
         />
       </div>
 
@@ -100,7 +100,7 @@ export function ICPDefinitionStep({
                   placeholder="Segment name"
                   value={seg.name}
                   onChange={(e) => updateSegment(seg.id, { name: e.target.value })}
-                  className="flex-1 bg-transparent border-b border-border text-foreground text-sm font-medium placeholder:text-muted-foreground focus:outline-none focus:border-[#7C3AED] pb-1"
+                  className="flex-1 bg-transparent border-b border-border text-foreground text-sm font-medium placeholder:text-muted-foreground focus:outline-none focus:border-[#8a6e4e] pb-1"
                 />
                 <button
                   onClick={() => removeSegment(seg.id)}
@@ -114,7 +114,7 @@ export function ICPDefinitionStep({
                 value={seg.description}
                 onChange={(e) => updateSegment(seg.id, { description: e.target.value })}
                 rows={2}
-                className="w-full bg-secondary/30 rounded px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 resize-none"
+                className="w-full bg-secondary/30 rounded px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30 resize-none"
               />
               <div className="grid grid-cols-3 gap-2">
                 <input
@@ -122,21 +122,21 @@ export function ICPDefinitionStep({
                   placeholder="Industry"
                   value={seg.industry ?? ""}
                   onChange={(e) => updateSegment(seg.id, { industry: e.target.value })}
-                  className="text-xs bg-secondary/30 rounded px-2.5 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                  className="text-xs bg-secondary/30 rounded px-2.5 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
                 />
                 <input
                   type="text"
                   placeholder="Company size"
                   value={seg.company_size ?? ""}
                   onChange={(e) => updateSegment(seg.id, { company_size: e.target.value })}
-                  className="text-xs bg-secondary/30 rounded px-2.5 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                  className="text-xs bg-secondary/30 rounded px-2.5 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
                 />
                 <input
                   type="text"
                   placeholder="Revenue range"
                   value={seg.revenue_range ?? ""}
                   onChange={(e) => updateSegment(seg.id, { revenue_range: e.target.value })}
-                  className="text-xs bg-secondary/30 rounded px-2.5 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                  className="text-xs bg-secondary/30 rounded px-2.5 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
                 />
               </div>
             </div>
@@ -144,7 +144,7 @@ export function ICPDefinitionStep({
         </div>
         <button
           onClick={addSegment}
-          className="mt-3 flex items-center gap-2 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground border border-dashed border-border rounded-lg hover:border-[#7C3AED]/30 transition-colors w-full justify-center"
+          className="mt-3 flex items-center gap-2 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground border border-dashed border-border rounded-lg hover:border-[#8a6e4e]/30 transition-colors w-full justify-center"
         >
           <Plus className="size-4" />
           Add Segment
@@ -171,7 +171,7 @@ export function ICPDefinitionStep({
         </div>
         <button
           onClick={addPersona}
-          className="mt-3 flex items-center gap-2 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground border border-dashed border-border rounded-lg hover:border-[#7C3AED]/30 transition-colors w-full justify-center"
+          className="mt-3 flex items-center gap-2 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground border border-dashed border-border rounded-lg hover:border-[#8a6e4e]/30 transition-colors w-full justify-center"
         >
           <Plus className="size-4" />
           Add Persona
@@ -212,7 +212,7 @@ function PersonaCard({
           placeholder="Persona title (e.g. VP of Sales)"
           value={persona.title}
           onChange={(e) => onUpdate({ title: e.target.value })}
-          className="flex-1 bg-transparent border-b border-border text-foreground text-sm font-medium placeholder:text-muted-foreground focus:outline-none focus:border-[#7C3AED] pb-1"
+          className="flex-1 bg-transparent border-b border-border text-foreground text-sm font-medium placeholder:text-muted-foreground focus:outline-none focus:border-[#8a6e4e] pb-1"
         />
         <button
           onClick={onRemove}
@@ -226,7 +226,7 @@ function PersonaCard({
         placeholder="Role / department"
         value={persona.role}
         onChange={(e) => onUpdate({ role: e.target.value })}
-        className="w-full text-xs bg-secondary/30 rounded px-2.5 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+        className="w-full text-xs bg-secondary/30 rounded px-2.5 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
       />
 
       {/* Pain Points */}
@@ -288,7 +288,7 @@ function ListField({
               placeholder={placeholder}
               value={item}
               onChange={(e) => onChange(i, e.target.value)}
-              className="flex-1 text-xs bg-secondary/30 rounded px-2 py-1 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+              className="flex-1 text-xs bg-secondary/30 rounded px-2 py-1 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
             />
             {items.length > 1 && (
               <button
@@ -302,7 +302,7 @@ function ListField({
         ))}
         <button
           onClick={onAdd}
-          className="text-[10px] text-muted-foreground hover:text-[#A78BFA] transition-colors"
+          className="text-[10px] text-muted-foreground hover:text-[#c4a882] transition-colors"
         >
           + Add
         </button>

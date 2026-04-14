@@ -130,7 +130,7 @@ export function OutputsDashboard({ sessionId, onBack }: Props) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="w-6 h-6 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[#8a6e4e] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -153,7 +153,7 @@ export function OutputsDashboard({ sessionId, onBack }: Props) {
             <button
               onClick={runSynthesis}
               disabled={synthesizing}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-white bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-40 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-white bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 rounded-lg transition-colors"
             >
               <Play className="size-3.5" />
               {synthesizing ? "Generating..." : "Generate deliverables"}
@@ -174,9 +174,9 @@ export function OutputsDashboard({ sessionId, onBack }: Props) {
 
       {/* Incomplete banner */}
       {isIncomplete && !synthesizing && (
-        <div className="shrink-0 px-6 py-3 bg-[#7C3AED]/5 border-b border-[#7C3AED]/10">
+        <div className="shrink-0 px-6 py-3 bg-[#8a6e4e]/5 border-b border-[#8a6e4e]/10">
           <div className="max-w-4xl mx-auto flex items-center gap-3">
-            <FileText className="size-4 text-[#A78BFA] shrink-0" />
+            <FileText className="size-4 text-[#c4a882] shrink-0" />
             <p className="text-xs text-muted-foreground">
               This workshop has <span className="text-foreground font-medium">{agentMessages.length} agent messages</span> but no structured deliverables.
               Click &ldquo;Generate deliverables&rdquo; to create framework, taglines, pitches and more.
@@ -186,9 +186,9 @@ export function OutputsDashboard({ sessionId, onBack }: Props) {
       )}
 
       {synthesizing && (
-        <div className="shrink-0 px-6 py-3 bg-[#7C3AED]/5 border-b border-[#7C3AED]/10">
+        <div className="shrink-0 px-6 py-3 bg-[#8a6e4e]/5 border-b border-[#8a6e4e]/10">
           <div className="max-w-4xl mx-auto flex items-center gap-3">
-            <div className="w-4 h-4 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin shrink-0" />
+            <div className="w-4 h-4 border-2 border-[#8a6e4e] border-t-transparent rounded-full animate-spin shrink-0" />
             <p className="text-xs text-muted-foreground">
               Generating deliverables from transcript... This may take a minute.
             </p>
@@ -207,7 +207,7 @@ export function OutputsDashboard({ sessionId, onBack }: Props) {
                 onClick={() => setActiveTab(tab.key)}
                 className={`px-3 py-2.5 text-xs font-medium transition-colors border-b-2 -mb-px ${
                   activeTab === tab.key
-                    ? "text-[#A78BFA] border-[#7C3AED]"
+                    ? "text-[#c4a882] border-[#8a6e4e]"
                     : "text-muted-foreground border-transparent hover:text-foreground"
                 }`}
               >
@@ -287,7 +287,7 @@ function EmptyState({
         <button
           onClick={onGenerate}
           disabled={synthesizing}
-          className="px-4 py-2 text-xs bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-40 text-white rounded-lg transition-colors"
+          className="px-4 py-2 text-xs bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 text-white rounded-lg transition-colors"
         >
           {synthesizing ? "Generating..." : "Generate from transcript"}
         </button>
@@ -336,7 +336,7 @@ function SummaryView({ output }: { output: MLSessionOutput }) {
         <ul className="space-y-1.5">
           {(s.immediate_actions as string[])?.map((a, i) => (
             <li key={i} className="text-sm text-foreground/90 flex items-start gap-2">
-              <span className="text-[#A78BFA] shrink-0 mt-1">&#8226;</span>
+              <span className="text-[#c4a882] shrink-0 mt-1">&#8226;</span>
               {a}
             </li>
           ))}

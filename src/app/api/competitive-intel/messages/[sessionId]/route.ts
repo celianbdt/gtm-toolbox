@@ -24,7 +24,7 @@ export async function GET(
         ...m,
         agent_name: agent?.name ?? (m.role === "user" ? "You" : "System"),
         agent_emoji: agent?.avatar_emoji ?? "",
-        agent_color: agent?.color ?? "#7C3AED",
+        agent_color: agent?.color ?? "#8a6e4e",
       };
     });
 

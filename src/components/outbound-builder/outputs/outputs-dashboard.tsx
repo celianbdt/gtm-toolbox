@@ -59,7 +59,7 @@ export function OutputsDashboard({ sessionId, onBack }: Props) {
               key={o.id}
               onClick={() => setSelectedId(o.id)}
               className={`w-full text-left px-4 py-3 transition-colors ${
-                selectedId === o.id ? "bg-[#7C3AED]/10 border-l-2 border-l-[#7C3AED]" : "hover:bg-secondary/50"
+                selectedId === o.id ? "bg-[#8a6e4e]/10 border-l-2 border-l-[#8a6e4e]" : "hover:bg-secondary/50"
               }`}
             >
               <span className="text-xs text-muted-foreground uppercase">{o.output_type}</span>
@@ -112,8 +112,8 @@ function PlaybookView({ metadata }: { metadata: Record<string, unknown> }) {
   return (
     <div className="space-y-6">
       {typeof m.executive_summary === "string" && (
-        <div className="p-4 bg-[#7C3AED]/5 rounded-lg border border-[#7C3AED]/20">
-          <h3 className="text-xs font-medium text-[#A78BFA] uppercase mb-2">Executive Summary</h3>
+        <div className="p-4 bg-[#8a6e4e]/5 rounded-lg border border-[#8a6e4e]/20">
+          <h3 className="text-xs font-medium text-[#c4a882] uppercase mb-2">Executive Summary</h3>
           <p className="text-sm text-foreground">{m.executive_summary}</p>
         </div>
       )}
@@ -203,7 +203,7 @@ function SequenceView({ metadata }: { metadata: Record<string, unknown> }) {
         <div className="space-y-4">
           {steps.map((step) => (
             <div key={step.step_number} className="relative pl-10">
-              <div className="absolute left-2 top-2 w-4 h-4 rounded-full bg-secondary border-2 border-[#7C3AED] flex items-center justify-center text-[8px] text-foreground">
+              <div className="absolute left-2 top-2 w-4 h-4 rounded-full bg-secondary border-2 border-[#8a6e4e] flex items-center justify-center text-[8px] text-foreground">
                 {step.step_number}
               </div>
               <div className="border border-border rounded-lg p-3">
@@ -213,7 +213,7 @@ function SequenceView({ metadata }: { metadata: Record<string, unknown> }) {
                   <span className="text-[10px] text-muted-foreground ml-auto">Day {step.day}</span>
                 </div>
                 {step.subject && (
-                  <p className="text-xs text-[#A78BFA] mb-1">Subject: {step.subject}</p>
+                  <p className="text-xs text-[#c4a882] mb-1">Subject: {step.subject}</p>
                 )}
                 <p className="text-sm text-foreground whitespace-pre-wrap mb-2">{step.body}</p>
                 {step.call_script && (
@@ -307,8 +307,8 @@ function PackageView({ metadata }: { metadata: Record<string, unknown> }) {
   return (
     <div className="space-y-4">
       {typeof m.overall_strategy === "string" && (
-        <div className="p-4 bg-[#7C3AED]/5 rounded-lg border border-[#7C3AED]/20">
-          <h3 className="text-xs font-medium text-[#A78BFA] uppercase mb-2">Overall Strategy</h3>
+        <div className="p-4 bg-[#8a6e4e]/5 rounded-lg border border-[#8a6e4e]/20">
+          <h3 className="text-xs font-medium text-[#c4a882] uppercase mb-2">Overall Strategy</h3>
           <p className="text-sm text-foreground">{m.overall_strategy}</p>
         </div>
       )}

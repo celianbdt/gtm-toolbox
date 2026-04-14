@@ -39,7 +39,7 @@ export function CurrentMessagingStep({ currentMessaging, onChange }: Props) {
             placeholder='e.g. "The platform for modern teams"'
             value={currentMessaging.tagline ?? ""}
             onChange={(e) => onChange({ ...currentMessaging, tagline: e.target.value || undefined })}
-            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
           />
         </div>
 
@@ -71,7 +71,7 @@ export function CurrentMessagingStep({ currentMessaging, onChange }: Props) {
               value={vpInput}
               onChange={(e) => setVpInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && addValueProp()}
-              className="flex-1 text-sm bg-secondary/30 rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+              className="flex-1 text-sm bg-secondary/30 rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
             />
             <button
               onClick={addValueProp}
@@ -90,7 +90,7 @@ export function CurrentMessagingStep({ currentMessaging, onChange }: Props) {
             value={currentMessaging.elevator_pitch ?? ""}
             onChange={(e) => onChange({ ...currentMessaging, elevator_pitch: e.target.value || undefined })}
             rows={3}
-            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 resize-none"
+            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30 resize-none"
           />
         </div>
 
@@ -101,7 +101,7 @@ export function CurrentMessagingStep({ currentMessaging, onChange }: Props) {
             value={currentMessaging.what_to_improve ?? ""}
             onChange={(e) => onChange({ ...currentMessaging, what_to_improve: e.target.value || undefined })}
             rows={3}
-            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 resize-none"
+            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30 resize-none"
           />
         </div>
       </div>

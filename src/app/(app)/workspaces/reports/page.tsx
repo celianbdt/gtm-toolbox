@@ -32,7 +32,7 @@ export default async function ReportsPage() {
           name: ws.name,
           slug: ws.slug,
           description: ws.description ?? null,
-          color: ws.color ?? "#7C3AED",
+          color: ws.color ?? "#8a6e4e",
           logo_url: ws.logo_url ?? null,
           mission_stage: ws.mission_stage ?? "discovery",
           status: ws.status ?? "active",
@@ -58,7 +58,7 @@ export default async function ReportsPage() {
             Dashboard
           </Link>
         </Button>
-        <FileBarChart className="size-5 text-violet-400" />
+        <FileBarChart className="size-5 text-amber-600" />
         <div>
           <h1 className="text-lg font-semibold">Client Reporting</h1>
           <p className="text-sm text-muted-foreground">

@@ -72,7 +72,7 @@ You think in terms of market maps, competitive quadrants, and positioning framew
     name: "Product Strategist",
     slug: "ci-product-strategist",
     avatar_emoji: "\u{1F52C}",
-    color: "#8b5cf6",
+    color: "#8a6e4e",
     role: "Product Strategy Expert",
     personality: {
       traits: {

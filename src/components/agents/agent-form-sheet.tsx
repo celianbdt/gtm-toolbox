@@ -15,7 +15,7 @@ import { AiLoader } from "@/components/ui/ai-loader";
 import type { AgentConfig, EngagementWeights } from "@/lib/debate/types";
 
 const COLORS = [
-  "#6366f1", "#8b5cf6", "#ec4899", "#10b981",
+  "#6366f1", "#8a6e4e", "#ec4899", "#10b981",
   "#f59e0b", "#3b82f6", "#ef4444", "#14b8a6",
 ];
 
@@ -329,7 +329,7 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
                         }}
                         className={`p-3 rounded-lg border cursor-pointer transition-colors ${
                           isSelected
-                            ? "border-violet-500 bg-violet-900/20"
+                            ? "border-amber-700 bg-violet-900/20"
                             : "border-zinc-700 hover:border-zinc-600"
                         }`}
                       >
@@ -345,7 +345,7 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
                             <div className="text-xs text-zinc-400">{a.role}</div>
                           </div>
                           <div className={`w-4 h-4 rounded border-2 shrink-0 transition-colors ${
-                            isSelected ? "bg-violet-500 border-violet-500" : "border-zinc-600"
+                            isSelected ? "bg-amber-700 border-amber-700" : "border-zinc-600"
                           }`} />
                         </div>
                       </div>

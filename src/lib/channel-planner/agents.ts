@@ -172,7 +172,7 @@ You think in terms of pipeline velocity, conversion rates, and channel attributi
     name: "Revenue Analyst",
     slug: "cp-revenue-analyst",
     avatar_emoji: "\u{1F4B0}",
-    color: "#8b5cf6",
+    color: "#8a6e4e",
     role: "ROI & Unit Economics Expert",
     personality: {
       traits: {

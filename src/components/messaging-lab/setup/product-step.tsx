@@ -39,7 +39,7 @@ export function ProductStep({ product, onChange }: Props) {
             placeholder="e.g. Acme Analytics"
             value={product.name}
             onChange={(e) => onChange({ ...product, name: e.target.value })}
-            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
           />
         </div>
 
@@ -50,7 +50,7 @@ export function ProductStep({ product, onChange }: Props) {
             value={product.description}
             onChange={(e) => onChange({ ...product, description: e.target.value })}
             rows={3}
-            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 resize-none"
+            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30 resize-none"
           />
         </div>
 
@@ -61,7 +61,7 @@ export function ProductStep({ product, onChange }: Props) {
             placeholder="e.g. Product Analytics, CRM, DevOps Platform"
             value={product.category}
             onChange={(e) => onChange({ ...product, category: e.target.value })}
-            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
           />
         </div>
 
@@ -93,7 +93,7 @@ export function ProductStep({ product, onChange }: Props) {
               value={featureInput}
               onChange={(e) => setFeatureInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && addFeature()}
-              className="flex-1 text-sm bg-secondary/30 rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+              className="flex-1 text-sm bg-secondary/30 rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
             />
             <button
               onClick={addFeature}
@@ -112,7 +112,7 @@ export function ProductStep({ product, onChange }: Props) {
             placeholder="e.g. Freemium, Usage-based, Per-seat"
             value={product.pricing_model ?? ""}
             onChange={(e) => onChange({ ...product, pricing_model: e.target.value || undefined })}
-            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
           />
         </div>
       </div>

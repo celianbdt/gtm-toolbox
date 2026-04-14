@@ -28,12 +28,12 @@ export function SteeringInput({ onSend, onPause, onStop, isRunning }: Props) {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
-          className="flex-1 text-sm bg-secondary/30 rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+          className="flex-1 text-sm bg-secondary/30 rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
         />
         <button
           onClick={handleSend}
           disabled={!input.trim()}
-          className="p-2 bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-30 text-white rounded-lg transition-colors"
+          className="p-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-30 text-white rounded-lg transition-colors"
           title="Send"
         >
           <Send className="size-4" />

@@ -62,7 +62,7 @@ export function ThreatAssessmentView({ output }: Props) {
                 <span className="text-[10px] text-muted-foreground ml-auto">{EFFORT_LABELS[opp.effort]}</span>
               </div>
               <p className="text-sm text-foreground/90">{opp.description}</p>
-              <p className="text-xs text-[#A78BFA] mt-1">{opp.action}</p>
+              <p className="text-xs text-[#c4a882] mt-1">{opp.action}</p>
             </div>
           ))}
         </div>

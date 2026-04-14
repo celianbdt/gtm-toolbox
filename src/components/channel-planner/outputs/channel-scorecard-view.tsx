@@ -49,7 +49,7 @@ export function ChannelScorecardView({ output }: Props) {
                 <span className="text-xs text-muted-foreground">Fit</span>
                 <div className="w-16 h-1.5 bg-secondary rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-[#7C3AED] rounded-full"
+                    className="h-full bg-[#8a6e4e] rounded-full"
                     style={{ width: `${ch.fit_score}%` }}
                   />
                 </div>

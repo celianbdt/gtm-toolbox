@@ -49,7 +49,7 @@ export function CompetitiveStep({ competitors, onChange }: Props) {
       {competitors.length < 5 && (
         <button
           onClick={addCompetitor}
-          className="mt-4 flex items-center gap-2 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground border border-dashed border-border rounded-lg hover:border-[#7C3AED]/30 transition-colors w-full justify-center"
+          className="mt-4 flex items-center gap-2 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground border border-dashed border-border rounded-lg hover:border-[#8a6e4e]/30 transition-colors w-full justify-center"
         >
           <Plus className="size-4" />
           Add Competitor
@@ -94,7 +94,7 @@ function CompetitorCard({
           placeholder="Competitor name"
           value={competitor.name}
           onChange={(e) => onUpdate({ name: e.target.value })}
-          className="flex-1 bg-transparent border-b border-border text-foreground text-sm font-medium placeholder:text-muted-foreground focus:outline-none focus:border-[#7C3AED] pb-1"
+          className="flex-1 bg-transparent border-b border-border text-foreground text-sm font-medium placeholder:text-muted-foreground focus:outline-none focus:border-[#8a6e4e] pb-1"
         />
         <button
           onClick={onRemove}
@@ -109,7 +109,7 @@ function CompetitorCard({
         placeholder="Their tagline (optional)"
         value={competitor.tagline ?? ""}
         onChange={(e) => onUpdate({ tagline: e.target.value || undefined })}
-        className="w-full bg-transparent text-sm text-muted-foreground placeholder:text-muted-foreground border-b border-border/50 focus:outline-none focus:border-[#7C3AED] pb-1"
+        className="w-full bg-transparent text-sm text-muted-foreground placeholder:text-muted-foreground border-b border-border/50 focus:outline-none focus:border-[#8a6e4e] pb-1"
       />
 
       <input
@@ -117,7 +117,7 @@ function CompetitorCard({
         placeholder="Their positioning (optional)"
         value={competitor.positioning ?? ""}
         onChange={(e) => onUpdate({ positioning: e.target.value || undefined })}
-        className="w-full bg-transparent text-sm text-muted-foreground placeholder:text-muted-foreground border-b border-border/50 focus:outline-none focus:border-[#7C3AED] pb-1"
+        className="w-full bg-transparent text-sm text-muted-foreground placeholder:text-muted-foreground border-b border-border/50 focus:outline-none focus:border-[#8a6e4e] pb-1"
       />
 
       {/* Key Claims */}
@@ -147,7 +147,7 @@ function CompetitorCard({
           value={claimInput}
           onChange={(e) => setClaimInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && addClaim()}
-          className="flex-1 text-xs bg-secondary/30 rounded px-2.5 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+          className="flex-1 text-xs bg-secondary/30 rounded px-2.5 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
         />
         <button
           onClick={addClaim}

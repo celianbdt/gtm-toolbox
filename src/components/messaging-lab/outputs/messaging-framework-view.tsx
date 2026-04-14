@@ -23,14 +23,14 @@ export function MessagingFrameworkView({ output }: Props) {
       {/* Pillars */}
       <div className="border border-border rounded-xl p-5">
         <div className="flex items-center gap-1.5 mb-4">
-          <Layers className="size-3.5 text-[#A78BFA]" />
+          <Layers className="size-3.5 text-[#c4a882]" />
           <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
             Messaging Pillars
           </h3>
         </div>
         <div className="space-y-4">
           {fw.pillars.map((pillar, i) => (
-            <div key={i} className="border-l-2 border-[#7C3AED]/30 pl-4">
+            <div key={i} className="border-l-2 border-[#8a6e4e]/30 pl-4">
               <h4 className="text-sm font-semibold text-foreground">{pillar.pillar}</h4>
               <p className="text-xs text-muted-foreground mt-0.5">{pillar.description}</p>
               <p className="text-sm text-foreground/90 mt-2 italic">&ldquo;{pillar.key_message}&rdquo;</p>
@@ -51,7 +51,7 @@ export function MessagingFrameworkView({ output }: Props) {
       {/* Brand Voice */}
       <div className="border border-border rounded-xl p-5">
         <div className="flex items-center gap-1.5 mb-4">
-          <MessageSquare className="size-3.5 text-[#A78BFA]" />
+          <MessageSquare className="size-3.5 text-[#c4a882]" />
           <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
             Brand Voice
           </h3>

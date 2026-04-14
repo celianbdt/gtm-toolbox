@@ -55,7 +55,7 @@ export function AnalyzerFocusStep({
               onClick={() => toggle(opt.id)}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border transition-colors text-left ${
                 selected
-                  ? "border-[#7C3AED] bg-[#7C3AED]/10"
+                  ? "border-[#8a6e4e] bg-[#8a6e4e]/10"
                   : "border-border hover:border-border/80 bg-secondary/30"
               }`}
             >
@@ -64,7 +64,7 @@ export function AnalyzerFocusStep({
                 {ANALYZER_FOCUS_LABELS[opt.id]}
               </span>
               {selected && (
-                <span className="ml-auto text-xs text-[#A78BFA]">✓</span>
+                <span className="ml-auto text-xs text-[#c4a882]">✓</span>
               )}
             </button>
           );

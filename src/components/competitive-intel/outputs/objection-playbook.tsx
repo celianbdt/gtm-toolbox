@@ -58,7 +58,7 @@ export function ObjectionPlaybookView({ output }: Props) {
                 )}
                 <div>
                   <span className="text-xs text-muted-foreground uppercase block mb-0.5">Follow-up Question</span>
-                  <p className="text-[#A78BFA] text-xs italic">&ldquo;{obj.follow_up_question}&rdquo;</p>
+                  <p className="text-[#c4a882] text-xs italic">&ldquo;{obj.follow_up_question}&rdquo;</p>
                 </div>
               </div>
             </div>

@@ -79,13 +79,13 @@ export function CWSetup({ workspaceId, onSessionCreated }: Props) {
               key={ch}
               className={`cursor-pointer transition-all ${
                 channel === ch
-                  ? "border-violet-500 bg-violet-500/5"
+                  ? "border-amber-700 bg-amber-700/5"
                   : "hover:border-border/80"
               }`}
               onClick={() => setChannel(ch)}
             >
               <CardContent className="flex flex-col items-center gap-2 py-4">
-                <div className={channel === ch ? "text-violet-400" : "text-muted-foreground"}>
+                <div className={channel === ch ? "text-amber-600" : "text-muted-foreground"}>
                   {CHANNEL_ICONS[ch]}
                 </div>
                 <span className="text-sm font-medium">{CHANNEL_LABELS[ch]}</span>
@@ -110,8 +110,8 @@ export function CWSetup({ workspaceId, onSessionCreated }: Props) {
               onClick={() => setSequenceLength(n)}
               className={`size-9 rounded-lg text-sm font-medium transition-all ${
                 sequenceLength === n
-                  ? "bg-violet-500 text-white"
-                  : "bg-card border border-border hover:border-violet-500/30"
+                  ? "bg-amber-700 text-white"
+                  : "bg-card border border-border hover:border-amber-700/30"
               }`}
             >
               {n}
@@ -129,7 +129,7 @@ export function CWSetup({ workspaceId, onSessionCreated }: Props) {
               key={t}
               variant={tone === t ? "default" : "secondary"}
               className={`cursor-pointer text-xs px-3 py-1 ${
-                tone === t ? "bg-violet-500" : "hover:bg-accent"
+                tone === t ? "bg-amber-700" : "hover:bg-accent"
               }`}
               onClick={() => setTone(t)}
             >
@@ -148,13 +148,13 @@ export function CWSetup({ workspaceId, onSessionCreated }: Props) {
               key={m}
               className={`cursor-pointer transition-all ${
                 mode === m
-                  ? "border-violet-500 bg-violet-500/5"
+                  ? "border-amber-700 bg-amber-700/5"
                   : "hover:border-border/80"
               }`}
               onClick={() => setMode(m)}
             >
               <CardContent className="flex items-center gap-3 py-3">
-                <div className={mode === m ? "text-violet-400" : "text-muted-foreground"}>
+                <div className={mode === m ? "text-amber-600" : "text-muted-foreground"}>
                   {MODE_ICONS[m]}
                 </div>
                 <span className="text-sm">{MODE_LABELS[m]}</span>

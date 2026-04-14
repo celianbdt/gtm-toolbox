@@ -74,7 +74,7 @@ export function BudgetStep({ budget, onChange }: Props) {
                   total_monthly: parseFloat(e.target.value) || 0,
                 })
               }
-              className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+              className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
             />
           </div>
           <div className="w-24">
@@ -86,7 +86,7 @@ export function BudgetStep({ budget, onChange }: Props) {
               onChange={(e) =>
                 onChange({ ...budget, currency: e.target.value })
               }
-              className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+              className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
             >
               {CURRENCIES.map((c) => (
                 <option key={c} value={c}>
@@ -135,7 +135,7 @@ export function BudgetStep({ budget, onChange }: Props) {
                     onChange={(e) =>
                       updateAllocation(i, { channel: e.target.value })
                     }
-                    className="flex-1 bg-secondary/30 rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                    className="flex-1 bg-secondary/30 rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
                   />
                   <div className="relative w-28">
                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
@@ -150,7 +150,7 @@ export function BudgetStep({ budget, onChange }: Props) {
                           spend: parseFloat(e.target.value) || 0,
                         })
                       }
-                      className="w-full bg-secondary/30 rounded-lg pl-6 pr-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                      className="w-full bg-secondary/30 rounded-lg pl-6 pr-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
                     />
                   </div>
                   <span className="text-xs text-muted-foreground w-10 text-right tabular-nums">
@@ -169,7 +169,7 @@ export function BudgetStep({ budget, onChange }: Props) {
 
           <button
             onClick={addAllocation}
-            className="mt-3 flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground border border-dashed border-border rounded-lg hover:border-[#7C3AED]/30 transition-colors w-full justify-center"
+            className="mt-3 flex items-center gap-2 px-4 py-2 text-sm text-muted-foreground hover:text-foreground border border-dashed border-border rounded-lg hover:border-[#8a6e4e]/30 transition-colors w-full justify-center"
           >
             <Plus className="size-4" />
             Add channel allocation

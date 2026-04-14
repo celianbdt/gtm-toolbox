@@ -57,7 +57,7 @@ export function AudienceStep({ audience, onChange }: Props) {
             value={audience.icp_summary}
             onChange={(e) => onChange({ ...audience, icp_summary: e.target.value })}
             rows={3}
-            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 resize-none"
+            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30 resize-none"
           />
         </div>
 
@@ -89,7 +89,7 @@ export function AudienceStep({ audience, onChange }: Props) {
               value={painInput}
               onChange={(e) => setPainInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && addPainPoint()}
-              className="flex-1 text-sm bg-secondary/30 rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+              className="flex-1 text-sm bg-secondary/30 rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
             />
             <button
               onClick={addPainPoint}
@@ -129,7 +129,7 @@ export function AudienceStep({ audience, onChange }: Props) {
               value={criteriaInput}
               onChange={(e) => setCriteriaInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && addCriteria()}
-              className="flex-1 text-sm bg-secondary/30 rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+              className="flex-1 text-sm bg-secondary/30 rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
             />
             <button
               onClick={addCriteria}
@@ -147,7 +147,7 @@ export function AudienceStep({ audience, onChange }: Props) {
           <select
             value={audience.buying_stage ?? ""}
             onChange={(e) => onChange({ ...audience, buying_stage: e.target.value || undefined })}
-            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
           >
             <option value="">Select a stage...</option>
             {BUYING_STAGES.map((stage) => (

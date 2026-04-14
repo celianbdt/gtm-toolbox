@@ -265,7 +265,7 @@ export function CampaignDataStep({ workspaceId, dataSources, onChange }: Props) 
             onClick={() => { setInputMode(m.key); setError(""); }}
             className={`px-4 py-1.5 rounded-md text-xs font-medium transition-colors ${
               inputMode === m.key
-                ? "bg-[#7C3AED] text-white"
+                ? "bg-[#8a6e4e] text-white"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -309,14 +309,14 @@ export function CampaignDataStep({ workspaceId, dataSources, onChange }: Props) 
                   <label
                     key={imp.id}
                     className={`flex items-center gap-3 px-4 py-3 rounded-lg border cursor-pointer transition-colors ${
-                      checked ? "border-[#7C3AED] bg-[#7C3AED]/10" : "border-border hover:border-border/80"
+                      checked ? "border-[#8a6e4e] bg-[#8a6e4e]/10" : "border-border hover:border-border/80"
                     }`}
                   >
                     <input
                       type="checkbox"
                       checked={checked}
                       onChange={() => toggleImport(imp)}
-                      className="rounded border-border text-[#7C3AED] focus:ring-[#7C3AED] w-4 h-4"
+                      className="rounded border-border text-[#8a6e4e] focus:ring-[#8a6e4e] w-4 h-4"
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-foreground truncate">{imp.title}</p>
@@ -337,7 +337,7 @@ export function CampaignDataStep({ workspaceId, dataSources, onChange }: Props) 
         <div
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
-          className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-[#7C3AED]/50 transition-colors cursor-pointer"
+          className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-[#8a6e4e]/50 transition-colors cursor-pointer"
           onClick={() => {
             const input = document.createElement("input");
             input.type = "file";
@@ -372,7 +372,7 @@ export function CampaignDataStep({ workspaceId, dataSources, onChange }: Props) 
                   onClick={() => { setSelectedProvider(p); setError(""); }}
                   className={`flex items-center gap-2.5 px-4 py-3 rounded-lg border transition-colors text-left ${
                     selected
-                      ? "border-[#7C3AED] bg-[#7C3AED]/10"
+                      ? "border-[#8a6e4e] bg-[#8a6e4e]/10"
                       : "border-border hover:border-border/80 bg-secondary/30"
                   }`}
                 >
@@ -418,7 +418,7 @@ export function CampaignDataStep({ workspaceId, dataSources, onChange }: Props) 
               <button
                 onClick={handleToolImport}
                 disabled={!apiKey.trim() || isImporting || (selectedProvider === "plusvibe" && !providerWorkspaceId.trim())}
-                className="px-4 py-2 bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-40 text-white text-xs font-medium rounded-lg transition-colors"
+                className="px-4 py-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 text-white text-xs font-medium rounded-lg transition-colors"
               >
                 {isImporting ? "Importing..." : "Connect & Import"}
               </button>
@@ -469,7 +469,7 @@ export function CampaignDataStep({ workspaceId, dataSources, onChange }: Props) 
           <button
             onClick={addManualRow}
             disabled={!manualRow.campaign_name?.trim()}
-            className="px-4 py-2 bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-40 text-white text-xs rounded-lg transition-colors"
+            className="px-4 py-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 text-white text-xs rounded-lg transition-colors"
           >
             Add Campaign
           </button>
@@ -499,7 +499,7 @@ export function CampaignDataStep({ workspaceId, dataSources, onChange }: Props) 
               </button>
             </div>
           ))}
-          <p className="text-xs text-[#A78BFA]">{totalRows} total campaigns selected</p>
+          <p className="text-xs text-[#c4a882]">{totalRows} total campaigns selected</p>
         </div>
       )}
     </div>

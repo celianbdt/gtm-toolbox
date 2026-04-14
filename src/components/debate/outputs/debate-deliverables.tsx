@@ -137,7 +137,7 @@ export function DebateDeliverables({ sessionId, workspaceId, onBackToDebate }: P
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
-        <div className="w-6 h-6 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[#8a6e4e] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -163,7 +163,7 @@ export function DebateDeliverables({ sessionId, workspaceId, onBackToDebate }: P
             <button
               onClick={runSynthesis}
               disabled={synthesizing}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-white bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-40 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-white bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 rounded-lg transition-colors"
             >
               <Play className="size-3.5" />
               {synthesizing ? "Synthesizing..." : "Re-synthesize"}
@@ -194,9 +194,9 @@ export function DebateDeliverables({ sessionId, workspaceId, onBackToDebate }: P
 
       {/* Synthesizing banner */}
       {synthesizing && (
-        <div className="shrink-0 px-6 py-3 bg-[#7C3AED]/5 border-b border-[#7C3AED]/10">
+        <div className="shrink-0 px-6 py-3 bg-[#8a6e4e]/5 border-b border-[#8a6e4e]/10">
           <div className="max-w-4xl mx-auto flex items-center gap-3">
-            <div className="w-4 h-4 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin shrink-0" />
+            <div className="w-4 h-4 border-2 border-[#8a6e4e] border-t-transparent rounded-full animate-spin shrink-0" />
             <p className="text-xs text-muted-foreground">
               Synthesizing debate insights... This may take a minute.
             </p>
@@ -206,9 +206,9 @@ export function DebateDeliverables({ sessionId, workspaceId, onBackToDebate }: P
 
       {/* No summary banner */}
       {!hasSummary && !synthesizing && hasTranscript && (
-        <div className="shrink-0 px-6 py-3 bg-[#7C3AED]/5 border-b border-[#7C3AED]/10">
+        <div className="shrink-0 px-6 py-3 bg-[#8a6e4e]/5 border-b border-[#8a6e4e]/10">
           <div className="max-w-4xl mx-auto flex items-center gap-3">
-            <MessageSquare className="size-4 text-[#A78BFA] shrink-0" />
+            <MessageSquare className="size-4 text-[#c4a882] shrink-0" />
             <p className="text-xs text-muted-foreground">
               This debate has <span className="text-foreground font-medium">{agentMessages.length} messages</span> but no structured summary.
               Click &ldquo;Re-synthesize&rdquo; to generate insights.
@@ -226,7 +226,7 @@ export function DebateDeliverables({ sessionId, workspaceId, onBackToDebate }: P
               onClick={() => setActiveTab(tab.key)}
               className={`px-3 py-2.5 text-xs font-medium transition-colors border-b-2 -mb-px ${
                 activeTab === tab.key
-                  ? "text-[#A78BFA] border-[#7C3AED]"
+                  ? "text-[#c4a882] border-[#8a6e4e]"
                   : "text-muted-foreground border-transparent hover:text-foreground"
               }`}
             >
@@ -294,7 +294,7 @@ function EmptyState({
         <button
           onClick={onGenerate}
           disabled={synthesizing}
-          className="px-4 py-2 text-xs bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-40 text-white rounded-lg transition-colors"
+          className="px-4 py-2 text-xs bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 text-white rounded-lg transition-colors"
         >
           {synthesizing ? "Generating..." : "Generate from transcript"}
         </button>
@@ -315,7 +315,7 @@ function SummaryView({ summary }: { summary: DebateSummary }) {
           <ul className="space-y-2">
             {summary.key_takeaways.map((t, i) => (
               <li key={i} className="text-sm text-foreground/90 flex items-start gap-2">
-                <span className="text-[#A78BFA] shrink-0 mt-1">&#8226;</span>
+                <span className="text-[#c4a882] shrink-0 mt-1">&#8226;</span>
                 {t}
               </li>
             ))}
@@ -332,7 +332,7 @@ function SummaryView({ summary }: { summary: DebateSummary }) {
           <ul className="space-y-2">
             {summary.strategic_recommendations.map((r, i) => (
               <li key={i} className="text-sm text-foreground/90 flex items-start gap-2">
-                <span className="text-[#A78BFA] shrink-0 mt-1">&#8226;</span>
+                <span className="text-[#c4a882] shrink-0 mt-1">&#8226;</span>
                 {r}
               </li>
             ))}
@@ -430,7 +430,7 @@ function TranscriptView({
         const agent = msg.agent_config_id ? agentsMap.get(msg.agent_config_id) : null;
         const name = msg.role === "user" ? "You" : agent?.name ?? "Agent";
         const emoji = msg.role === "user" ? "" : agent?.avatar_emoji ?? "";
-        const color = msg.role === "user" ? "#7C3AED" : agent?.color ?? "#888";
+        const color = msg.role === "user" ? "#8a6e4e" : agent?.color ?? "#888";
 
         return (
           <div key={msg.id} className="flex gap-3">

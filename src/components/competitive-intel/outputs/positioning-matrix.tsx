@@ -57,12 +57,12 @@ export function PositioningMatrixView({ output }: Props) {
               <div
                 className={`w-3 h-3 rounded-full border-2 ${
                   player.is_us
-                    ? "bg-[#7C3AED] border-[#A78BFA]"
+                    ? "bg-[#8a6e4e] border-[#c4a882]"
                     : "bg-muted-foreground/60 border-muted-foreground"
                 }`}
               />
               <span className={`absolute top-4 left-1/2 -translate-x-1/2 text-[10px] whitespace-nowrap ${
-                player.is_us ? "text-[#A78BFA] font-medium" : "text-muted-foreground"
+                player.is_us ? "text-[#c4a882] font-medium" : "text-muted-foreground"
               }`}>
                 {player.name}
               </span>
@@ -82,7 +82,7 @@ export function PositioningMatrixView({ output }: Props) {
             <div key={i} className="flex items-start gap-2 text-xs">
               <div
                 className={`w-2 h-2 rounded-full mt-1 shrink-0 ${
-                  player.is_us ? "bg-[#7C3AED]" : "bg-muted-foreground/60"
+                  player.is_us ? "bg-[#8a6e4e]" : "bg-muted-foreground/60"
                 }`}
               />
               <div>

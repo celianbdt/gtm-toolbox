@@ -70,7 +70,7 @@ export function BattleCardView({ output }: Props) {
         {/* Landmines */}
         <div>
           <div className="flex items-center gap-1.5 mb-2">
-            <AlertTriangle className="size-3.5 text-[#A78BFA]" />
+            <AlertTriangle className="size-3.5 text-[#c4a882]" />
             <h4 className="text-xs font-medium text-muted-foreground uppercase">Landmine Questions</h4>
           </div>
           <ul className="space-y-1">
@@ -97,7 +97,7 @@ export function BattleCardView({ output }: Props) {
       {/* Winning Talk Track */}
       <div className="px-5 py-4 border-t border-border">
         <div className="flex items-center gap-1.5 mb-2">
-          <MessageCircle className="size-3.5 text-[#7C3AED]" />
+          <MessageCircle className="size-3.5 text-[#8a6e4e]" />
           <h4 className="text-xs font-medium text-muted-foreground uppercase">Winning Talk Track</h4>
         </div>
         <p className="text-sm text-foreground/90 leading-relaxed">{card.winning_talk_track}</p>

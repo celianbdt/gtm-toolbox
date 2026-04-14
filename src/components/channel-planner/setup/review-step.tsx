@@ -13,7 +13,7 @@ const ANALYSTS = [
   { emoji: "\u{1F680}", name: "Growth Hacker", color: "#ef4444" },
   { emoji: "\u{1F4DD}", name: "Content Strategist", color: "#22c55e" },
   { emoji: "\u{1F4C8}", name: "Demand Gen Specialist", color: "#3b82f6" },
-  { emoji: "\u{1F4B0}", name: "Revenue Analyst", color: "#8b5cf6" },
+  { emoji: "\u{1F4B0}", name: "Revenue Analyst", color: "#8a6e4e" },
 ];
 
 type Props = {
@@ -137,7 +137,7 @@ export function ReviewStep({
             {focusDimensions.map((f) => (
               <span
                 key={f}
-                className="text-xs px-2.5 py-1 bg-[#7C3AED]/10 text-[#A78BFA] rounded-full"
+                className="text-xs px-2.5 py-1 bg-[#8a6e4e]/10 text-[#c4a882] rounded-full"
               >
                 {CHANNEL_FOCUS_LABELS[f]}
               </span>

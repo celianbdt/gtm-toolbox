@@ -135,7 +135,7 @@ export function DataImportStep({
           />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-2 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground border border-dashed border-border rounded-lg hover:border-[#7C3AED]/30 transition-colors"
+            className="flex items-center gap-2 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground border border-dashed border-border rounded-lg hover:border-[#8a6e4e]/30 transition-colors"
           >
             <Upload className="size-4" />
             Upload CSV
@@ -149,14 +149,14 @@ export function DataImportStep({
             placeholder="Data source title (optional)"
             value={manualTitle}
             onChange={(e) => setManualTitle(e.target.value)}
-            className="w-full text-xs bg-secondary/30 rounded px-2.5 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+            className="w-full text-xs bg-secondary/30 rounded px-2.5 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
           />
           <textarea
             placeholder="Paste customer data, CRM export, or notes here..."
             value={manualInput}
             onChange={(e) => setManualInput(e.target.value)}
             rows={4}
-            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 resize-none"
+            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30 resize-none"
           />
           <button
             onClick={addManualData}
@@ -202,14 +202,14 @@ export function DataImportStep({
                   placeholder="Account name"
                   value={entry.account_name ?? ""}
                   onChange={(e) => updateWinLoss(i, { account_name: e.target.value })}
-                  className="text-xs bg-secondary/30 rounded px-2 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                  className="text-xs bg-secondary/30 rounded px-2 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
                 />
                 <input
                   type="text"
                   placeholder="Segment"
                   value={entry.segment ?? ""}
                   onChange={(e) => updateWinLoss(i, { segment: e.target.value })}
-                  className="text-xs bg-secondary/30 rounded px-2 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                  className="text-xs bg-secondary/30 rounded px-2 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
                 />
               </div>
               <input
@@ -217,7 +217,7 @@ export function DataImportStep({
                 placeholder="Reason for win/loss *"
                 value={entry.reason}
                 onChange={(e) => updateWinLoss(i, { reason: e.target.value })}
-                className="w-full text-xs bg-secondary/30 rounded px-2 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                className="w-full text-xs bg-secondary/30 rounded px-2 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
               />
               <div className="grid grid-cols-2 gap-2">
                 <input
@@ -225,14 +225,14 @@ export function DataImportStep({
                   placeholder="Deal size ($)"
                   value={entry.deal_size ?? ""}
                   onChange={(e) => updateWinLoss(i, { deal_size: e.target.value })}
-                  className="text-xs bg-secondary/30 rounded px-2 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                  className="text-xs bg-secondary/30 rounded px-2 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
                 />
                 <input
                   type="text"
                   placeholder="Notes"
                   value={entry.notes ?? ""}
                   onChange={(e) => updateWinLoss(i, { notes: e.target.value })}
-                  className="text-xs bg-secondary/30 rounded px-2 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                  className="text-xs bg-secondary/30 rounded px-2 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
                 />
               </div>
             </div>

@@ -33,7 +33,7 @@ export function KanbanCard({ task, index, onClick }: KanbanCardProps) {
           <Card
             className={`p-3 cursor-pointer border-border/50 bg-card hover:bg-muted/50 transition-all ${
               snapshot.isDragging
-                ? "shadow-lg ring-1 ring-violet-500/30 rotate-1 scale-[1.02]"
+                ? "shadow-lg ring-1 ring-amber-700/30 rotate-1 scale-[1.02]"
                 : ""
             }`}
           >

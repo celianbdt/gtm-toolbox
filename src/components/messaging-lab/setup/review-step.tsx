@@ -37,7 +37,7 @@ const ALL_FOCUSES: MessagingFocus[] = [
 ];
 
 const AGENTS = [
-  { emoji: "\u{1F3A8}", name: "Brand Strategist", color: "#8b5cf6" },
+  { emoji: "\u{1F3A8}", name: "Brand Strategist", color: "#8a6e4e" },
   { emoji: "\u270D\uFE0F", name: "Conversion Copywriter", color: "#f59e0b" },
   { emoji: "\u{1F464}", name: "Buyer Persona", color: "#06b6d4" },
   { emoji: "\u{1F4E2}", name: "Sales Enablement", color: "#ef4444" },
@@ -103,11 +103,11 @@ export function ReviewStep({
                   onClick={() => toggleFocus(focus)}
                   className={`flex items-center gap-2.5 p-3 rounded-lg border text-left transition-all text-sm ${
                     selected
-                      ? "border-[#7C3AED]/40 bg-[#7C3AED]/10 text-foreground"
+                      ? "border-[#8a6e4e]/40 bg-[#8a6e4e]/10 text-foreground"
                       : "border-border hover:border-border/80 text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  <Icon className={`size-3.5 shrink-0 ${selected ? "text-[#A78BFA]" : ""}`} />
+                  <Icon className={`size-3.5 shrink-0 ${selected ? "text-[#c4a882]" : ""}`} />
                   <span className="text-xs">{MESSAGING_FOCUS_LABELS[focus]}</span>
                 </button>
               );
@@ -125,7 +125,7 @@ export function ReviewStep({
             value={customQuestion}
             onChange={(e) => onCustomQuestionChange(e.target.value)}
             rows={2}
-            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 resize-none"
+            className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30 resize-none"
           />
         </div>
 

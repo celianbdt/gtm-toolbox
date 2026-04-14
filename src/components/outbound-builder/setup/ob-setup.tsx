@@ -118,7 +118,7 @@ export function OBSetup({ workspaceId, mode, onSessionCreated }: Props) {
             <div key={s} className="flex items-center gap-2 flex-1">
               <div
                 className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition-colors ${
-                  i <= stepIndex ? "bg-[#7C3AED] text-white" : "bg-secondary text-muted-foreground"
+                  i <= stepIndex ? "bg-[#8a6e4e] text-white" : "bg-secondary text-muted-foreground"
                 }`}
               >
                 {i + 1}
@@ -127,7 +127,7 @@ export function OBSetup({ workspaceId, mode, onSessionCreated }: Props) {
                 {stepLabels[s as keyof typeof stepLabels]}
               </span>
               {i < steps.length - 1 && (
-                <div className={`flex-1 h-px transition-colors ${i < stepIndex ? "bg-[#7C3AED]" : "bg-border"}`} />
+                <div className={`flex-1 h-px transition-colors ${i < stepIndex ? "bg-[#8a6e4e]" : "bg-border"}`} />
               )}
             </div>
           ))}
@@ -188,7 +188,7 @@ export function OBSetup({ workspaceId, mode, onSessionCreated }: Props) {
             <button
               onClick={() => setStepIndex(stepIndex + 1)}
               disabled={!canAdvance}
-              className="px-5 py-2 bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
+              className="px-5 py-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
             >
               Continue &rarr;
             </button>
@@ -196,7 +196,7 @@ export function OBSetup({ workspaceId, mode, onSessionCreated }: Props) {
             <button
               onClick={launch}
               disabled={!canAdvance || isCreating}
-              className="px-5 py-2 bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-40 text-white text-sm font-medium rounded-lg transition-colors"
+              className="px-5 py-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 text-white text-sm font-medium rounded-lg transition-colors"
             >
               {isCreating
                 ? "Launching..."

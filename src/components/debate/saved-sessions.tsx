@@ -30,7 +30,7 @@ export function SavedSessions({ workspaceId, onSelectSession }: Props) {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="w-6 h-6 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-[#8a6e4e] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -65,7 +65,7 @@ export function SavedSessions({ workspaceId, onSelectSession }: Props) {
           <button
             key={session.id}
             onClick={() => onSelectSession(session.id, session.status)}
-            className="w-full flex items-center gap-3 p-4 border border-border rounded-lg hover:border-[#7C3AED]/20 transition-colors text-left group"
+            className="w-full flex items-center gap-3 p-4 border border-border rounded-lg hover:border-[#8a6e4e]/20 transition-colors text-left group"
           >
             <StatusIcon className={`size-4 shrink-0 ${config.color}`} />
             <div className="flex-1 min-w-0">

@@ -26,7 +26,7 @@ export default function ICPAuditPage() {
               onClick={() => setState({ view: "home", tab: "new" })}
               className={`px-4 py-3 text-sm font-medium border-b-2 -mb-px transition-colors ${
                 state.tab === "new"
-                  ? "text-[#A78BFA] border-[#7C3AED]"
+                  ? "text-[#c4a882] border-[#8a6e4e]"
                   : "text-muted-foreground border-transparent hover:text-foreground"
               }`}
             >
@@ -36,7 +36,7 @@ export default function ICPAuditPage() {
               onClick={() => setState({ view: "home", tab: "saved" })}
               className={`px-4 py-3 text-sm font-medium border-b-2 -mb-px transition-colors ${
                 state.tab === "saved"
-                  ? "text-[#A78BFA] border-[#7C3AED]"
+                  ? "text-[#c4a882] border-[#8a6e4e]"
                   : "text-muted-foreground border-transparent hover:text-foreground"
               }`}
             >

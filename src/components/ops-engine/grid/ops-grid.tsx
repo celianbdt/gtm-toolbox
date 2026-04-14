@@ -169,7 +169,7 @@ export function OpsGrid({
           type="checkbox"
           checked={table.getIsAllPageRowsSelected()}
           onChange={table.getToggleAllPageRowsSelectedHandler()}
-          className="accent-violet-500"
+          className="accent-amber-700"
         />
       ),
       cell: ({ row }) => (
@@ -177,7 +177,7 @@ export function OpsGrid({
           type="checkbox"
           checked={row.getIsSelected()}
           onChange={row.getToggleSelectedHandler()}
-          className="accent-violet-500"
+          className="accent-amber-700"
         />
       ),
       size: 32,
@@ -232,7 +232,7 @@ export function OpsGrid({
               return (
                 <div className="flex items-center gap-1">
                   <span className="text-xs truncate">{String(val)}</span>
-                  <Database className="size-2.5 text-violet-400 shrink-0" />
+                  <Database className="size-2.5 text-amber-600 shrink-0" />
                 </div>
               );
             case "ai_column":

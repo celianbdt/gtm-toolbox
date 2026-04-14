@@ -83,7 +83,7 @@ export function BudgetAllocationView({ output }: Props) {
             {/* Percentage bar */}
             <div className="w-full h-1.5 bg-secondary rounded-full overflow-hidden mb-2">
               <div
-                className="h-full bg-[#7C3AED] rounded-full transition-all"
+                className="h-full bg-[#8a6e4e] rounded-full transition-all"
                 style={{ width: `${Math.min(alloc.percentage, 100)}%` }}
               />
             </div>

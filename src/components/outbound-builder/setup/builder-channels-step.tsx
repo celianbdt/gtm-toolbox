@@ -51,7 +51,7 @@ export function BuilderChannelsStep({
               onClick={() => onChannelsChange({ ...channels, [opt.key]: !enabled })}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg border transition-colors text-left ${
                 enabled
-                  ? "border-[#7C3AED] bg-[#7C3AED]/10"
+                  ? "border-[#8a6e4e] bg-[#8a6e4e]/10"
                   : "border-border bg-secondary/30"
               }`}
             >
@@ -62,7 +62,7 @@ export function BuilderChannelsStep({
                 </span>
                 <p className="text-xs text-muted-foreground">{opt.desc}</p>
               </div>
-              {enabled && <span className="ml-auto text-xs text-[#A78BFA]">✓</span>}
+              {enabled && <span className="ml-auto text-xs text-[#c4a882]">✓</span>}
             </button>
           );
         })}
@@ -79,7 +79,7 @@ export function BuilderChannelsStep({
               max={10}
               value={params.sequence_length}
               onChange={(e) => onParamsChange({ ...params, sequence_length: Number(e.target.value) })}
-              className="w-full accent-[#7C3AED]"
+              className="w-full accent-[#8a6e4e]"
             />
             <span className="text-xs text-foreground">{params.sequence_length} steps</span>
           </div>
@@ -92,7 +92,7 @@ export function BuilderChannelsStep({
               step={7}
               value={params.total_duration_days}
               onChange={(e) => onParamsChange({ ...params, total_duration_days: Number(e.target.value) })}
-              className="w-full accent-[#7C3AED]"
+              className="w-full accent-[#8a6e4e]"
             />
             <span className="text-xs text-foreground">{params.total_duration_days} days</span>
           </div>
@@ -108,7 +108,7 @@ export function BuilderChannelsStep({
                 onClick={() => onParamsChange({ ...params, tone: opt.value })}
                 className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                   params.tone === opt.value
-                    ? "bg-[#7C3AED] text-white"
+                    ? "bg-[#8a6e4e] text-white"
                     : "bg-secondary text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -128,7 +128,7 @@ export function BuilderChannelsStep({
                 onClick={() => onParamsChange({ ...params, language: lang })}
                 className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                   params.language === lang
-                    ? "bg-[#7C3AED] text-white"
+                    ? "bg-[#8a6e4e] text-white"
                     : "bg-secondary text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -144,7 +144,7 @@ export function BuilderChannelsStep({
             type="checkbox"
             checked={params.ab_variants}
             onChange={(e) => onParamsChange({ ...params, ab_variants: e.target.checked })}
-            className="rounded border-border text-[#7C3AED] focus:ring-[#7C3AED] w-4 h-4"
+            className="rounded border-border text-[#8a6e4e] focus:ring-[#8a6e4e] w-4 h-4"
           />
           <div>
             <span className="text-sm text-foreground">Generate A/B variants</span>

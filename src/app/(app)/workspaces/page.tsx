@@ -142,7 +142,7 @@ export default async function WorkspacesPage() {
             name: ws.name,
             slug: ws.slug,
             description: ws.description ?? null,
-            color: ws.color ?? "#7C3AED",
+            color: ws.color ?? "#8a6e4e",
             logo_url: ws.logo_url ?? null,
             mission_stage: ws.mission_stage ?? "discovery",
             status: ws.status ?? "active",

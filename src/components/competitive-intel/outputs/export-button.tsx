@@ -76,7 +76,7 @@ export function ExportButton({ outputs }: Props) {
       <button
         onClick={downloadPDF}
         disabled={generating || outputs.length === 0}
-        className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-white bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-40 rounded-lg transition-colors"
+        className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-white bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 rounded-lg transition-colors"
       >
         <Download className="size-3.5" />
         {generating ? "Generating..." : "Download PDF"}

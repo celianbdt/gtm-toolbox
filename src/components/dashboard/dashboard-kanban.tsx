@@ -55,7 +55,7 @@ const PRIORITY_COLORS: Record<string, string> = {
 const TAG_COLORS: Record<string, string> = {
   outbound: "#10b981",
   inbound: "#3b82f6",
-  strategy: "#8b5cf6",
+  strategy: "#8a6e4e",
   admin: "#f59e0b",
 };
 
@@ -231,7 +231,7 @@ export function DashboardKanban({
                     className="flex items-center gap-2 w-full rounded-md px-2 py-1.5 text-xs hover:bg-accent transition-colors"
                   >
                     <div className={`size-4 rounded border flex items-center justify-center shrink-0 ${
-                      isSelected ? "bg-violet-500 border-violet-500" : "border-border"
+                      isSelected ? "bg-amber-700 border-amber-700" : "border-border"
                     }`}>
                       {isSelected && <Check className="size-3 text-white" />}
                     </div>
@@ -292,7 +292,7 @@ export function DashboardKanban({
                       ref={provided.innerRef}
                       {...provided.droppableProps}
                       className={`flex flex-col gap-1.5 min-h-[100px] rounded-lg p-1 transition-colors ${
-                        snapshot.isDraggingOver ? "bg-violet-500/10" : ""
+                        snapshot.isDraggingOver ? "bg-amber-700/10" : ""
                       }`}
                     >
                       {columnTasks.length === 0 && !snapshot.isDraggingOver ? (
@@ -312,9 +312,9 @@ export function DashboardKanban({
                                 {...dragProvided.draggableProps}
                                 {...dragProvided.dragHandleProps}
                                 onClick={() => handleCardClick(task)}
-                                className={`group rounded-lg border border-border/50 bg-card px-3 py-2 cursor-pointer hover:border-violet-500/30 transition-all ${
+                                className={`group rounded-lg border border-border/50 bg-card px-3 py-2 cursor-pointer hover:border-amber-700/30 transition-all ${
                                   dragSnapshot.isDragging
-                                    ? "shadow-lg ring-1 ring-violet-500/30 rotate-1 scale-[1.02]"
+                                    ? "shadow-lg ring-1 ring-amber-700/30 rotate-1 scale-[1.02]"
                                     : ""
                                 }`}
                               >

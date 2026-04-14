@@ -21,8 +21,8 @@ export function PersonaCardView({ output }: Props) {
       {/* Header */}
       <div className="px-5 py-4 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-[#7C3AED]/15 border border-[#7C3AED]/40 flex items-center justify-center">
-            <User className="size-4 text-[#A78BFA]" />
+          <div className="w-8 h-8 rounded-full bg-[#8a6e4e]/15 border border-[#8a6e4e]/40 flex items-center justify-center">
+            <User className="size-4 text-[#c4a882]" />
           </div>
           <div>
             <h3 className="text-base font-semibold text-foreground">{persona.persona_title}</h3>
@@ -58,7 +58,7 @@ export function PersonaCardView({ output }: Props) {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <div className="flex items-center gap-1.5 mb-2">
-              <Zap className="size-3.5 text-[#A78BFA]" />
+              <Zap className="size-3.5 text-[#c4a882]" />
               <h4 className="text-xs font-medium text-muted-foreground uppercase">Buying Triggers</h4>
             </div>
             <ul className="space-y-1">
@@ -81,9 +81,9 @@ export function PersonaCardView({ output }: Props) {
         </div>
 
         {/* Messaging Angle */}
-        <div className="p-3 bg-[#7C3AED]/5 rounded-lg border border-[#7C3AED]/10">
+        <div className="p-3 bg-[#8a6e4e]/5 rounded-lg border border-[#8a6e4e]/10">
           <div className="flex items-center gap-1.5 mb-1">
-            <MessageCircle className="size-3.5 text-[#7C3AED]" />
+            <MessageCircle className="size-3.5 text-[#8a6e4e]" />
             <h4 className="text-xs font-medium text-muted-foreground uppercase">Messaging Angle</h4>
           </div>
           <p className="text-sm text-foreground/90 leading-relaxed">{persona.messaging_angle}</p>

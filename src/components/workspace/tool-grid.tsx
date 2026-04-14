@@ -23,9 +23,9 @@ const categoryLabels: Record<ToolCategory, string> = {
 };
 
 const categoryColors: Record<ToolCategory, string> = {
-  strategy: "text-[#A78BFA]",
+  strategy: "text-[#c4a882]",
   messaging: "text-[#D8CDFF]",
-  analysis: "text-[#7C3AED]",
+  analysis: "text-[#8a6e4e]",
   outbound: "text-[#10B981]",
   ops: "text-[#f97316]",
   dev: "text-[#f59e0b]",

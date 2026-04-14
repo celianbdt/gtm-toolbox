@@ -114,7 +114,7 @@ export function ClientReportBuilder({ workspaces }: Props) {
                 key={ws.id}
                 className={`cursor-pointer transition-all ${
                   isSelected
-                    ? "border-violet-500 bg-violet-500/5"
+                    ? "border-amber-700 bg-amber-700/5"
                     : "hover:border-border/80"
                 }`}
                 onClick={() => toggleWorkspace(ws.id)}
@@ -128,7 +128,7 @@ export function ClientReportBuilder({ workspaces }: Props) {
                   />
                   <span className="text-sm">{ws.name}</span>
                   {isSelected && (
-                    <CheckCircle2 className="size-3.5 text-violet-400 ml-1" />
+                    <CheckCircle2 className="size-3.5 text-amber-600 ml-1" />
                   )}
                 </CardContent>
               </Card>

@@ -50,7 +50,7 @@ export function HumanInput({ onSend, onPause, onStop, isStreaming, currentTurn, 
   return (
     <div className="shrink-0 px-6 py-3 border-t border-border bg-background">
       <div className="flex items-end gap-2 max-w-4xl mx-auto">
-        <div className="flex-1 bg-secondary/30 rounded-xl border border-border focus-within:border-[#7C3AED]/30 transition-colors">
+        <div className="flex-1 bg-secondary/30 rounded-xl border border-border focus-within:border-[#8a6e4e]/30 transition-colors">
           <textarea
             ref={textareaRef}
             value={value}
@@ -66,7 +66,7 @@ export function HumanInput({ onSend, onPause, onStop, isStreaming, currentTurn, 
         <button
           onClick={handleSend}
           disabled={!value.trim() || isMaxReached}
-          className="p-2.5 bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-30 text-white rounded-xl transition-colors"
+          className="p-2.5 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-30 text-white rounded-xl transition-colors"
           title="Send"
         >
           <Send className="size-4" />

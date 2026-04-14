@@ -18,7 +18,7 @@ const ANALYSTS = [
   { emoji: "\u{1F4CA}", name: "Market Researcher", color: "#3b82f6" },
   { emoji: "\u{1F49A}", name: "Customer Success Analyst", color: "#22c55e" },
   { emoji: "\u{1F3AF}", name: "Sales Intelligence", color: "#ef4444" },
-  { emoji: "\u{1F52C}", name: "PMF Analyst", color: "#8b5cf6" },
+  { emoji: "\u{1F52C}", name: "PMF Analyst", color: "#8a6e4e" },
 ];
 
 export function ReviewStep({
@@ -106,7 +106,7 @@ export function ReviewStep({
             {focusDimensions.map((f) => (
               <span
                 key={f}
-                className="text-xs px-2.5 py-1 bg-[#7C3AED]/10 text-[#A78BFA] rounded-full"
+                className="text-xs px-2.5 py-1 bg-[#8a6e4e]/10 text-[#c4a882] rounded-full"
               >
                 {AUDIT_FOCUS_LABELS[f]}
               </span>

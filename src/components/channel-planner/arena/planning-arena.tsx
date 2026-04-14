@@ -88,7 +88,7 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
         agentId: "user",
         agentName: "You",
         emoji: "",
-        color: "#7C3AED",
+        color: "#8a6e4e",
         content: text,
         phase: "strategy-debate",
         role: "user",
@@ -297,9 +297,9 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
                 <div
                   className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-medium transition-colors ${
                     isDone
-                      ? "bg-[#7C3AED] text-white"
+                      ? "bg-[#8a6e4e] text-white"
                       : isActive
-                      ? "bg-[#7C3AED]/60 text-white animate-pulse"
+                      ? "bg-[#8a6e4e]/60 text-white animate-pulse"
                       : "bg-secondary text-muted-foreground"
                   }`}
                 >
@@ -310,7 +310,7 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
                     isActive
                       ? "text-foreground font-medium"
                       : isDone
-                      ? "text-[#A78BFA]"
+                      ? "text-[#c4a882]"
                       : "text-muted-foreground"
                   }`}
                 >
@@ -319,7 +319,7 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
                 {i < PHASES.length - 1 && (
                   <div
                     className={`flex-1 h-px transition-colors ${
-                      isDone ? "bg-[#7C3AED]" : "bg-border"
+                      isDone ? "bg-[#8a6e4e]" : "bg-border"
                     }`}
                   />
                 )}
@@ -347,7 +347,7 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
           {allItems.length === 0 ? (
             <div className="flex items-center justify-center py-20">
               <div className="text-center">
-                <div className="w-8 h-8 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                <div className="w-8 h-8 border-2 border-[#8a6e4e] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
                 <p className="text-sm text-muted-foreground">
                   Initializing planning...
                 </p>
@@ -394,13 +394,13 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
                     <div
                       className={`text-sm leading-relaxed whitespace-pre-wrap ${
                         item.role === "user"
-                          ? "bg-[#7C3AED]/15 text-foreground rounded-xl px-3 py-2 inline-block"
+                          ? "bg-[#8a6e4e]/15 text-foreground rounded-xl px-3 py-2 inline-block"
                           : "text-foreground/90"
                       }`}
                     >
                       {item.content}
                       {item.streaming && (
-                        <span className="inline-block w-1.5 h-4 bg-[#7C3AED] animate-pulse ml-0.5 align-middle rounded-sm" />
+                        <span className="inline-block w-1.5 h-4 bg-[#8a6e4e] animate-pulse ml-0.5 align-middle rounded-sm" />
                       )}
                     </div>
                   </div>
@@ -421,7 +421,7 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
             </span>
             <button
               onClick={handleResume}
-              className="px-3 py-1.5 text-xs bg-[#7C3AED] text-white rounded-lg hover:bg-[#6D28D9] transition-colors"
+              className="px-3 py-1.5 text-xs bg-[#8a6e4e] text-white rounded-lg hover:bg-[#6D28D9] transition-colors"
             >
               Resume
             </button>
@@ -456,7 +456,7 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
                   setSteeringInput("");
                 }
               }}
-              className="flex-1 text-sm bg-secondary/30 rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+              className="flex-1 text-sm bg-secondary/30 rounded-lg px-3 py-2 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
             />
             <button
               onClick={() => {
@@ -466,7 +466,7 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
                 }
               }}
               disabled={!steeringInput.trim()}
-              className="p-2 bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-30 text-white rounded-lg transition-colors"
+              className="p-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-30 text-white rounded-lg transition-colors"
             >
               <Send className="size-4" />
             </button>
@@ -502,7 +502,7 @@ export function PlanningArena({ sessionId, onComplete, onSaveExit }: Props) {
             Planning stopped.{" "}
             <button
               onClick={onSaveExit}
-              className="text-[#A78BFA] hover:underline"
+              className="text-[#c4a882] hover:underline"
             >
               View partial results
             </button>

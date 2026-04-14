@@ -25,7 +25,7 @@ export function TaglineOptionsView({ output }: Props) {
           <div className="p-5 space-y-3">
             {dir.taglines.map((t, j) => (
               <div key={j} className="flex gap-3">
-                <Quote className="size-3.5 text-[#A78BFA] shrink-0 mt-1" />
+                <Quote className="size-3.5 text-[#c4a882] shrink-0 mt-1" />
                 <div>
                   <p className="text-sm font-medium text-foreground">&ldquo;{t.tagline}&rdquo;</p>
                   <p className="text-xs text-muted-foreground mt-0.5">{t.rationale}</p>
@@ -37,10 +37,10 @@ export function TaglineOptionsView({ output }: Props) {
       ))}
 
       {/* Recommendation */}
-      <div className="border border-[#7C3AED]/20 rounded-xl p-5 bg-[#7C3AED]/5">
+      <div className="border border-[#8a6e4e]/20 rounded-xl p-5 bg-[#8a6e4e]/5">
         <div className="flex items-center gap-1.5 mb-2">
-          <Star className="size-3.5 text-[#A78BFA]" />
-          <h3 className="text-xs font-medium text-[#A78BFA] uppercase tracking-wider">
+          <Star className="size-3.5 text-[#c4a882]" />
+          <h3 className="text-xs font-medium text-[#c4a882] uppercase tracking-wider">
             Recommendation
           </h3>
         </div>

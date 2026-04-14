@@ -32,7 +32,7 @@ export const SOURCE_LABELS: Record<NoteSource, string> = {
 
 export const SOURCE_COLORS: Record<NoteSource, string> = {
   manual: "#6b7280",
-  debate: "#8b5cf6",
+  debate: "#8a6e4e",
   "icp-audit": "#ef4444",
   "messaging-lab": "#f59e0b",
   "competitive-intel": "#3b82f6",

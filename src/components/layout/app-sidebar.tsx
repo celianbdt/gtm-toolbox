@@ -61,7 +61,7 @@ function getIcon(iconName: string) {
 
 const STAGE_CONFIG: Record<ToolStage, { label: string; icon: typeof LucideIcons.Search; color: string }> = {
   discovery: { label: "Discovery", icon: LucideIcons.Search, color: "text-blue-400" },
-  foundation: { label: "Foundation", icon: LucideIcons.Layers, color: "text-violet-400" },
+  foundation: { label: "Foundation", icon: LucideIcons.Layers, color: "text-amber-600" },
   optimization: { label: "Optimization", icon: LucideIcons.TrendingUp, color: "text-amber-400" },
   scaling: { label: "Scaling", icon: LucideIcons.Rocket, color: "text-emerald-400" },
 };

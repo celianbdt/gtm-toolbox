@@ -179,7 +179,7 @@ export function DebateArena({ sessionId, workspaceId, onConcluded }: Props) {
       {isSynthesizing && (
         <div className="px-6 py-4 border-t border-border bg-secondary/50">
           <div className="max-w-4xl mx-auto flex items-center justify-center gap-3">
-            <div className="w-4 h-4 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin" />
+            <div className="w-4 h-4 border-2 border-[#8a6e4e] border-t-transparent rounded-full animate-spin" />
             <span className="text-sm text-muted-foreground">Synthesizing debate insights...</span>
           </div>
         </div>
@@ -192,7 +192,7 @@ export function DebateArena({ sessionId, workspaceId, onConcluded }: Props) {
             {onConcluded && (
               <button
                 onClick={() => onConcluded(sessionId)}
-                className="px-4 py-1.5 text-xs text-white bg-[#7C3AED] hover:bg-[#6D28D9] rounded-lg transition-colors"
+                className="px-4 py-1.5 text-xs text-white bg-[#8a6e4e] hover:bg-[#6D28D9] rounded-lg transition-colors"
               >
                 View deliverables
               </button>

@@ -93,7 +93,7 @@ export function CurrentChannelsStep({ channels, onChange }: Props) {
                 onChange={(e) =>
                   updateChannel(i, { channel: e.target.value })
                 }
-                className="flex-1 bg-transparent border-b border-border text-foreground text-sm font-medium placeholder:text-muted-foreground focus:outline-none focus:border-[#7C3AED] pb-1"
+                className="flex-1 bg-transparent border-b border-border text-foreground text-sm font-medium placeholder:text-muted-foreground focus:outline-none focus:border-[#8a6e4e] pb-1"
               />
               <button
                 onClick={() => removeChannel(i)}
@@ -115,7 +115,7 @@ export function CurrentChannelsStep({ channels, onChange }: Props) {
                       status: e.target.value as ChannelStatus,
                     })
                   }
-                  className="w-full bg-secondary/30 rounded-lg px-2.5 py-1.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                  className="w-full bg-secondary/30 rounded-lg px-2.5 py-1.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
                 >
                   {STATUS_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>
@@ -135,7 +135,7 @@ export function CurrentChannelsStep({ channels, onChange }: Props) {
                       assessment: e.target.value as ChannelAssessment,
                     })
                   }
-                  className="w-full bg-secondary/30 rounded-lg px-2.5 py-1.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                  className="w-full bg-secondary/30 rounded-lg px-2.5 py-1.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
                 >
                   {ASSESSMENT_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>
@@ -160,7 +160,7 @@ export function CurrentChannelsStep({ channels, onChange }: Props) {
                       monthly_spend: parseFloat(e.target.value) || undefined,
                     })
                   }
-                  className="w-full bg-secondary/30 rounded-lg px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                  className="w-full bg-secondary/30 rounded-lg px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
                 />
               </div>
               <div>
@@ -176,7 +176,7 @@ export function CurrentChannelsStep({ channels, onChange }: Props) {
                       metrics: e.target.value || undefined,
                     })
                   }
-                  className="w-full bg-secondary/30 rounded-lg px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                  className="w-full bg-secondary/30 rounded-lg px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
                 />
               </div>
             </div>
@@ -194,7 +194,7 @@ export function CurrentChannelsStep({ channels, onChange }: Props) {
                     notes: e.target.value || undefined,
                   })
                 }
-                className="w-full bg-secondary/30 rounded-lg px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+                className="w-full bg-secondary/30 rounded-lg px-2.5 py-1.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
               />
             </div>
           </div>
@@ -203,7 +203,7 @@ export function CurrentChannelsStep({ channels, onChange }: Props) {
 
       <button
         onClick={() => addChannel()}
-        className="mt-4 flex items-center gap-2 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground border border-dashed border-border rounded-lg hover:border-[#7C3AED]/30 transition-colors w-full justify-center"
+        className="mt-4 flex items-center gap-2 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground border border-dashed border-border rounded-lg hover:border-[#8a6e4e]/30 transition-colors w-full justify-center"
       >
         <Plus className="size-4" />
         Add Channel

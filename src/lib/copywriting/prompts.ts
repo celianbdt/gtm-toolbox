@@ -97,7 +97,7 @@ export const DEBATE_AGENTS = [
     id: "cw-strategist",
     name: "Strategiste Copy",
     emoji: "🎯",
-    color: "#8b5cf6",
+    color: "#8a6e4e",
     system_prompt: `Tu es un strategiste en copywriting B2B. Tu analyses le marche, l'ICP et les pain points pour identifier l'angle de messaging le plus impactant. Tu privilegies la differenciation et le positionnement unique. Tu penses en termes de "pourquoi maintenant" et "pourquoi nous".`,
   },
   {

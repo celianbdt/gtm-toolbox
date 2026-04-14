@@ -43,7 +43,7 @@ export function DashboardContent({ workspaces }: Props) {
             onClick={() => setViewMode("workspaces")}
             className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
               viewMode === "workspaces"
-                ? "bg-violet-500/10 text-violet-400"
+                ? "bg-amber-700/10 text-amber-600"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -53,7 +53,7 @@ export function DashboardContent({ workspaces }: Props) {
             onClick={() => setViewMode("kanban")}
             className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
               viewMode === "kanban"
-                ? "bg-violet-500/10 text-violet-400"
+                ? "bg-amber-700/10 text-amber-600"
                 : "text-muted-foreground hover:text-foreground"
             }`}
           >
@@ -63,7 +63,7 @@ export function DashboardContent({ workspaces }: Props) {
 
         <Link
           href="/workspaces/reports"
-          className="flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-md border border-border hover:border-violet-500/30 transition-colors text-muted-foreground hover:text-foreground"
+          className="flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-md border border-border hover:border-amber-700/30 transition-colors text-muted-foreground hover:text-foreground"
         >
           <FileBarChart className="size-3" />
           Reports

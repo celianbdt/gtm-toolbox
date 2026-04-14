@@ -24,7 +24,7 @@ export default async function OpsPage({
     <WorkspaceProvider workspace={workspace}>
       <div className="flex-1 p-6">
         <div className="flex items-center gap-2 mb-6">
-          <BookmarkCheck className="size-5 text-violet-400" />
+          <BookmarkCheck className="size-5 text-amber-600" />
           <div>
             <h1 className="text-lg font-semibold">Ops Notes</h1>
             <p className="text-sm text-muted-foreground">

@@ -169,7 +169,7 @@ function SequenceStepCard({
             <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
               CTA
             </span>
-            <p className="text-sm text-violet-400">{step.cta}</p>
+            <p className="text-sm text-amber-600">{step.cta}</p>
           </div>
         )}
 

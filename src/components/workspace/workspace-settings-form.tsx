@@ -18,7 +18,7 @@ import type { Workspace } from "@/components/workspace/workspace-provider";
 
 const COLORS = [
   "#6366f1", // indigo
-  "#8b5cf6", // violet
+  "#8a6e4e", // violet
   "#ec4899", // pink
   "#10b981", // emerald
   "#f59e0b", // amber

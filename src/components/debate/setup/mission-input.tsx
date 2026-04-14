@@ -40,7 +40,7 @@ export function MissionInput({ mission, onChange, maxTurns, onMaxTurnsChange }: 
           step={1}
           value={maxTurns}
           onChange={(e) => onMaxTurnsChange(Number(e.target.value))}
-          className="w-full accent-violet-500"
+          className="w-full accent-amber-700"
         />
         <div className="flex justify-between text-xs text-zinc-600">
           <span>3 (focused)</span>

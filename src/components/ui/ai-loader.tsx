@@ -15,7 +15,7 @@ export function AiLoader({ label, size = "md" }: Props) {
         {[0, 1, 2].map((i) => (
           <span
             key={i}
-            className={`${dotSize} rounded-full bg-violet-400 animate-bounce`}
+            className={`${dotSize} rounded-full bg-amber-600 animate-bounce`}
             style={{ animationDelay: `${i * 150}ms`, animationDuration: "900ms" }}
           />
         ))}

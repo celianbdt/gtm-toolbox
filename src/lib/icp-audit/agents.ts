@@ -172,7 +172,7 @@ You are practical and revenue-focused. Every insight should connect to actionabl
     name: "PMF Analyst",
     slug: "ica-pmf-analyst",
     avatar_emoji: "\u{1F52C}",
-    color: "#8b5cf6",
+    color: "#8a6e4e",
     role: "Product-Market Fit Analyst",
     personality: {
       traits: {

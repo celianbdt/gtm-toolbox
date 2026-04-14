@@ -373,8 +373,8 @@ export function AddDocumentSheet({
                 <div className="space-y-3">
                   <div className="rounded-lg bg-zinc-900 border border-zinc-800 p-3 text-xs text-zinc-400 space-y-1">
                     <p className="font-medium text-zinc-300">Setup required</p>
-                    <p>1. Go to <span className="text-violet-400">notion.so/my-integrations</span> and create an integration</p>
-                    <p>2. Copy the <span className="text-violet-400">Internal Integration Token</span> (starts with <code>secret_</code>)</p>
+                    <p>1. Go to <span className="text-amber-600">notion.so/my-integrations</span> and create an integration</p>
+                    <p>2. Copy the <span className="text-amber-600">Internal Integration Token</span> (starts with <code>secret_</code>)</p>
                     <p>3. Share your Notion page with the integration (page menu → Connections)</p>
                   </div>
                   <input
@@ -421,7 +421,7 @@ export function AddDocumentSheet({
               {toolMode === "gdocs" && (
                 <div className="space-y-3">
                   <div className="rounded-lg bg-zinc-900 border border-zinc-800 p-3 text-xs text-zinc-400">
-                    <p>The document must be shared with <span className="text-violet-400">"Anyone with the link"</span> (viewer access is enough).</p>
+                    <p>The document must be shared with <span className="text-amber-600">"Anyone with the link"</span> (viewer access is enough).</p>
                   </div>
                   <input
                     value={gdocsUrl}
@@ -435,7 +435,7 @@ export function AddDocumentSheet({
               <button
                 onClick={handleToolFetch}
                 disabled={fetching}
-                className="px-4 py-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
+                className="px-4 py-2 bg-violet-600 hover:bg-amber-700 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors"
               >
                 {fetching ? "Importing..." : "Import"}
               </button>
@@ -470,7 +470,7 @@ export function AddDocumentSheet({
             <button
               onClick={handleSave}
               disabled={saving || !title.trim() || !content.trim()}
-              className="px-5 py-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
+              className="px-5 py-2 bg-violet-600 hover:bg-amber-700 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
             >
               {saving ? "Saving..." : isEdit ? "Save changes" : "Add document"}
             </button>

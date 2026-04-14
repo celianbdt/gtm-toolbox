@@ -82,7 +82,7 @@ export function ICASetup({ workspaceId, onSessionCreated }: Props) {
               <div
                 className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition-colors ${
                   i <= stepIndex
-                    ? "bg-[#7C3AED] text-white"
+                    ? "bg-[#8a6e4e] text-white"
                     : "bg-secondary text-muted-foreground"
                 }`}
               >
@@ -98,7 +98,7 @@ export function ICASetup({ workspaceId, onSessionCreated }: Props) {
               {i < steps.length - 1 && (
                 <div
                   className={`flex-1 h-px transition-colors ${
-                    i < stepIndex ? "bg-[#7C3AED]" : "bg-border"
+                    i < stepIndex ? "bg-[#8a6e4e]" : "bg-border"
                   }`}
                 />
               )}
@@ -176,7 +176,7 @@ export function ICASetup({ workspaceId, onSessionCreated }: Props) {
             <button
               onClick={() => setStep(steps[stepIndex + 1])}
               disabled={!canAdvance}
-              className="px-5 py-2 bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
+              className="px-5 py-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium rounded-lg transition-colors"
             >
               Continue &rarr;
             </button>
@@ -184,7 +184,7 @@ export function ICASetup({ workspaceId, onSessionCreated }: Props) {
             <button
               onClick={launchAudit}
               disabled={isCreating}
-              className="px-5 py-2 bg-[#7C3AED] hover:bg-[#6D28D9] disabled:opacity-40 text-white text-sm font-medium rounded-lg transition-colors"
+              className="px-5 py-2 bg-[#8a6e4e] hover:bg-[#6D28D9] disabled:opacity-40 text-white text-sm font-medium rounded-lg transition-colors"
             >
               {isCreating ? "Launching..." : "Launch Audit"}
             </button>

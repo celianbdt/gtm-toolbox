@@ -64,7 +64,7 @@ export function AnalystFeed({ messages, streamingAgents }: Props) {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-[#7C3AED] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <div className="w-8 h-8 border-2 border-[#8a6e4e] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
           <p className="text-sm text-muted-foreground">
             Initializing analysis...
           </p>
@@ -100,13 +100,13 @@ export function AnalystFeed({ messages, streamingAgents }: Props) {
               <div
                 className={`text-sm leading-relaxed whitespace-pre-wrap ${
                   item.role === "user"
-                    ? "bg-[#7C3AED]/15 text-foreground rounded-xl px-3 py-2 inline-block"
+                    ? "bg-[#8a6e4e]/15 text-foreground rounded-xl px-3 py-2 inline-block"
                     : "text-foreground/90"
                 }`}
               >
                 {item.content}
                 {item.streaming && (
-                  <span className="inline-block w-1.5 h-4 bg-[#7C3AED] animate-pulse ml-0.5 align-middle rounded-sm" />
+                  <span className="inline-block w-1.5 h-4 bg-[#8a6e4e] animate-pulse ml-0.5 align-middle rounded-sm" />
                 )}
               </div>
             </div>
@@ -119,7 +119,7 @@ export function AnalystFeed({ messages, streamingAgents }: Props) {
       {hasNewContent && !autoScroll && (
         <button
           onClick={scrollToBottom}
-          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 px-3 py-1.5 bg-[#7C3AED] text-white text-xs rounded-full shadow-lg hover:bg-[#6D28D9] transition-colors"
+          className="fixed bottom-24 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 px-3 py-1.5 bg-[#8a6e4e] text-white text-xs rounded-full shadow-lg hover:bg-[#6D28D9] transition-colors"
         >
           <ArrowDown className="size-3" />
           New content

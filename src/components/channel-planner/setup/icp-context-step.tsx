@@ -108,7 +108,7 @@ export function ICPContextStep({
             onICPChange({ ...icpContext, summary: e.target.value })
           }
           rows={3}
-          className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 resize-none"
+          className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30 resize-none"
         />
       </div>
 
@@ -124,7 +124,7 @@ export function ICPContextStep({
             value={segmentInput}
             onChange={(e) => setSegmentInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && addSegment()}
-            className="flex-1 bg-secondary/30 rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30"
+            className="flex-1 bg-secondary/30 rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30"
           />
           <button
             onClick={addSegment}
@@ -139,7 +139,7 @@ export function ICPContextStep({
             {icpContext.segments.map((seg) => (
               <span
                 key={seg}
-                className="inline-flex items-center gap-1 text-xs px-2.5 py-1 bg-[#7C3AED]/10 text-[#A78BFA] rounded-full"
+                className="inline-flex items-center gap-1 text-xs px-2.5 py-1 bg-[#8a6e4e]/10 text-[#c4a882] rounded-full"
               >
                 {seg}
                 <button
@@ -174,7 +174,7 @@ export function ICPContextStep({
               }
               className={`text-xs px-3 py-1.5 rounded-lg border transition-all ${
                 icpContext.buying_behavior === behavior
-                  ? "border-[#7C3AED]/40 bg-[#7C3AED]/10 text-foreground"
+                  ? "border-[#8a6e4e]/40 bg-[#8a6e4e]/10 text-foreground"
                   : "border-border text-muted-foreground hover:text-foreground hover:border-border/80"
               }`}
             >
@@ -199,13 +199,13 @@ export function ICPContextStep({
                 onClick={() => toggleFocus(focus)}
                 className={`flex items-center gap-3 p-3.5 rounded-lg border text-left transition-all ${
                   selected
-                    ? "border-[#7C3AED]/40 bg-[#7C3AED]/10 text-foreground"
+                    ? "border-[#8a6e4e]/40 bg-[#8a6e4e]/10 text-foreground"
                     : "border-border hover:border-border/80 text-muted-foreground hover:text-foreground"
                 }`}
               >
                 <Icon
                   className={`size-4 shrink-0 ${
-                    selected ? "text-[#A78BFA]" : ""
+                    selected ? "text-[#c4a882]" : ""
                   }`}
                 />
                 <span className="text-sm">{CHANNEL_FOCUS_LABELS[focus]}</span>
@@ -225,7 +225,7 @@ export function ICPContextStep({
           value={customQuestion}
           onChange={(e) => onCustomQuestionChange(e.target.value)}
           rows={2}
-          className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#7C3AED]/30 resize-none"
+          className="w-full bg-secondary/30 rounded-lg px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-[#8a6e4e]/30 resize-none"
         />
       </div>
 

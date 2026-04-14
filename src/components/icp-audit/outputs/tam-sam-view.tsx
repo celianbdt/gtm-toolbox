@@ -21,12 +21,12 @@ export function TAMSAMView({ output }: Props) {
           </div>
           <div className="text-center p-4 bg-secondary/30 rounded-lg">
             <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">SAM</p>
-            <p className="text-xl font-bold text-[#A78BFA]">{analysis.sam_estimate}</p>
+            <p className="text-xl font-bold text-[#c4a882]">{analysis.sam_estimate}</p>
             <p className="text-[10px] text-muted-foreground mt-0.5">Serviceable Addressable</p>
           </div>
           <div className="text-center p-4 bg-secondary/30 rounded-lg">
             <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">SOM</p>
-            <p className="text-xl font-bold text-[#7C3AED]">{analysis.som_estimate}</p>
+            <p className="text-xl font-bold text-[#8a6e4e]">{analysis.som_estimate}</p>
             <p className="text-[10px] text-muted-foreground mt-0.5">Serviceable Obtainable</p>
           </div>
         </div>

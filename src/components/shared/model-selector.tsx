@@ -61,7 +61,7 @@ export function ModelSelector({ selected, onChange, maxSelection = 2 }: Props) {
         </div>
         <button
           onClick={() => setExpanded(!expanded)}
-          className="text-xs text-violet-400 hover:text-violet-300 transition-colors"
+          className="text-xs text-amber-600 hover:text-violet-300 transition-colors"
         >
           {expanded ? "Collapse" : "Show all models"}
         </button>
@@ -78,7 +78,7 @@ export function ModelSelector({ selected, onChange, maxSelection = 2 }: Props) {
             >
               <span className={`w-2 h-2 rounded-full ${m.provider === "anthropic" ? "bg-orange-400" : "bg-emerald-400"}`} />
               {m.label}
-              <span className="text-violet-500 ml-1">×</span>
+              <span className="text-amber-700 ml-1">×</span>
             </button>
           ))}
           {selected.length === 0 && (

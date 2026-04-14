@@ -4,7 +4,7 @@ type MissionStage = "discovery" | "foundation" | "optimization" | "scaling";
 
 const STAGE_CONFIG: Record<MissionStage, { label: string; color: string }> = {
   discovery: { label: "Discovery", color: "#3b82f6" },
-  foundation: { label: "Foundation", color: "#8b5cf6" },
+  foundation: { label: "Foundation", color: "#8a6e4e" },
   optimization: { label: "Optimization", color: "#f59e0b" },
   scaling: { label: "Scaling", color: "#10b981" },
 };

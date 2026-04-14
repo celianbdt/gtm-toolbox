@@ -67,7 +67,7 @@ export const TASK_TAG_LABELS: Record<TaskTag, string> = {
 export const TASK_TAG_COLORS: Record<TaskTag, string> = {
   outbound: "#10b981",
   inbound: "#3b82f6",
-  strategy: "#8b5cf6",
+  strategy: "#8a6e4e",
   admin: "#f59e0b",
 };
 
