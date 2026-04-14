@@ -16,10 +16,10 @@ function getIcon(iconName: string) {
 }
 
 const STAGE_CONFIG: Record<ToolStage, { label: string; color: string; bgColor: string }> = {
-  discovery: { label: "Discovery", color: "text-blue-400", bgColor: "bg-blue-500/10" },
-  foundation: { label: "Foundation", color: "text-amber-600", bgColor: "bg-amber-700/10" },
-  optimization: { label: "Optimization", color: "text-amber-400", bgColor: "bg-amber-500/10" },
-  scaling: { label: "Scaling", color: "text-emerald-400", bgColor: "bg-emerald-500/10" },
+  discovery: { label: "Discovery", color: "text-blue-500", bgColor: "bg-blue-500/10" },
+  foundation: { label: "Foundation", color: "text-orange-700", bgColor: "bg-orange-700/10" },
+  optimization: { label: "Optimization", color: "text-amber-600", bgColor: "bg-amber-600/10" },
+  scaling: { label: "Scaling", color: "text-emerald-600", bgColor: "bg-emerald-600/10" },
 };
 
 type CompletedTools = Set<string>;
@@ -82,7 +82,7 @@ export function ToolFlow({ workspaceSlug, workspaceId }: { workspaceSlug: string
 
                 return (
                   <Link key={tool.id} href={`/${workspaceSlug}/tools/${tool.href}`}>
-                    <Card className="group cursor-pointer hover:border-amber-700/50 transition-all">
+                    <Card className="group cursor-pointer hover:border-primary/50 transition-all">
                       <CardContent>
                         <div className="flex items-start gap-3">
                           <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-secondary">

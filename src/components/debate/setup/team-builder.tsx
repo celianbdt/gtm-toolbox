@@ -210,7 +210,7 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
             <button
               onClick={generateFromPrompt}
               disabled={!prompt.trim()}
-              className="px-4 py-2 bg-violet-600 hover:bg-amber-700 disabled:opacity-50 disabled:cursor-not-allowed text-foreground text-sm font-medium rounded-lg transition-colors"
+              className="px-4 py-2 bg-violet-600 hover:bg-primary disabled:opacity-50 disabled:cursor-not-allowed text-foreground text-sm font-medium rounded-lg transition-colors"
             >
               Generate Team
             </button>
@@ -252,7 +252,7 @@ export function TeamBuilder({ workspaceId, agents, onChange }: Props) {
               Team ({agents.length}/{maxAgents})
             </span>
             {isFull && (
-              <span className="text-xs text-amber-600">Team is full</span>
+              <span className="text-xs text-primary">Team is full</span>
             )}
           </div>
           <div className="flex flex-wrap gap-2">

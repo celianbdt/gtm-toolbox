@@ -46,7 +46,7 @@ export function DebateTopBar({ mission, currentTurn, maxTurns, status, agents, e
               ? "bg-emerald-950 text-emerald-400"
               : status === "concluded"
               ? "bg-secondary text-muted-foreground"
-              : "bg-amber-950 text-amber-400"
+              : "bg-amber-950 text-primary"
           }`}
         >
           {status}

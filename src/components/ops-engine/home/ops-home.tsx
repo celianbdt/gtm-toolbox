@@ -99,12 +99,12 @@ export function OpsHome({
       {/* Quick stats */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         <StatCard
-          icon={<Table2 className="size-4 text-amber-600" />}
+          icon={<Table2 className="size-4 text-primary" />}
           label="Tables"
           value={loading ? null : totalTables}
         />
         <StatCard
-          icon={<Rows3 className="size-4 text-amber-600" />}
+          icon={<Rows3 className="size-4 text-primary" />}
           label="Total rows"
           value={loading ? null : totalRows}
         />
@@ -115,7 +115,7 @@ export function OpsHome({
         />
         <button
           onClick={onNavigateCost}
-          className="text-left transition-colors hover:ring-amber-700/40 hover:ring-2 rounded-xl"
+          className="text-left transition-colors hover:ring-primary/40 hover:ring-2 rounded-xl"
         >
           <StatCard
             icon={<Coins className="size-4 text-emerald-400" />}

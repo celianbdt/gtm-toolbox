@@ -113,15 +113,15 @@ export function TemplatePicker({
             return (
               <Card
                 key={t.slug}
-                className="cursor-pointer transition-colors hover:ring-amber-700/40 hover:ring-2"
+                className="cursor-pointer transition-colors hover:ring-primary/40 hover:ring-2"
                 onClick={() => !loading && openCreateDialog(t)}
               >
                 <CardContent className="flex flex-col gap-2 p-4">
                   <div className="flex items-center gap-2">
                     {isLoading ? (
-                      <Loader2 className="size-4 text-amber-600 animate-spin" />
+                      <Loader2 className="size-4 text-primary animate-spin" />
                     ) : (
-                      <Icon className="size-4 text-amber-600" />
+                      <Icon className="size-4 text-primary" />
                     )}
                     <span className="text-sm font-medium">{t.name}</span>
                   </div>
@@ -135,7 +135,7 @@ export function TemplatePicker({
 
           {/* Blank table */}
           <Card
-            className="cursor-pointer border-dashed transition-colors hover:ring-amber-700/40 hover:ring-2"
+            className="cursor-pointer border-dashed transition-colors hover:ring-primary/40 hover:ring-2"
             onClick={() => !loading && openCreateDialog(null)}
           >
             <CardContent className="flex flex-col items-center justify-center gap-2 p-4 h-full min-h-[80px]">

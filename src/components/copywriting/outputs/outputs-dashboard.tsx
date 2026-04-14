@@ -169,13 +169,13 @@ function SequenceStepCard({
             <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
               CTA
             </span>
-            <p className="text-sm text-amber-600">{step.cta}</p>
+            <p className="text-sm text-primary">{step.cta}</p>
           </div>
         )}
 
         {step.notes && (
-          <div className="rounded-md bg-amber-500/5 border border-amber-500/20 p-2">
-            <span className="text-[10px] uppercase tracking-wider text-amber-400">
+          <div className="rounded-md bg-primary/5 border border-primary/20 p-2">
+            <span className="text-[10px] uppercase tracking-wider text-primary">
               Notes / Objections
             </span>
             <p className="text-xs text-muted-foreground mt-1 whitespace-pre-wrap">

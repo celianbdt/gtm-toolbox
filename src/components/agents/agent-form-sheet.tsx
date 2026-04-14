@@ -329,7 +329,7 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
                         }}
                         className={`p-3 rounded-lg border cursor-pointer transition-colors ${
                           isSelected
-                            ? "border-amber-700 bg-violet-900/20"
+                            ? "border-primary bg-violet-900/20"
                             : "border-border hover:border-zinc-600"
                         }`}
                       >
@@ -345,7 +345,7 @@ export function AgentFormSheet({ open, onOpenChange, workspaceId, agent, onSaved
                             <div className="text-xs text-muted-foreground">{a.role}</div>
                           </div>
                           <div className={`w-4 h-4 rounded border-2 shrink-0 transition-colors ${
-                            isSelected ? "bg-amber-700 border-amber-700" : "border-zinc-600"
+                            isSelected ? "bg-primary border-primary" : "border-zinc-600"
                           }`} />
                         </div>
                       </div>

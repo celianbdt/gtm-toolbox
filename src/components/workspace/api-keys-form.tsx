@@ -58,7 +58,7 @@ export function APIKeysForm({ workspaceSlug, initialKeys }: Props) {
   return (
     <section>
       <div className="flex items-center gap-2 mb-4">
-        <Key className="h-4 w-4 text-amber-400" />
+        <Key className="h-4 w-4 text-primary" />
         <h2 className="text-base font-semibold text-foreground">Clés API</h2>
       </div>
       <p className="text-sm text-muted-foreground mb-4">

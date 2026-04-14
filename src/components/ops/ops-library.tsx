@@ -210,7 +210,7 @@ export function OpsLibrary() {
             <Card
               key={note.id}
               className={`transition-colors ${
-                note.is_pinned ? "border-amber-700/30 bg-amber-700/5" : ""
+                note.is_pinned ? "border-primary/30 bg-primary/5" : ""
               }`}
             >
               <CardContent className="py-3 space-y-2">
@@ -224,7 +224,7 @@ export function OpsLibrary() {
                       onClick={() => handleTogglePin(note)}
                     >
                       {note.is_pinned ? (
-                        <PinOff className="size-3 text-amber-600" />
+                        <PinOff className="size-3 text-primary" />
                       ) : (
                         <Pin className="size-3 text-muted-foreground" />
                       )}

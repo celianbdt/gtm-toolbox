@@ -74,7 +74,7 @@ export function TableCard({
   return (
     <Card
       size="sm"
-      className="cursor-pointer transition-colors hover:ring-amber-700/40 hover:ring-2"
+      className="cursor-pointer transition-colors hover:ring-primary/40 hover:ring-2"
       onClick={onClick}
     >
       <CardHeader>

@@ -74,7 +74,7 @@ export function WhitelistPanel() {
   ];
 
   const statusConfig = {
-    pending: { icon: Clock, color: "text-amber-400", bg: "bg-amber-400/10", label: "En attente" },
+    pending: { icon: Clock, color: "text-primary", bg: "bg-amber-400/10", label: "En attente" },
     approved: { icon: Check, color: "text-emerald-400", bg: "bg-emerald-400/10", label: "Approuvé" },
     rejected: { icon: X, color: "text-red-400", bg: "bg-red-400/10", label: "Refusé" },
   };
@@ -84,7 +84,7 @@ export function WhitelistPanel() {
       {/* Header */}
       <div className="px-5 py-4 border-b border-border bg-card">
         <div className="flex items-center gap-2 mb-3">
-          <Shield className="h-4 w-4 text-amber-600" />
+          <Shield className="h-4 w-4 text-primary" />
           <h3 className="text-sm font-semibold text-foreground">Gestion des accès</h3>
         </div>
 
@@ -100,7 +100,7 @@ export function WhitelistPanel() {
           <button
             type="submit"
             disabled={adding || !addEmail.trim()}
-            className="flex items-center gap-1 px-3 py-1.5 bg-violet-600 hover:bg-amber-700 disabled:opacity-40 text-foreground text-xs font-medium rounded-lg transition-colors"
+            className="flex items-center gap-1 px-3 py-1.5 bg-violet-600 hover:bg-primary disabled:opacity-40 text-foreground text-xs font-medium rounded-lg transition-colors"
           >
             <UserPlus className="h-3 w-3" />
             {adding ? "..." : "Inviter"}

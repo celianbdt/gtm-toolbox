@@ -58,7 +58,7 @@ export default async function ReportsPage() {
             Dashboard
           </Link>
         </Button>
-        <FileBarChart className="size-5 text-amber-600" />
+        <FileBarChart className="size-5 text-primary" />
         <div>
           <h1 className="text-lg font-semibold">Client Reporting</h1>
           <p className="text-sm text-muted-foreground">

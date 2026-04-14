@@ -181,7 +181,7 @@ export function DashboardWorkspaceCard({ workspace: initial }: Props) {
             {workspace.task_summary.blocked > 0 && (
               <>
                 <span className="text-foreground/30">|</span>
-                <span className="text-amber-400">
+                <span className="text-primary">
                   {workspace.task_summary.blocked} bloquee
                   {workspace.task_summary.blocked !== 1 ? "s" : ""}
                 </span>
@@ -192,7 +192,7 @@ export function DashboardWorkspaceCard({ workspace: initial }: Props) {
 
         {/* Next action */}
         {workspace.next_task && (
-          <div className="rounded-md border border-border/50 bg-amber-700/5 px-2.5 py-1.5">
+          <div className="rounded-md border border-border/50 bg-primary/5 px-2.5 py-1.5">
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">
               Prochaine action
             </div>

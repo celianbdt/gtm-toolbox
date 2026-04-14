@@ -53,7 +53,7 @@ export function SyncStatusBadge({
       );
     case "syncing":
       return (
-        <Badge className="bg-amber-500/15 text-amber-400 border-amber-500/25 flex items-center gap-1.5">
+        <Badge className="bg-amber-500/15 text-primary border-amber-500/25 flex items-center gap-1.5">
           <Loader2 className="h-3 w-3 animate-spin" />
           Sync en cours...
         </Badge>

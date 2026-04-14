@@ -144,7 +144,7 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
             <button
               onClick={() => setStep(steps[stepIndex + 1])}
               disabled={!canAdvance}
-              className="px-5 py-2 bg-violet-600 hover:bg-amber-700 disabled:opacity-40 disabled:cursor-not-allowed text-foreground text-sm font-medium rounded-lg transition-colors"
+              className="px-5 py-2 bg-violet-600 hover:bg-primary disabled:opacity-40 disabled:cursor-not-allowed text-foreground text-sm font-medium rounded-lg transition-colors"
             >
               Continue →
             </button>
@@ -153,7 +153,7 @@ export function DebateSetup({ workspaceId, onSessionCreated }: Props) {
           ) : (
             <button
               onClick={startDebate}
-              className="px-5 py-2 bg-violet-600 hover:bg-amber-700 text-foreground text-sm font-medium rounded-lg transition-colors"
+              className="px-5 py-2 bg-violet-600 hover:bg-primary text-foreground text-sm font-medium rounded-lg transition-colors"
             >
               Start Debate ⚡
             </button>

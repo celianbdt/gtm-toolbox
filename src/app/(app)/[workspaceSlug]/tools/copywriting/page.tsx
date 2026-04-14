@@ -36,7 +36,7 @@ export default function CopywritingPage() {
           </Button>
         )}
         <div className="flex items-center gap-2">
-          <PenLine className="size-5 text-amber-600" />
+          <PenLine className="size-5 text-primary" />
           <h1 className="text-lg font-semibold">Copywriting</h1>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default function CopywritingPage() {
               onClick={() => setViewState({ view: "home", tab: "new" })}
               className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
                 viewState.tab === "new"
-                  ? "bg-amber-700/10 text-amber-600"
+                  ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -59,7 +59,7 @@ export default function CopywritingPage() {
               onClick={() => setViewState({ view: "home", tab: "saved" })}
               className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
                 viewState.tab === "saved"
-                  ? "bg-amber-700/10 text-amber-600"
+                  ? "bg-primary/10 text-primary"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >

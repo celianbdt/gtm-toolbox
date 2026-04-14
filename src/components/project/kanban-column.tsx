@@ -20,14 +20,14 @@ type KanbanColumnProps = {
 
 const COLUMN_BG: Record<TaskStatus, string> = {
   todo: "bg-muted/20",
-  in_progress: "bg-amber-700/5",
+  in_progress: "bg-primary/5",
   blocked: "bg-red-500/8",
   done: "bg-emerald-500/5",
 };
 
 const COLUMN_HEADER_COLOR: Record<TaskStatus, string> = {
   todo: "text-muted-foreground",
-  in_progress: "text-amber-600",
+  in_progress: "text-primary",
   blocked: "text-red-400",
   done: "text-emerald-400",
 };
@@ -71,7 +71,7 @@ export function KanbanColumn({
             ref={provided.innerRef}
             {...provided.droppableProps}
             className={`flex-1 p-2 flex flex-col gap-2 transition-colors ${
-              snapshot.isDraggingOver ? "bg-amber-700/10" : ""
+              snapshot.isDraggingOver ? "bg-primary/10" : ""
             }`}
           >
             {tasks.map((task, index) => (

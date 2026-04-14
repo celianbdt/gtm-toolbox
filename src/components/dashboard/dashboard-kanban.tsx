@@ -231,7 +231,7 @@ export function DashboardKanban({
                     className="flex items-center gap-2 w-full rounded-md px-2 py-1.5 text-xs hover:bg-accent transition-colors"
                   >
                     <div className={`size-4 rounded border flex items-center justify-center shrink-0 ${
-                      isSelected ? "bg-amber-700 border-amber-700" : "border-border"
+                      isSelected ? "bg-primary border-primary" : "border-border"
                     }`}>
                       {isSelected && <Check className="size-3 text-foreground" />}
                     </div>
@@ -292,7 +292,7 @@ export function DashboardKanban({
                       ref={provided.innerRef}
                       {...provided.droppableProps}
                       className={`flex flex-col gap-1.5 min-h-[100px] rounded-lg p-1 transition-colors ${
-                        snapshot.isDraggingOver ? "bg-amber-700/10" : ""
+                        snapshot.isDraggingOver ? "bg-primary/10" : ""
                       }`}
                     >
                       {columnTasks.length === 0 && !snapshot.isDraggingOver ? (
@@ -312,9 +312,9 @@ export function DashboardKanban({
                                 {...dragProvided.draggableProps}
                                 {...dragProvided.dragHandleProps}
                                 onClick={() => handleCardClick(task)}
-                                className={`group rounded-lg border border-border/50 bg-card px-3 py-2 cursor-pointer hover:border-amber-700/30 transition-all ${
+                                className={`group rounded-lg border border-border/50 bg-card px-3 py-2 cursor-pointer hover:border-primary/30 transition-all ${
                                   dragSnapshot.isDragging
-                                    ? "shadow-lg ring-1 ring-amber-700/30 rotate-1 scale-[1.02]"
+                                    ? "shadow-lg ring-1 ring-primary/30 rotate-1 scale-[1.02]"
                                     : ""
                                 }`}
                               >

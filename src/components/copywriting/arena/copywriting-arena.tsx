@@ -152,14 +152,14 @@ export function CopywritingArena({ sessionId, workspaceId, onComplete }: Props) 
               {isCompleted ? (
                 <CheckCircle2 className="size-4 text-emerald-500" />
               ) : isCurrent ? (
-                <Loader2 className="size-4 text-amber-600 animate-spin" />
+                <Loader2 className="size-4 text-primary animate-spin" />
               ) : (
                 <div className="size-4 rounded-full border border-border" />
               )}
               <span
                 className={`text-xs ${
                   isCurrent
-                    ? "text-amber-600 font-medium"
+                    ? "text-primary font-medium"
                     : isCompleted
                       ? "text-emerald-500"
                       : "text-muted-foreground"
@@ -222,7 +222,7 @@ export function CopywritingArena({ sessionId, workspaceId, onComplete }: Props) 
       {/* Loading state for non-debate phases */}
       {currentPhase !== "complete" && agents.size === 0 && !error && (
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="size-6 animate-spin text-amber-600 mr-3" />
+          <Loader2 className="size-6 animate-spin text-primary mr-3" />
           <span className="text-sm text-muted-foreground">
             {PHASE_LABELS[currentPhase]}...
           </span>

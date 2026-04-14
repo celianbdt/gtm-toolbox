@@ -45,7 +45,7 @@ const COLUMN_TYPE_META: Record<
   formula: {
     label: "Formula",
     icon: FileText,
-    color: "bg-amber-500/10 text-amber-600",
+    color: "bg-primary/10 text-primary",
   },
   static: {
     label: "Static",

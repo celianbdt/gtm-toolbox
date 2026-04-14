@@ -206,7 +206,7 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
       <SheetContent className="w-full sm:max-w-2xl overflow-hidden flex flex-col gap-0 p-0">
         <SheetHeader className="px-6 pt-6 pb-4 border-b border-border">
           <SheetTitle className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-amber-600" />
+            <Sparkles className="h-4 w-4 text-primary" />
             Remodel Context
           </SheetTitle>
         </SheetHeader>
@@ -224,7 +224,7 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
             {/* Phase 1: Analyzing */}
             {phase === "analyzing" && !error && (
               <div className="flex flex-col items-center justify-center py-16 text-center">
-                <Loader2 className="h-8 w-8 text-amber-600 animate-spin mb-4" />
+                <Loader2 className="h-8 w-8 text-primary animate-spin mb-4" />
                 <p className="text-sm text-foreground font-medium">
                   Analyse de vos documents...
                 </p>
@@ -281,7 +281,7 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
             {/* Phase 3: Restructuring */}
             {phase === "restructuring" && !error && (
               <div className="flex flex-col items-center justify-center py-16 text-center">
-                <Loader2 className="h-8 w-8 text-amber-600 animate-spin mb-4" />
+                <Loader2 className="h-8 w-8 text-primary animate-spin mb-4" />
                 <p className="text-sm text-foreground font-medium">
                   Restructuration en cours...
                 </p>
@@ -411,7 +411,7 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
               >
                 Tout passer
               </Button>
-              <Button onClick={handleContinue} className="bg-violet-600 hover:bg-amber-700">
+              <Button onClick={handleContinue} className="bg-violet-600 hover:bg-primary">
                 Continuer
               </Button>
             </>
@@ -432,7 +432,7 @@ export function RemodelSheet({ workspaceId, open, onOpenChange, onRemodeled }: P
               <Button
                 onClick={handleApply}
                 disabled={applying}
-                className="bg-violet-600 hover:bg-amber-700"
+                className="bg-violet-600 hover:bg-primary"
               >
                 {applying ? (
                   <>

@@ -14,8 +14,8 @@ export function CostEstimateBadge({ estimate }: Props) {
 
   if (cost === 0) return null;
 
-  const color = cost < 0.05 ? "text-emerald-400" : cost < 0.20 ? "text-amber-400" : "text-orange-400";
-  const bgColor = cost < 0.05 ? "bg-emerald-500/10" : cost < 0.20 ? "bg-amber-500/10" : "bg-orange-500/10";
+  const color = cost < 0.05 ? "text-emerald-400" : cost < 0.20 ? "text-primary" : "text-orange-400";
+  const bgColor = cost < 0.05 ? "bg-emerald-500/10" : cost < 0.20 ? "bg-primary/10" : "bg-orange-500/10";
 
   return (
     <div className="space-y-1">

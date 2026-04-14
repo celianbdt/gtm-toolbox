@@ -62,7 +62,7 @@ function budgetColor(pct: number): string {
 
 function budgetTextColor(pct: number): string {
   if (pct < 60) return "text-emerald-400";
-  if (pct < 80) return "text-amber-400";
+  if (pct < 80) return "text-primary";
   return "text-red-400";
 }
 
@@ -218,7 +218,7 @@ function BudgetOverview({ data }: { data: CostData }) {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Coins className="size-4 text-amber-600" />
+            <Coins className="size-4 text-primary" />
             <CardTitle>Budget Overview</CardTitle>
           </div>
           <Badge
@@ -282,7 +282,7 @@ function ProviderBreakdown({
       <Card size="sm">
         <CardHeader>
           <div className="flex items-center gap-2">
-            <Zap className="size-4 text-amber-600" />
+            <Zap className="size-4 text-primary" />
             <CardTitle>Provider Breakdown</CardTitle>
           </div>
         </CardHeader>
@@ -304,7 +304,7 @@ function ProviderBreakdown({
     <Card size="sm">
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Zap className="size-4 text-amber-600" />
+          <Zap className="size-4 text-primary" />
           <CardTitle>Provider Breakdown</CardTitle>
         </div>
         <CardDescription>
@@ -348,7 +348,7 @@ function ProviderBreakdown({
                 </div>
                 <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-amber-700 transition-all"
+                    className="h-full rounded-full bg-primary transition-all"
                     style={{ width: `${barWidth}%` }}
                   />
                 </div>
@@ -372,7 +372,7 @@ function CacheEfficiency({
     <Card size="sm">
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Database className="size-4 text-amber-600" />
+          <Database className="size-4 text-primary" />
           <CardTitle>Cache Efficiency</CardTitle>
         </div>
       </CardHeader>

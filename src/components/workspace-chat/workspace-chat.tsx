@@ -81,7 +81,7 @@ export function WorkspaceChat({ workspaceId, workspaceName }: Props) {
       <div ref={scrollRef} className="flex-1 overflow-y-auto space-y-4 pb-4">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center py-16 text-center">
-            <Bot className="size-10 text-amber-600 mb-4" />
+            <Bot className="size-10 text-primary mb-4" />
             <h3 className="text-sm font-medium mb-1">Assistant GTM — {workspaceName}</h3>
             <p className="text-xs text-muted-foreground max-w-md">
               Pose des questions sur ton workspace : contexte, taches, metriques, integrations, insights des sessions precedentes.
@@ -96,7 +96,7 @@ export function WorkspaceChat({ workspaceId, workspaceName }: Props) {
                 <button
                   key={suggestion}
                   onClick={() => { setInput(suggestion); }}
-                  className="text-[11px] px-3 py-1.5 rounded-full border border-border hover:border-amber-700/30 text-muted-foreground hover:text-foreground transition-colors"
+                  className="text-[11px] px-3 py-1.5 rounded-full border border-border hover:border-primary/30 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {suggestion}
                 </button>
@@ -108,11 +108,11 @@ export function WorkspaceChat({ workspaceId, workspaceName }: Props) {
         {messages.map((msg, i) => (
           <div key={i} className={`flex gap-3 ${msg.role === "user" ? "justify-end" : ""}`}>
             {msg.role === "assistant" && (
-              <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-amber-700/10">
-                <Bot className="size-4 text-amber-600" />
+              <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                <Bot className="size-4 text-primary" />
               </div>
             )}
-            <Card className={`max-w-[80%] ${msg.role === "user" ? "bg-amber-700/10 border-amber-700/20" : ""}`}>
+            <Card className={`max-w-[80%] ${msg.role === "user" ? "bg-primary/10 border-primary/20" : ""}`}>
               <CardContent className="py-2 px-3">
                 <div className="text-sm whitespace-pre-wrap prose prose-invert prose-sm max-w-none">
                   {msg.content}

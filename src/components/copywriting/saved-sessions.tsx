@@ -58,7 +58,7 @@ export function SavedSessions({ workspaceId, onSelect }: Props) {
         return (
           <Card
             key={session.id}
-            className="cursor-pointer hover:border-amber-700/30 transition-colors"
+            className="cursor-pointer hover:border-primary/30 transition-colors"
             onClick={() => onSelect(session.id)}
           >
             <CardContent className="py-3 space-y-2">

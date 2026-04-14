@@ -33,9 +33,9 @@ export function DashboardTaskSummary({ workspaces }: Props) {
   if (totalBlocked === 0) return null;
 
   return (
-    <Card size="sm" className="border-amber-500/20 bg-amber-500/5">
+    <Card size="sm" className="border-primary/20 bg-primary/5">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-amber-400">
+        <CardTitle className="flex items-center gap-2 text-primary">
           <AlertTriangleIcon className="size-4" />
           {totalBlocked} tache{totalBlocked !== 1 ? "s" : ""} bloquee
           {totalBlocked !== 1 ? "s" : ""}

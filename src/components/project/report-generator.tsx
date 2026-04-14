@@ -153,7 +153,7 @@ export function ReportGenerator({ onReportSaved }: ReportGeneratorProps) {
             {/* Streaming cursor effect */}
             {isLoading && (
               <div className="absolute top-3 right-4">
-                <span className="inline-block size-2 rounded-full bg-amber-700 animate-pulse" />
+                <span className="inline-block size-2 rounded-full bg-primary animate-pulse" />
               </div>
             )}
 

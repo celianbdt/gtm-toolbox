@@ -232,14 +232,14 @@ export function OpsGrid({
               return (
                 <div className="flex items-center gap-1">
                   <span className="text-xs truncate">{String(val)}</span>
-                  <Database className="size-2.5 text-amber-600 shrink-0" />
+                  <Database className="size-2.5 text-primary shrink-0" />
                 </div>
               );
             case "ai_column":
               return (
                 <div className="flex items-center gap-1">
                   <span className="text-xs truncate">{String(val)}</span>
-                  <Sparkles className="size-2.5 text-amber-400 shrink-0" />
+                  <Sparkles className="size-2.5 text-primary shrink-0" />
                 </div>
               );
             case "formula":

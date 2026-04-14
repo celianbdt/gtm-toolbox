@@ -111,7 +111,7 @@ export function ContextManager({ workspaceId, initialDocs }: Props) {
             <button
               onClick={handleCrmResync}
               disabled={syncing}
-              className="flex items-center gap-1.5 px-4 py-2 bg-amber-900/30 hover:bg-amber-900/50 text-amber-400 text-sm font-medium rounded-lg transition-colors border border-amber-800/50"
+              className="flex items-center gap-1.5 px-4 py-2 bg-amber-900/30 hover:bg-amber-900/50 text-primary text-sm font-medium rounded-lg transition-colors border border-amber-800/50"
             >
               <RefreshCw className={`h-3.5 w-3.5 ${syncing ? "animate-spin" : ""}`} />
               CRM Sync
@@ -128,7 +128,7 @@ export function ContextManager({ workspaceId, initialDocs }: Props) {
           )}
           <button
             onClick={openAdd}
-            className="px-4 py-2 bg-violet-600 hover:bg-amber-700 text-foreground text-sm font-medium rounded-lg transition-colors"
+            className="px-4 py-2 bg-violet-600 hover:bg-primary text-foreground text-sm font-medium rounded-lg transition-colors"
           >
             + Add document
           </button>
@@ -156,7 +156,7 @@ export function ContextManager({ workspaceId, initialDocs }: Props) {
           </p>
           <button
             onClick={openAdd}
-            className="px-4 py-2 bg-violet-600 hover:bg-amber-700 text-foreground text-sm font-medium rounded-lg transition-colors"
+            className="px-4 py-2 bg-violet-600 hover:bg-primary text-foreground text-sm font-medium rounded-lg transition-colors"
           >
             Add your first document
           </button>

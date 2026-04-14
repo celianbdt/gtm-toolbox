@@ -192,7 +192,7 @@ export function CsvMappingDialog({
                     ))}
                   </select>
                 ) : (
-                  <Badge className="text-[10px] bg-amber-700/10 text-amber-600 border-amber-700/20">
+                  <Badge className="text-[10px] bg-primary/10 text-primary border-primary/20">
                     <Plus className="size-2.5 mr-0.5" />
                     New column: {m.targetKey}
                   </Badge>
@@ -230,7 +230,7 @@ export function CsvMappingDialog({
                   }
                   className={`px-1.5 py-0.5 rounded text-[10px] transition-colors ${
                     m.action === "create"
-                      ? "bg-amber-700/10 text-amber-600"
+                      ? "bg-primary/10 text-primary"
                       : "text-muted-foreground hover:bg-muted"
                   }`}
                 >
@@ -255,7 +255,7 @@ export function CsvMappingDialog({
         <div className="flex items-center gap-3 text-xs text-muted-foreground border-t border-border pt-2">
           <span>{mappedCount} mapped</span>
           {newCount > 0 && (
-            <span className="text-amber-600">{newCount} new columns</span>
+            <span className="text-primary">{newCount} new columns</span>
           )}
           {skippedCount > 0 && <span>{skippedCount} skipped</span>}
         </div>
